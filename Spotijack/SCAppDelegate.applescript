@@ -39,11 +39,13 @@ script SCAppDelegate
 	
 	on actionButtonClicked_(sender)
 		if my playingMusic as boolean is false then
-			actionButton's setTitle_("Stop")
+			actionButton's setTitle_("Recording")
+            actionButton's setState_(1) -- 1 == NSOnState
 			my setPlayingMusic_(true as boolean)
 			performSelectorInBackground_withObject_("recordMusic:", "test")
 		else
-			actionButton's setTitle_("Start")
+			actionButton's setTitle_("Start Recording")
+            actionButton's setState_(0) -- 0 == NSOffState
 			my setPlayingMusic_(false as boolean)
 		end if
 	end actionButtonClicked_

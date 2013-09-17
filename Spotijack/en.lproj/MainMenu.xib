@@ -693,10 +693,13 @@
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OMn-to-q5D">
                         <rect key="frame" x="72" y="73" width="110" height="19"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="recessed" title="Start Recording" bezelStyle="recessed" image="264369A6-923C-4A12-9604-1AE69D1EC7D0" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="b5l-tY-oEE">
+                        <buttonCell key="cell" type="recessed" title="Start Recording" bezelStyle="recessed" image="FB1033DA-5606-403D-9BE1-9B855D7A025B" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="b5l-tY-oEE">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
                             <font key="font" metaFont="systemBold" size="12"/>
                         </buttonCell>
+                        <connections>
+                            <action selector="actionButtonClicked:" target="494" id="20D-xJ-RAw"/>
+                        </connections>
                     </button>
                 </subviews>
                 <constraints>
@@ -712,6 +715,7 @@
         </window>
         <customObject id="494" customClass="SCAppDelegate">
             <connections>
+                <outlet property="actionButton" destination="OMn-to-q5D" id="Ue9-vr-iBQ"/>
                 <outlet property="statusLabel" destination="539" id="552"/>
             </connections>
         </customObject>
@@ -719,7 +723,7 @@
         <userDefaultsController representsSharedInstance="YES" id="554"/>
     </objects>
     <resources>
-        <image name="264369A6-923C-4A12-9604-1AE69D1EC7D0" width="1" height="1">
+        <image name="FB1033DA-5606-403D-9BE1-9B855D7A025B" width="1" height="1">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
