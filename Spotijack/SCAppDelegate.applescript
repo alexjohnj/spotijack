@@ -8,10 +8,12 @@
 
 script SCAppDelegate
 	property parent : class "NSObject"
+    property mainWindow : missing value
 	property songTitleLabel : missing value
     property artistLabel : missing value
 	property actionButton : missing value
 	property playingMusic : false
+
 	
 	on applicationWillFinishLaunching_(aNotification)
 		# Get AH & Spotify set up
@@ -35,8 +37,15 @@ script SCAppDelegate
 	end applicationShouldTerminate_
 	
 	on applicationShouldTerminateAfterLastWindowClosed_(sender)
-		return true
+		return false
 	end applicationShouldTerminateAfterLastWindowClosed_
+    
+    on applicationShouldHandleReopen_hasVisibleWindows_(theApplication, flag)
+        if flag as boolean is false
+            mainWindow's makeKeyAndOrderFront_(me)
+        end if
+    return true
+    end applicationShouldHandleReopen_hasVisibleWindows_
 	
 	on actionButtonClicked_(sender)
 		if my playingMusic as boolean is false then

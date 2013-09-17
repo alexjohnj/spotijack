@@ -683,7 +683,7 @@
                     <button verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OMn-to-q5D">
                         <rect key="frame" x="110" y="7" width="57" height="19"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="recessed" title="Record" bezelStyle="recessed" image="776A1F70-52C6-4997-9770-97C6AD6FEF87" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="b5l-tY-oEE">
+                        <buttonCell key="cell" type="recessed" title="Record" bezelStyle="recessed" image="A0FA201D-9058-40AE-8491-44CA1FF9D66F" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="b5l-tY-oEE">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
                             <font key="font" metaFont="systemBold" size="12"/>
                         </buttonCell>
@@ -709,6 +709,7 @@
             <connections>
                 <outlet property="actionButton" destination="OMn-to-q5D" id="Ue9-vr-iBQ"/>
                 <outlet property="artistLabel" destination="oDZ-oV-3Wh" id="dao-lL-b5U"/>
+                <outlet property="mainWindow" destination="371" id="N5a-9L-44y"/>
                 <outlet property="songTitleLabel" destination="vzK-xp-Dea" id="us6-yf-C8d"/>
             </connections>
         </customObject>
@@ -716,7 +717,7 @@
         <userDefaultsController representsSharedInstance="YES" id="554"/>
     </objects>
     <resources>
-        <image name="776A1F70-52C6-4997-9770-97C6AD6FEF87" width="1" height="1">
+        <image name="A0FA201D-9058-40AE-8491-44CA1FF9D66F" width="1" height="1">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
