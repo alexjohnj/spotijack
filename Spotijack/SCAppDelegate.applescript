@@ -8,7 +8,8 @@
 
 script SCAppDelegate
 	property parent : class "NSObject"
-	property statusLabel : missing value
+	property songTitleLabel : missing value
+    property artistLabel : missing value
 	property actionButton : missing value
 	property playingMusic : false
 	
@@ -22,10 +23,10 @@ script SCAppDelegate
 			end tell
 		on error errmesg number errn
 			display dialog errmesg & return & return & "error number: " & (errn as text)
-			statusLabel's setStringValue_("Error")
-			statusLabel's setTextColor_(current application's NSColor's redColor)
+			songTitleLabel's setStringValue_("Error")
+			songTitleLabel's setTextColor_(current application's NSColor's redColor)
 		end try
-		statusLabel's setStringValue_("Standing by...")
+		songTitleLabel's setStringValue_("Ready to Record")
 	end applicationWillFinishLaunching_
 	
 	on applicationShouldTerminate_(sender)
@@ -44,7 +45,7 @@ script SCAppDelegate
 			my setPlayingMusic_(true as boolean)
 			performSelectorInBackground_withObject_("recordMusic:", "test")
 		else
-			actionButton's setTitle_("Start Recording")
+			actionButton's setTitle_("Record")
             actionButton's setState_(0) -- 0 == NSOffState
 			my setPlayingMusic_(false as boolean)
 		end if
@@ -81,10 +82,10 @@ script SCAppDelegate
 			tell application "Spotify" to set current_track_id to id of current track
 			tell application "Spotify" to set old_track_id to id of current track
 			tell application "Spotify" to set currentTrackTitle to name of current track
-			statusLabel's setStringValue_(currentTrackTitle)
+			songTitleLabel's setStringValue_(currentTrackTitle)
 		on error errmesg number errn
 			if errn is -1728 then
-				statusLabel's setStringValue_("Start a song in Spotify")
+				songTitleLabel's setStringValue_("Start a song in Spotify")
 			else
 				display dialog errmesg & return & return & "error number: " & (errn as text)
 			end if
@@ -105,15 +106,18 @@ script SCAppDelegate
 		tell application "Spotify" to set player position to 0
 		tell application "Spotify" to play current track
 		tell application "Spotify" to set currentTrackTitle to name of current track
-		
-		statusLabel's setStringValue_(currentTrackTitle)
+		tell application "Spotify" to set currentTrackArtist to artist of current track
+        
+		songTitleLabel's setStringValue_(currentTrackTitle)
+        artistLabel's setStringValue_(currentTrackArtist)
 		
 		repeat
 			
 			# Check if user has asked to stop recording music.
 			if my playingMusic as boolean is false then
 				resetApps_()
-				statusLabel's setStringValue_("Standing by…")
+				songTitleLabel's setStringValue_("Ready to Record")
+                artistLabel's setStringValue_("")
 				return
 			end if
 			
@@ -122,8 +126,9 @@ script SCAppDelegate
 				tell application "Spotify" to set current_track_id to id of current track
 			on error errmesg number errn
 				if errn is -1728 then -- Error -1728 indicates there is no track playing so assume we've finished
-					statusLabel's setStringValue_("Finished…")
-					actionButton's setTitle_("Start")
+					songTitleLabel's setStringValue_("Ready to Record")
+                    artistLabel's setStringValue_("")
+					actionButton's setTitle_("Record")
 					my setPlayingMusic_(false as boolean)
 					resetApps_()
 					return
@@ -144,8 +149,10 @@ script SCAppDelegate
 				end tell
 				tell application "Spotify" to play current track
 				tell application "Spotify" to set currentTrackTitle to name of current track
+                tell application "Spotify" to set currentTrackArtist to artist of current track
 				set old_track_id to current_track_id
-				statusLabel's setStringValue_(currentTrackTitle)
+				songTitleLabel's setStringValue_(currentTrackTitle)
+                artistLabel's setStringValue_(currentTrackArtist)
 			end if
 			delay 0.1 -- Polling interval for Spotify
 		end repeat
