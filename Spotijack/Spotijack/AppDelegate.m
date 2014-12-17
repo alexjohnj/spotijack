@@ -32,6 +32,11 @@
   [self.mainWindowController.statusLabel setStringValue:@"Ready to Record"];
 }
 
+- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender {
+  //TODO: Make this take into account if we are currently recording or not
+  return NO;
+}
+
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
   [[[SPJSessionController sharedController] audioHijackSpotifySession] stopHijacking];
 }

@@ -76,6 +76,8 @@
     return; // TODO: Make this continously prompt to start a track
   }
   
+  // TODO: Somewhere around here we need to tell OSX to disable AppNap for Spotijack otherwise the timer could be
+  // delayed a significant amount
   if (!self.spotifyPollingTimer) {
     self.spotifyPollingTimer = [NSTimer scheduledTimerWithTimeInterval:0.1
                                                                 target:self
