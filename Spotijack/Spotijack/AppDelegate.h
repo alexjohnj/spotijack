@@ -7,6 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "SPJSessionController.h"
 #import "SPJMainWindowController.h"
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>

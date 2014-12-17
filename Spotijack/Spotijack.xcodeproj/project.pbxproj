@@ -15,6 +15,7 @@
 		FA9503871A421D6B009D7149 /* SPJMainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA9503851A421D6B009D7149 /* SPJMainWindowController.m */; };
 		FA9503881A421D6B009D7149 /* SPJMainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA9503861A421D6B009D7149 /* SPJMainWindow.xib */; };
 		FAF81BEA1A421FB5008F3360 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAF81BE91A421FB5008F3360 /* ScriptingBridge.framework */; };
+		FAF81BED1A422351008F3360 /* SPJSessionController.m in Sources */ = {isa = PBXBuildFile; fileRef = FAF81BEC1A422351008F3360 /* SPJSessionController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +45,8 @@
 		FA9503851A421D6B009D7149 /* SPJMainWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPJMainWindowController.m; sourceTree = "<group>"; };
 		FA9503861A421D6B009D7149 /* SPJMainWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SPJMainWindow.xib; sourceTree = "<group>"; };
 		FAF81BE91A421FB5008F3360 /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
+		FAF81BEB1A422351008F3360 /* SPJSessionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPJSessionController.h; sourceTree = "<group>"; };
+		FAF81BEC1A422351008F3360 /* SPJSessionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPJSessionController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +89,8 @@
 		FA95035D1A421B76009D7149 /* Spotijack */ = {
 			isa = PBXGroup;
 			children = (
+				FAF81BEB1A422351008F3360 /* SPJSessionController.h */,
+				FAF81BEC1A422351008F3360 /* SPJSessionController.m */,
 				FA9503841A421D6B009D7149 /* SPJMainWindowController.h */,
 				FA9503851A421D6B009D7149 /* SPJMainWindowController.m */,
 				FA9503601A421B76009D7149 /* AppDelegate.h */,
@@ -246,6 +251,7 @@
 			files = (
 				FA9503641A421B76009D7149 /* main.m in Sources */,
 				FA9503621A421B76009D7149 /* AppDelegate.m in Sources */,
+				FAF81BED1A422351008F3360 /* SPJSessionController.m in Sources */,
 				FA9503871A421D6B009D7149 /* SPJMainWindowController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

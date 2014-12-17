@@ -7,7 +7,6 @@
 //
 
 #import "AppDelegate.h"
-#import "AudioHijack.h"
 
 @interface AppDelegate ()
 
@@ -25,18 +24,7 @@
 }
 
 - (void)applicationWillFinishLaunching:(NSNotification *)notification {
-  // Initialise Audio Hijack Pro
-  AudioHijackApplication *ahApp = [SBApplication applicationWithBundleIdentifier:@"com.rogueamoeba.AudioHijackPro2"];
-  [ahApp activate];
-  AudioHijackApplicationSession *spotifySession = nil;
-  for (AudioHijackApplicationSession *session in ahApp.sessions) {
-    if ([session.name isEqualToString:@"Spotify"]) {
-      spotifySession = session;
-      break;
-    }
-  }
-  
-  [spotifySession startHijackingRelaunch:AudioHijackRelaunchOptionsYes];
+  [[SPJSessionController sharedController] initializeAudioHijackPro];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
@@ -45,7 +33,6 @@
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
-  // Insert code here to tear down your application
 }
 
 - (BOOL)applicationShouldHandleReopen:(NSApplication *)sender hasVisibleWindows:(BOOL)flag {
