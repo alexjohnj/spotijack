@@ -16,7 +16,10 @@
 
 - (void)windowDidLoad {
   [super windowDidLoad];
-  
+  [[SPJSessionController sharedController] addObserver:self
+                                            forKeyPath:@"playingMusic"
+                                               options:NSKeyValueObservingOptionNew
+                                               context:NULL];
   // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
 }
 
@@ -25,6 +28,16 @@
     [[SPJSessionController sharedController] stopRecordingSession];
   } else {
     [[SPJSessionController sharedController] startRecordingSession];
+  }
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+  if ([keyPath isEqualToString:@"playingMusic"]) {
+    if ([change[NSKeyValueChangeNewKey] isEqualTo:@YES]) {
+      self.recordingButton.title = @"Recording";
+    } else {
+      self.recordingButton.title = @"Record";
+    }
   }
 }
 

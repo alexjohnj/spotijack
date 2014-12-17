@@ -6,6 +6,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="SPJMainWindowController">
             <connections>
+                <outlet property="recordingButton" destination="AKD-kg-1UY" id="jTx-Tp-kuF"/>
                 <outlet property="statusLabel" destination="SVJ-Xv-L1m" id="y2s-5Z-4AB"/>
                 <outlet property="window" destination="uSh-TC-Nzq" id="y6Z-WO-648"/>
             </connections>
@@ -45,7 +46,7 @@
                     </textField>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="AKD-kg-1UY">
                         <rect key="frame" x="110" y="7" width="58" height="19"/>
-                        <buttonCell key="cell" type="recessed" title="Record" bezelStyle="recessed" image="D84BF972-881F-415D-A156-27134C0F5A86" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="VHG-XA-Bdi">
+                        <buttonCell key="cell" type="recessed" title="Record" bezelStyle="recessed" image="D04C3715-F77E-4B97-807F-F8133B50D5DB" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="VHG-XA-Bdi">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
                             <font key="font" metaFont="systemBold" size="12"/>
                         </buttonCell>
@@ -71,7 +72,7 @@
         </window>
     </objects>
     <resources>
-        <image name="D84BF972-881F-415D-A156-27134C0F5A86" width="1" height="1">
+        <image name="D04C3715-F77E-4B97-807F-F8133B50D5DB" width="1" height="1">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
