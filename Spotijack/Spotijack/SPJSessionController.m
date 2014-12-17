@@ -15,6 +15,7 @@
   __strong static SPJSessionController *sharedController;
   dispatch_once(&onceToken, ^{
     sharedController = [[self alloc] init];
+    sharedController.playingMusic = NO;
     
     sharedController.audioHijackApp = [SBApplication applicationWithBundleIdentifier:@"com.rogueamoeba.AudioHijackPro2"];
     if (!sharedController.audioHijackApp) {

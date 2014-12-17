@@ -13,6 +13,8 @@
 
 @interface SPJSessionController : NSObject
 
+@property (assign) BOOL playingMusic;
+
 @property (strong) SpotifyApplication *spotifyApp;
 @property (strong) AudioHijackApplication *audioHijackApp;
 @property (strong) AudioHijackSession *audioHijackSpotifySession;
