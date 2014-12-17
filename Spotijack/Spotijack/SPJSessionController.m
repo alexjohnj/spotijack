@@ -74,10 +74,10 @@
   
   if (!self.spotifyPollingTimer) {
     self.spotifyPollingTimer = [NSTimer scheduledTimerWithTimeInterval:0.1
-                                                       target:self
-                                                     selector:@selector(pollSpotify)
-                                                     userInfo:nil
-                                                      repeats:TRUE];
+                                                                target:self
+                                                              selector:@selector(pollSpotify)
+                                                              userInfo:nil
+                                                               repeats:TRUE];
   }
   
   [self.audioHijackSpotifySession startHijackingRelaunch:AudioHijackRelaunchOptionsYes];
