@@ -14,6 +14,7 @@
 		FA9503751A421B76009D7149 /* SpotijackTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FA9503741A421B76009D7149 /* SpotijackTests.m */; };
 		FA9503871A421D6B009D7149 /* SPJMainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA9503851A421D6B009D7149 /* SPJMainWindowController.m */; };
 		FA9503881A421D6B009D7149 /* SPJMainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA9503861A421D6B009D7149 /* SPJMainWindow.xib */; };
+		FAF81BEA1A421FB5008F3360 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAF81BE91A421FB5008F3360 /* ScriptingBridge.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +43,7 @@
 		FA9503841A421D6B009D7149 /* SPJMainWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPJMainWindowController.h; sourceTree = "<group>"; };
 		FA9503851A421D6B009D7149 /* SPJMainWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPJMainWindowController.m; sourceTree = "<group>"; };
 		FA9503861A421D6B009D7149 /* SPJMainWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SPJMainWindow.xib; sourceTree = "<group>"; };
+		FAF81BE91A421FB5008F3360 /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,6 +51,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FAF81BEA1A421FB5008F3360 /* ScriptingBridge.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -91,6 +94,7 @@
 				FA9503651A421B76009D7149 /* Images.xcassets */,
 				FA95037E1A421C7D009D7149 /* ScriptingBridge Headers */,
 				FA95035E1A421B76009D7149 /* Supporting Files */,
+				FAF81BE91A421FB5008F3360 /* ScriptingBridge.framework */,
 			);
 			path = Spotijack;
 			sourceTree = "<group>";
