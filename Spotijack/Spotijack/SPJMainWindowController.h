@@ -10,4 +10,6 @@
 
 @interface SPJMainWindowController : NSWindowController
 
+@property (weak) IBOutlet NSTextField *statusLabel;
+
 @end

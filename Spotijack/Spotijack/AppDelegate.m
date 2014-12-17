@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "AudioHijack.h"
 
 @interface AppDelegate ()
 
@@ -23,8 +24,24 @@
   return self;
 }
 
+- (void)applicationWillFinishLaunching:(NSNotification *)notification {
+  // Initialise Audio Hijack Pro
+  AudioHijackApplication *ahApp = [SBApplication applicationWithBundleIdentifier:@"com.rogueamoeba.AudioHijackPro2"];
+  [ahApp activate];
+  AudioHijackApplicationSession *spotifySession = nil;
+  for (AudioHijackApplicationSession *session in ahApp.sessions) {
+    if ([session.name isEqualToString:@"Spotify"]) {
+      spotifySession = session;
+      break;
+    }
+  }
+  
+  [spotifySession startHijackingRelaunch:AudioHijackRelaunchOptionsYes];
+}
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-  [self applicationShouldHandleReopen:nil hasVisibleWindows:NO];
+  [self applicationShouldHandleReopen:nil hasVisibleWindows:NO]; // Display the main window
+  [self.mainWindowController.statusLabel setStringValue:@"Ready to Record"];
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
