@@ -48,12 +48,11 @@
 }
 
 #pragma mark - Session Recording
-
 - (void)startRecordingSession {
   [self resetApplications];
   
   // See if we need to/should disable shuffling
-  if (self.spotifyApp.shufflingEnabled) {
+  if (self.spotifyApp.shuffling) {
     NSAlert *shufflingAlert = [[NSAlert alloc] init];
     shufflingAlert.messageText = @"Disable Shuffling?";
     [shufflingAlert addButtonWithTitle:@"Yes"];
