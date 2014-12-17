@@ -110,6 +110,13 @@
     [self.audioHijackSpotifySession startRecording];
     [self.spotifyApp play];
     self.currentTrackID = suspectTrack.id;
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"SPJTrackChanged"
+                                                        object:self
+                                                      userInfo:@{
+                                                                 @"TrackTitle": self.spotifyApp.currentTrack.name,
+                                                                 @"TrackArtist": self.spotifyApp.currentTrack.artist,
+                                                                 }];
   }
 }
 

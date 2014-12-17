@@ -12,6 +12,7 @@
 @interface SPJMainWindowController : NSWindowController
 
 @property (weak) IBOutlet NSTextField *statusLabel;
+@property (weak) IBOutlet NSTextField *artistLabel;
 @property (weak) IBOutlet NSButton *recordingButton;
 
 - (IBAction)recordButtonPressed:(id)sender;
