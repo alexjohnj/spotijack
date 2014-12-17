@@ -14,6 +14,7 @@
 @interface SPJSessionController : NSObject
 
 @property (assign) BOOL playingMusic;
+@property (strong) NSTimer *spotifyPollingTimer;
 
 @property (strong) SpotifyApplication *spotifyApp;
 @property (strong) AudioHijackApplication *audioHijackApp;
@@ -25,5 +26,9 @@
  Initialises Audio Hijack Pro by hijacking the first session who's name is Spotify. Will restart Spotify if Instant Hijack isn't set up
  */
 - (void)initializeAudioHijackPro;
+/**
+ Starts recording!
+ */
+- (void)startRecordingSession;
 
 @end

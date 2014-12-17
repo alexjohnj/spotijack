@@ -7,9 +7,12 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "SPJSessionController.h"
 
 @interface SPJMainWindowController : NSWindowController
 
 @property (weak) IBOutlet NSTextField *statusLabel;
+
+- (IBAction)recordButtonPressed:(id)sender;
 
 @end
