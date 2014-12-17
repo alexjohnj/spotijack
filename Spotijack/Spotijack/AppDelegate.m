@@ -10,17 +10,33 @@
 
 @interface AppDelegate ()
 
-@property (weak) IBOutlet NSWindow *window;
 @end
 
 @implementation AppDelegate
 
+- (id)init {
+  self = [super init];
+  
+  if (self) {
+    _mainWindowController = [[SPJMainWindowController alloc] initWithWindowNibName:@"SPJMainWindow"];
+  }
+  return self;
+}
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-  // Insert code here to initialize your application
+  [self applicationShouldHandleReopen:nil hasVisibleWindows:NO];
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
   // Insert code here to tear down your application
+}
+
+- (BOOL)applicationShouldHandleReopen:(NSApplication *)sender hasVisibleWindows:(BOOL)flag {
+  if (!flag) {
+    [self.mainWindowController showWindow:self];
+    return NO;
+  }
+  return YES;
 }
 
 @end

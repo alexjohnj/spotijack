@@ -12,6 +12,8 @@
 		FA9503661A421B76009D7149 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA9503651A421B76009D7149 /* Images.xcassets */; };
 		FA9503691A421B76009D7149 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA9503671A421B76009D7149 /* MainMenu.xib */; };
 		FA9503751A421B76009D7149 /* SpotijackTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FA9503741A421B76009D7149 /* SpotijackTests.m */; };
+		FA9503871A421D6B009D7149 /* SPJMainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA9503851A421D6B009D7149 /* SPJMainWindowController.m */; };
+		FA9503881A421D6B009D7149 /* SPJMainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA9503861A421D6B009D7149 /* SPJMainWindow.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +37,11 @@
 		FA95036E1A421B76009D7149 /* SpotijackTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SpotijackTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA9503731A421B76009D7149 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FA9503741A421B76009D7149 /* SpotijackTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SpotijackTests.m; sourceTree = "<group>"; };
+		FA95037F1A421C8D009D7149 /* Spotify.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Spotify.h; sourceTree = "<group>"; };
+		FA9503801A421CB1009D7149 /* AudioHijack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioHijack.h; sourceTree = "<group>"; };
+		FA9503841A421D6B009D7149 /* SPJMainWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPJMainWindowController.h; sourceTree = "<group>"; };
+		FA9503851A421D6B009D7149 /* SPJMainWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPJMainWindowController.m; sourceTree = "<group>"; };
+		FA9503861A421D6B009D7149 /* SPJMainWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SPJMainWindow.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,10 +83,13 @@
 		FA95035D1A421B76009D7149 /* Spotijack */ = {
 			isa = PBXGroup;
 			children = (
+				FA9503841A421D6B009D7149 /* SPJMainWindowController.h */,
+				FA9503851A421D6B009D7149 /* SPJMainWindowController.m */,
 				FA9503601A421B76009D7149 /* AppDelegate.h */,
 				FA9503611A421B76009D7149 /* AppDelegate.m */,
+				FAF81BE81A421ED9008F3360 /* XIBs */,
 				FA9503651A421B76009D7149 /* Images.xcassets */,
-				FA9503671A421B76009D7149 /* MainMenu.xib */,
+				FA95037E1A421C7D009D7149 /* ScriptingBridge Headers */,
 				FA95035E1A421B76009D7149 /* Supporting Files */,
 			);
 			path = Spotijack;
@@ -109,6 +119,24 @@
 				FA9503731A421B76009D7149 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		FA95037E1A421C7D009D7149 /* ScriptingBridge Headers */ = {
+			isa = PBXGroup;
+			children = (
+				FA9503801A421CB1009D7149 /* AudioHijack.h */,
+				FA95037F1A421C8D009D7149 /* Spotify.h */,
+			);
+			name = "ScriptingBridge Headers";
+			sourceTree = "<group>";
+		};
+		FAF81BE81A421ED9008F3360 /* XIBs */ = {
+			isa = PBXGroup;
+			children = (
+				FA9503861A421D6B009D7149 /* SPJMainWindow.xib */,
+				FA9503671A421B76009D7149 /* MainMenu.xib */,
+			);
+			name = XIBs;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -155,6 +183,7 @@
 		FA9503531A421B76009D7149 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				CLASSPREFIX = SPJ;
 				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = "Alex Jackson";
 				TargetAttributes = {
@@ -193,6 +222,7 @@
 			files = (
 				FA9503661A421B76009D7149 /* Images.xcassets in Resources */,
 				FA9503691A421B76009D7149 /* MainMenu.xib in Resources */,
+				FA9503881A421D6B009D7149 /* SPJMainWindow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -212,6 +242,7 @@
 			files = (
 				FA9503641A421B76009D7149 /* main.m in Sources */,
 				FA9503621A421B76009D7149 /* AppDelegate.m in Sources */,
+				FA9503871A421D6B009D7149 /* SPJMainWindowController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -398,6 +429,7 @@
 				FA95037A1A421B76009D7149 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		FA95037B1A421B76009D7149 /* Build configuration list for PBXNativeTarget "SpotijackTests" */ = {
 			isa = XCConfigurationList;
@@ -406,6 +438,7 @@
 				FA95037D1A421B76009D7149 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
