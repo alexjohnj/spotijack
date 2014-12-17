@@ -33,6 +33,7 @@
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
+  [[[SPJSessionController sharedController] audioHijackSpotifySession] stopHijacking];
 }
 
 - (BOOL)applicationShouldHandleReopen:(NSApplication *)sender hasVisibleWindows:(BOOL)flag {
