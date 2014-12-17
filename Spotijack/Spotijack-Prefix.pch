@@ -1,7 +1,0 @@
-//
-// Prefix header for all source files of the 'Spotijack' target in the 'Spotijack' project
-//
-
-#ifdef __OBJC__
-    #import <Cocoa/Cocoa.h>
-#endif
