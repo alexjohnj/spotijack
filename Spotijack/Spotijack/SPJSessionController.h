@@ -26,10 +26,14 @@
  Initialises Audio Hijack Pro by hijacking the first session who's name is Spotify. Will restart Spotify if Instant Hijack isn't set up
  */
 - (void)initializeAudioHijackPro;
+
 /**
- Starts recording!
+ Starts the recording session. Pauses Spotify, sets play position to 0, starts AH Session, creates timer, starts playing Spotify. That's it.
  */
 - (void)startRecordingSession;
+/** 
+ Stops the recording session. Pauses Spotify, ends AH Session, invalidates timer. 
+ */
 - (void)stopRecordingSession;
 
 @end

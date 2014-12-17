@@ -36,6 +36,9 @@
   return sharedController;
 }
 
+/**
+ Initializes AH by selecting the first recording session who's name is Spotify.
+ */
 - (void)initializeAudioHijackPro {
   [self.audioHijackApp activate];
   for (AudioHijackSession *session in self.audioHijackApp.sessions) {
@@ -96,6 +99,12 @@
   [self.spotifyPollingTimer invalidate];
 }
 
+#pragma mark Private Methods
+
+/**
+ Polls Spotify, comparing the stored track ID with the current track's ID. Posts a track change notification if the IDs
+ are different and sets up the next recording session for AH.
+ */
 - (void)pollSpotify {
   SpotifyTrack *suspectTrack = self.spotifyApp.currentTrack;
   if (!suspectTrack) {
@@ -120,7 +129,9 @@
   }
 }
 
-// PRIVATE
+/**
+ Updates as much metadata as possible for the current AH recording session using what's available from Spotify.
+ */
 - (void)updateMetadata {
   self.audioHijackSpotifySession.titleTag = self.spotifyApp.currentTrack.name;
   self.audioHijackSpotifySession.artistTag = self.spotifyApp.currentTrack.artist;
