@@ -30,5 +30,6 @@
  Starts recording!
  */
 - (void)startRecordingSession;
+- (void)stopRecordingSession;
 
 @end

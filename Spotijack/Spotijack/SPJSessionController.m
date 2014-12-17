@@ -49,7 +49,8 @@
 
 #pragma mark - Session Recording
 - (void)startRecordingSession {
-  [self resetApplications];
+  // Just in case we were recording
+  [self stopRecordingSession];
   
   // See if we need to/should disable shuffling
   if (self.spotifyApp.shuffling) {
@@ -89,7 +90,10 @@
 }
 
 - (void)stopRecordingSession {
-  //TODO: Implement
+  [self.spotifyApp pause];
+  [self.audioHijackSpotifySession stopRecording];
+  self.playingMusic = NO;
+  [self.spotifyPollingTimer invalidate];
 }
 
 - (void)pollSpotify {
@@ -111,22 +115,12 @@
 
 // PRIVATE
 - (void)updateMetadata {
-  
   self.audioHijackSpotifySession.titleTag = self.spotifyApp.currentTrack.name;
   self.audioHijackSpotifySession.artistTag = self.spotifyApp.currentTrack.artist;
   self.audioHijackSpotifySession.albumArtistTag = self.spotifyApp.currentTrack.albumArtist;
   self.audioHijackSpotifySession.albumTag = self.spotifyApp.currentTrack.album;
   self.audioHijackSpotifySession.trackNumberTag = [NSString stringWithFormat:@"%lu", self.spotifyApp.currentTrack.trackNumber];
   self.audioHijackSpotifySession.discNumberTag = [NSString stringWithFormat:@"%lu", self.spotifyApp.currentTrack.discNumber];
-}
-
-/**
- Stops the current recording session & stops Spotify from playing
- */
-- (void)resetApplications {
-  [self.audioHijackSpotifySession stopRecording];
-  
-  [self.spotifyApp pause];
 }
 
 @end
