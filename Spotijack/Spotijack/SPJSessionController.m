@@ -56,10 +56,10 @@ static NSString * const SPJSpotifyIdentifier = @"com.spotify.client";
   [self.audioHijackSpotifySession startHijackingRelaunch:AudioHijackRelaunchOptionsYes];
 }
 
-- (void)startRecordingSession {
+- (BOOL)startRecordingSession {
   if (self.playingMusic) {
     NSLog(@"Attempted to start new recording session while previous session was active. Aborting.");
-    return;
+    return NO;
   }
   
   if (!self.spotifyApp.currentTrack.id) { // Have to check against ID as currentTrack will never be nil
@@ -67,7 +67,7 @@ static NSString * const SPJSpotifyIdentifier = @"com.spotify.client";
     noTrackAlert.messageText = @"No Track Playing";
     noTrackAlert.informativeText = @"Please start a track in Spotify";
     [noTrackAlert beginSheetModalForWindow:[NSApp mainWindow] completionHandler:NULL];
-    return; // TODO: Make this continously prompt to start a track
+    return NO; // TODO: Make this continously prompt to start a track
   }
   
   // See if we need to/should disable shuffling
@@ -100,6 +100,7 @@ static NSString * const SPJSpotifyIdentifier = @"com.spotify.client";
   [self.spotifyApp setPlayerPosition:0.0];
   [self.spotifyApp play];
   self.playingMusic = YES;
+  return YES;
 }
 
 - (void)stopRecordingSession {

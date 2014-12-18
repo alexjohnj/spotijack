@@ -31,8 +31,10 @@
 /**
  Starts the recording session. Pauses Spotify, sets play position to 0, starts AH Session, creates timer, starts playing 
  Spotify. That's it.
+
+ @return A bool indicating if the recording session started successfully
  */
-- (void)startRecordingSession;
+- (BOOL)startRecordingSession;
 /** 
  Stops the recording session. Pauses Spotify, ends AH Session, invalidates timer. 
  */
