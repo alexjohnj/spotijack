@@ -67,7 +67,7 @@ static NSString * const SPJSpotifyIdentifier = @"com.spotify.client";
     noTrackAlert.messageText = @"No Track Playing";
     noTrackAlert.informativeText = @"Please start a track in Spotify";
     [noTrackAlert beginSheetModalForWindow:[NSApp mainWindow] completionHandler:NULL];
-    return NO; // TODO: Make this continously prompt to start a track
+    return NO;
   }
   
   // See if we need to/should disable shuffling
