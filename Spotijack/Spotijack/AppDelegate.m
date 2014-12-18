@@ -33,8 +33,10 @@
 }
 
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender {
-  //TODO: Make this take into account if we are currently recording or not
-  return NO;
+  if ([[SPJSessionController sharedController] playingMusic]) {
+    return NO;
+  }
+  return YES;
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
