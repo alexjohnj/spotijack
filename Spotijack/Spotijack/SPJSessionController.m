@@ -19,6 +19,7 @@ static NSString * const SPJSpotifyIdentifier = @"com.spotify.client";
 
 @implementation SPJSessionController
 
+#pragma mark - Object Lifecycle
 + (SPJSessionController *)sharedController {
   static dispatch_once_t onceToken;
   __strong static SPJSessionController *sharedController;
@@ -39,6 +40,7 @@ static NSString * const SPJSpotifyIdentifier = @"com.spotify.client";
   return sharedController;
 }
 
+#pragma mark - Session Recording
 /**
  Initializes AH by selecting the first recording session who's name is Spotify.
  */
@@ -53,7 +55,6 @@ static NSString * const SPJSpotifyIdentifier = @"com.spotify.client";
   [self.audioHijackSpotifySession startHijackingRelaunch:AudioHijackRelaunchOptionsYes];
 }
 
-#pragma mark - Session Recording
 - (void)startRecordingSession {
   // Just in case we were recording
   [self stopRecordingSession];
