@@ -62,6 +62,14 @@ static NSString * const SPJSpotifyIdentifier = @"com.spotify.client";
     return;
   }
   
+  if (!self.spotifyApp.currentTrack.id) { // Have to check against ID as currentTrack will never be nil
+    NSAlert *noTrackAlert = [[NSAlert alloc] init];
+    noTrackAlert.messageText = @"No Track Playing";
+    noTrackAlert.informativeText = @"Please start a track in Spotify";
+    [noTrackAlert beginSheetModalForWindow:[NSApp mainWindow] completionHandler:NULL];
+    return; // TODO: Make this continously prompt to start a track
+  }
+  
   // See if we need to/should disable shuffling
   if (self.spotifyApp.shuffling) {
     NSAlert *shufflingAlert = [[NSAlert alloc] init];
@@ -74,13 +82,6 @@ static NSString * const SPJSpotifyIdentifier = @"com.spotify.client";
         self.spotifyApp.shuffling = false;
       }
     }];
-  }
-  
-  if (!self.spotifyApp.currentTrack) {
-    NSAlert *noTrackAlert = [[NSAlert alloc] init];
-    noTrackAlert.messageText = @"Please start a track in Spotify";
-    [noTrackAlert beginSheetModalForWindow:[NSApp mainWindow] completionHandler:NULL];
-    return; // TODO: Make this continously prompt to start a track
   }
   
   
