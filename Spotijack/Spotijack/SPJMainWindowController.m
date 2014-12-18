@@ -14,6 +14,8 @@
 
 @implementation SPJMainWindowController
 
+#pragma mark - NSWindowController
+
 - (void)windowDidLoad {
   [super windowDidLoad];
   [[SPJSessionController sharedController] addObserver:self
@@ -26,6 +28,8 @@
                                              object:nil];
 }
 
+#pragma mark - IBActions
+
 - (IBAction)recordButtonPressed:(id)sender {
   if ([[SPJSessionController sharedController] playingMusic]) {
     [[SPJSessionController sharedController] stopRecordingSession];
@@ -33,6 +37,15 @@
     [[SPJSessionController sharedController] startRecordingSession];
   }
 }
+
+#pragma mark - Private Methods
+
+- (void)trackChanged:(NSNotification *)notification {
+  self.statusLabel.stringValue = notification.userInfo[@"TrackTitle"];
+  self.artistLabel.stringValue = notification.userInfo[@"TrackArtist"];
+}
+
+#pragma mark - KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
   if ([keyPath isEqualToString:@"playingMusic"]) {
@@ -44,9 +57,11 @@
   }
 }
 
-- (void)trackChanged:(NSNotification *)notification {
-  self.statusLabel.stringValue = notification.userInfo[@"TrackTitle"];
-  self.artistLabel.stringValue = notification.userInfo[@"TrackArtist"];
+#pragma mark - Object Lifecycle
+
+- (void)dealloc {
+  [[SPJSessionController sharedController] removeObserver:self forKeyPath:@"playingMusic"];
+  [[NSNotificationCenter defaultCenter] removeObserver:self forKeyPath:SPJTrackDidChangeNotification];
 }
 
 @end
