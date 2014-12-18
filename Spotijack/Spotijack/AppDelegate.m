@@ -39,6 +39,24 @@
   return YES;
 }
 
+- (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender {
+  if ([[SPJSessionController sharedController] playingMusic]) {
+    // TODO: Make this a sheet
+    NSAlert *sessionQuitAlert = [[NSAlert alloc] init];
+    sessionQuitAlert.messageText = @"Recording in Process";
+    sessionQuitAlert.informativeText = @"Are you sure you want to quit?";
+    [sessionQuitAlert addButtonWithTitle:@"Cancel"];
+    [sessionQuitAlert addButtonWithTitle:@"OK"];
+    
+    if ([sessionQuitAlert runModal] == NSAlertFirstButtonReturn) {
+      return NSTerminateCancel;
+    } else {
+      return NSTerminateNow;
+    }
+  }
+  return NSTerminateNow;
+}
+
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
   [[[SPJSessionController sharedController] audioHijackSpotifySession] stopHijacking];
 }
