@@ -15,6 +15,7 @@ static NSString * const SPJSpotifyIdentifier = @"com.spotify.client";
 
 @interface SPJSessionController ()
 @property (copy) NSString *currentTrackID;
+@property (strong) id recordingActivityToken;
 @end
 
 @implementation SPJSessionController
@@ -56,8 +57,10 @@ static NSString * const SPJSpotifyIdentifier = @"com.spotify.client";
 }
 
 - (void)startRecordingSession {
-  // Just in case we were recording
-  [self stopRecordingSession];
+  if (self.playingMusic) {
+    NSLog(@"Attempted to start new recording session while previous session was active. Aborting.");
+    return;
+  }
   
   // See if we need to/should disable shuffling
   if (self.spotifyApp.shuffling) {
@@ -80,15 +83,15 @@ static NSString * const SPJSpotifyIdentifier = @"com.spotify.client";
     return; // TODO: Make this continously prompt to start a track
   }
   
-  // TODO: Somewhere around here we need to tell OSX to disable AppNap for Spotijack otherwise the timer could be
-  // delayed a significant amount
-  if (!self.spotifyPollingTimer) {
-    self.spotifyPollingTimer = [NSTimer scheduledTimerWithTimeInterval:0.1
-                                                                target:self
-                                                              selector:@selector(pollSpotify)
-                                                              userInfo:nil
-                                                               repeats:TRUE];
-  }
+  
+  self.recordingActivityToken = [[NSProcessInfo processInfo]
+                                 beginActivityWithOptions:(NSActivityUserInitiated|NSActivityIdleSystemSleepDisabled)
+                                 reason:@"Recording session in progress"];
+  self.spotifyPollingTimer = [NSTimer scheduledTimerWithTimeInterval:0.1
+                                                              target:self
+                                                            selector:@selector(pollSpotify)
+                                                            userInfo:nil
+                                                             repeats:TRUE];
   
   [self.audioHijackSpotifySession startHijackingRelaunch:AudioHijackRelaunchOptionsYes];
   [self.audioHijackSpotifySession startRecording];
@@ -103,6 +106,7 @@ static NSString * const SPJSpotifyIdentifier = @"com.spotify.client";
   [self.audioHijackSpotifySession stopRecording];
   self.playingMusic = NO;
   [self.spotifyPollingTimer invalidate];
+  [[NSProcessInfo processInfo] endActivity:self.recordingActivityToken];
 }
 
 #pragma mark Private Methods
