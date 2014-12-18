@@ -33,6 +33,8 @@
 - (IBAction)recordButtonPressed:(id)sender {
   if ([[SPJSessionController sharedController] playingMusic]) {
     [[SPJSessionController sharedController] stopRecordingSession];
+    self.statusLabel.stringValue = @"Ready to Record";
+    self.artistLabel.stringValue = @"";
   } else {
     self.recordingButton.state = [[SPJSessionController sharedController] startRecordingSession];
   }
