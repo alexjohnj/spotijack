@@ -17,16 +17,17 @@
         <window title="Spotijack" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="uSh-TC-Nzq">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="335" y="390" width="277" height="119"/>
+            <rect key="contentRect" x="335" y="390" width="305" height="119"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1057"/>
             <view key="contentView" id="d0Y-fb-agL">
-                <rect key="frame" x="0.0" y="0.0" width="277" height="119"/>
+                <rect key="frame" x="0.0" y="0.0" width="305" height="119"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SVJ-Xv-L1m">
-                        <rect key="frame" x="18" y="77" width="241" height="22"/>
+                        <rect key="frame" x="18" y="77" width="269" height="22"/>
                         <constraints>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="237" id="n5f-YB-avb"/>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="22" id="pf1-4T-o0O"/>
                         </constraints>
                         <textFieldCell key="cell" controlSize="mini" sendsActionOnEndEditing="YES" placeholderString="Status" id="Dbj-7N-ITI">
                             <font key="font" metaFont="system" size="18"/>
@@ -35,7 +36,7 @@
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2zZ-cK-X9C">
-                        <rect key="frame" x="18" y="52" width="241" height="17"/>
+                        <rect key="frame" x="18" y="52" width="269" height="17"/>
                         <constraints>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="237" id="9qs-aC-smd"/>
                         </constraints>
@@ -46,8 +47,8 @@
                         </textFieldCell>
                     </textField>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="AKD-kg-1UY">
-                        <rect key="frame" x="110" y="7" width="58" height="19"/>
-                        <buttonCell key="cell" type="recessed" title="Record" bezelStyle="recessed" image="E91243C5-1871-4B7F-8984-638530F61523" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="VHG-XA-Bdi">
+                        <rect key="frame" x="124" y="7" width="58" height="19"/>
+                        <buttonCell key="cell" type="recessed" title="Record" bezelStyle="recessed" image="C634DC49-36A8-4448-8E96-27163CC54303" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="VHG-XA-Bdi">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
                             <font key="font" metaFont="systemBold" size="12"/>
                         </buttonCell>
@@ -62,6 +63,9 @@
                     <constraint firstAttribute="bottom" secondItem="AKD-kg-1UY" secondAttribute="bottom" constant="8" id="C2a-UX-LNE"/>
                     <constraint firstAttribute="trailing" secondItem="2zZ-cK-X9C" secondAttribute="trailing" constant="20" symbolic="YES" id="EBB-iW-E5x"/>
                     <constraint firstAttribute="centerX" secondItem="AKD-kg-1UY" secondAttribute="centerX" id="V7r-6M-qGW"/>
+                    <constraint firstItem="2zZ-cK-X9C" firstAttribute="leading" secondItem="d0Y-fb-agL" secondAttribute="leading" constant="20" symbolic="YES" id="fQW-Oj-RuK"/>
+                    <constraint firstItem="AKD-kg-1UY" firstAttribute="top" secondItem="2zZ-cK-X9C" secondAttribute="bottom" constant="26" id="hGX-yQ-44W"/>
+                    <constraint firstItem="SVJ-Xv-L1m" firstAttribute="leading" secondItem="d0Y-fb-agL" secondAttribute="leading" constant="20" symbolic="YES" id="j8x-MT-Ivf"/>
                     <constraint firstItem="2zZ-cK-X9C" firstAttribute="top" secondItem="SVJ-Xv-L1m" secondAttribute="bottom" constant="8" symbolic="YES" id="vM3-j3-LGg"/>
                 </constraints>
             </view>
@@ -69,11 +73,11 @@
             <connections>
                 <outlet property="delegate" destination="-2" id="ea6-We-iEi"/>
             </connections>
-            <point key="canvasLocation" x="-502.5" y="247.5"/>
+            <point key="canvasLocation" x="-1174.5" y="325.5"/>
         </window>
     </objects>
     <resources>
-        <image name="E91243C5-1871-4B7F-8984-638530F61523" width="1" height="1">
+        <image name="C634DC49-36A8-4448-8E96-27163CC54303" width="1" height="1">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
