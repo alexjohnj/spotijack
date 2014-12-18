@@ -22,7 +22,7 @@
                                                context:NULL];
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(trackChanged:)
-                                               name:@"SPJTrackChanged"
+                                               name:SPJTrackDidChangeNotification
                                              object:nil];
 }
 

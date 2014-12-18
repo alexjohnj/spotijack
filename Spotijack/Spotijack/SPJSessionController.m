@@ -8,10 +8,13 @@
 
 #import "SPJSessionController.h"
 
+NSString * const SPJTrackDidChangeNotification = @"SPJTrackChanged";
+
+static NSString * const SPJAudioHijackIdentifier = @"com.rogueamoeba.AudioHijackPro2";
+static NSString * const SPJSpotifyIdentifier = @"com.spotify.client";
+
 @interface SPJSessionController ()
-
 @property (copy) NSString *currentTrackID;
-
 @end
 
 @implementation SPJSessionController
@@ -23,12 +26,12 @@
     sharedController = [[self alloc] init];
     sharedController.playingMusic = NO;
     
-    sharedController.audioHijackApp = [SBApplication applicationWithBundleIdentifier:@"com.rogueamoeba.AudioHijackPro2"];
+    sharedController.audioHijackApp = [SBApplication applicationWithBundleIdentifier:SPJAudioHijackIdentifier];
     if (!sharedController.audioHijackApp) {
       NSLog(@"Unable to open Audio Hijack Pro for Scripting! Prepare to crash...");
     }
     
-    sharedController.spotifyApp = [SBApplication applicationWithBundleIdentifier:@"com.spotify.client"];
+    sharedController.spotifyApp = [SBApplication applicationWithBundleIdentifier:SPJSpotifyIdentifier];
     if (!sharedController.spotifyApp) {
       NSLog(@"Unable to open Spotify for Scripting!");
     }
@@ -122,7 +125,7 @@
     [self.spotifyApp play];
     self.currentTrackID = suspectTrack.id;
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"SPJTrackChanged"
+    [[NSNotificationCenter defaultCenter] postNotificationName:SPJTrackDidChangeNotification
                                                         object:self
                                                       userInfo:@{
                                                                  @"TrackTitle": self.spotifyApp.currentTrack.name,

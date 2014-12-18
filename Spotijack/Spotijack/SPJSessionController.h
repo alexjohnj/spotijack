@@ -36,4 +36,6 @@
  */
 - (void)stopRecordingSession;
 
+extern NSString * const SPJTrackDidChangeNotification;
+
 @end
