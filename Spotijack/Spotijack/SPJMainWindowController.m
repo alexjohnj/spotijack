@@ -34,7 +34,7 @@
   if ([[SPJSessionController sharedController] playingMusic]) {
     [[SPJSessionController sharedController] stopRecordingSession];
   } else {
-    [[SPJSessionController sharedController] startRecordingSession];
+    self.recordingButton.state = [[SPJSessionController sharedController] startRecordingSession];
   }
 }
 
