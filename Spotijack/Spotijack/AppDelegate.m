@@ -53,7 +53,7 @@
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender {
   if ([[SPJSessionController sharedController] playingMusic]) {
     NSAlert *sessionQuitAlert = [[NSAlert alloc] init];
-    sessionQuitAlert.messageText = @"Recording in Process";
+    sessionQuitAlert.messageText = @"Recording in Progress";
     sessionQuitAlert.informativeText = @"Are you sure you want to quit?";
     [sessionQuitAlert addButtonWithTitle:@"Cancel"];
     [sessionQuitAlert addButtonWithTitle:@"OK"];
