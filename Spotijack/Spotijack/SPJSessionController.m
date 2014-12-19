@@ -26,7 +26,7 @@ static NSString * const SPJSpotifyIdentifier = @"com.spotify.client";
   __strong static SPJSessionController *sharedController;
   dispatch_once(&onceToken, ^{
     sharedController = [[self alloc] init];
-    sharedController.playingMusic = NO;
+    sharedController.isRecording = NO;
     
     sharedController.audioHijackApp = [SBApplication applicationWithBundleIdentifier:SPJAudioHijackIdentifier];
     if (!sharedController.audioHijackApp) {
@@ -56,7 +56,7 @@ static NSString * const SPJSpotifyIdentifier = @"com.spotify.client";
 }
 
 - (BOOL)startRecordingSession {
-  if (self.playingMusic) {
+  if (self.isRecording) {
     NSLog(@"Attempted to start new recording session while previous session was active. Aborting.");
     return NO;
   }
@@ -99,14 +99,14 @@ static NSString * const SPJSpotifyIdentifier = @"com.spotify.client";
                                                  boolForKey:SPJMuteSpotifyForSessionKey];
   [self.spotifyApp setPlayerPosition:0.0];
   [self.spotifyApp play];
-  self.playingMusic = YES;
+  self.isRecording = YES;
   return YES;
 }
 
 - (void)stopRecordingSession {
   [self.spotifyApp pause];
   [self.audioHijackSpotifySession stopRecording];
-  self.playingMusic = NO;
+  self.isRecording = NO;
   
   if ([[NSUserDefaults standardUserDefaults] boolForKey:SPJMuteSpotifyForSessionKey]) {
     self.audioHijackSpotifySession.speakerMuted = NO;

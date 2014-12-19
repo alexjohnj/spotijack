@@ -14,7 +14,7 @@
 
 @interface SPJSessionController : NSObject
 
-@property (assign) BOOL playingMusic;
+@property (assign) BOOL isRecording;
 @property (strong) NSTimer *spotifyPollingTimer;
 
 @property (strong) SpotifyApplication *spotifyApp;

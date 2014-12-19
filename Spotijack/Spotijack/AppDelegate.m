@@ -44,14 +44,14 @@
 }
 
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender {
-  if ([[SPJSessionController sharedController] playingMusic]) {
+  if ([SPJSessionController sharedController].isRecording) {
     return NO;
   }
   return YES;
 }
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender {
-  if ([[SPJSessionController sharedController] playingMusic]) {
+  if ([SPJSessionController sharedController].isRecording) {
     NSAlert *sessionQuitAlert = [[NSAlert alloc] init];
     sessionQuitAlert.messageText = @"Recording in Progress";
     sessionQuitAlert.informativeText = @"Are you sure you want to quit?";
@@ -72,7 +72,7 @@
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
-  if ([[SPJSessionController sharedController] playingMusic]) {
+  if ([SPJSessionController sharedController].isRecording) {
     [[SPJSessionController sharedController] stopRecordingSession];
   }
   [[[SPJSessionController sharedController] audioHijackSpotifySession] stopHijacking];

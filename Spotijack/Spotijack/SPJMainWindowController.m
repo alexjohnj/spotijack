@@ -19,7 +19,7 @@
 - (void)windowDidLoad {
   [super windowDidLoad];
   [[SPJSessionController sharedController] addObserver:self
-                                            forKeyPath:@"playingMusic"
+                                            forKeyPath:@"isRecording"
                                                options:NSKeyValueObservingOptionNew
                                                context:NULL];
   [[NSNotificationCenter defaultCenter] addObserver:self
@@ -31,7 +31,7 @@
 #pragma mark - IBActions
 
 - (IBAction)recordButtonPressed:(id)sender {
-  if ([[SPJSessionController sharedController] playingMusic]) {
+  if ([SPJSessionController sharedController].isRecording) {
     [[SPJSessionController sharedController] stopRecordingSession];
     self.statusLabel.stringValue = @"Ready to Record";
     self.artistLabel.stringValue = @"";
@@ -50,7 +50,7 @@
 #pragma mark - KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-  if ([keyPath isEqualToString:@"playingMusic"]) {
+  if ([keyPath isEqualToString:@"isRecording"]) {
     if ([change[NSKeyValueChangeNewKey] isEqualTo:@YES]) {
       self.recordingButton.title = @"Recording";
     } else {
@@ -62,7 +62,7 @@
 #pragma mark - Object Lifecycle
 
 - (void)dealloc {
-  [[SPJSessionController sharedController] removeObserver:self forKeyPath:@"playingMusic"];
+  [[SPJSessionController sharedController] removeObserver:self forKeyPath:@"recording"];
   [[NSNotificationCenter defaultCenter] removeObserver:self forKeyPath:SPJTrackDidChangeNotification];
 }
 
