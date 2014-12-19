@@ -46,7 +46,6 @@ static NSString * const SPJSpotifyIdentifier = @"com.spotify.client";
  Initializes AH by selecting the first recording session who's name is Spotify.
  */
 - (void)initializeAudioHijackPro {
-  [self.audioHijackApp activate];
   for (AudioHijackSession *session in self.audioHijackApp.sessions) {
     if ([session.name isEqualToString:@"Spotify"]) {
       self.audioHijackSpotifySession = session;
