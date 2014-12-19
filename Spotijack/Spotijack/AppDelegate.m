@@ -72,6 +72,9 @@
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
+  if ([[SPJSessionController sharedController] playingMusic]) {
+    [[SPJSessionController sharedController] stopRecordingSession];
+  }
   [[[SPJSessionController sharedController] audioHijackSpotifySession] stopHijacking];
 }
 
