@@ -48,7 +48,7 @@
                     </textField>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="AKD-kg-1UY">
                         <rect key="frame" x="124" y="7" width="58" height="19"/>
-                        <buttonCell key="cell" type="recessed" title="Record" bezelStyle="recessed" image="C634DC49-36A8-4448-8E96-27163CC54303" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="VHG-XA-Bdi">
+                        <buttonCell key="cell" type="recessed" title="Record" bezelStyle="recessed" image="C16D2160-F5C4-4BAD-B38A-98AD2A903D56" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="VHG-XA-Bdi">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
                             <font key="font" metaFont="systemBold" size="12"/>
                         </buttonCell>
@@ -73,11 +73,11 @@
             <connections>
                 <outlet property="delegate" destination="-2" id="ea6-We-iEi"/>
             </connections>
-            <point key="canvasLocation" x="-1174.5" y="325.5"/>
+            <point key="canvasLocation" x="-595.5" y="181.5"/>
         </window>
     </objects>
     <resources>
-        <image name="C634DC49-36A8-4448-8E96-27163CC54303" width="1" height="1">
+        <image name="C16D2160-F5C4-4BAD-B38A-98AD2A903D56" width="1" height="1">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw

@@ -9,10 +9,14 @@
 #import <Cocoa/Cocoa.h>
 #import "SPJSessionController.h"
 #import "SPJMainWindowController.h"
+#import "SPJPreferencesWindowController.h"
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
 @property (strong) SPJMainWindowController *mainWindowController;
+@property (strong) SPJPreferencesWindowController *preferencesWindowController;
+
+- (IBAction)openPreferencesWindow:(id)sender;
 
 @end
 

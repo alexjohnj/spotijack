@@ -14,6 +14,7 @@
 
 @implementation AppDelegate
 
+#pragma mark - Object Lifecycle
 - (id)init {
   self = [super init];
   
@@ -22,6 +23,16 @@
   }
   return self;
 }
+
++ (void)initialize
+{
+  if (self == [AppDelegate class]) {
+    NSDictionary *userDefaultsDict = @{SPJMuteSpotifyForSessionKey:@NO};
+    [[NSUserDefaults standardUserDefaults] registerDefaults:userDefaultsDict];
+  }
+}
+
+#pragma mark - NSApplicationDelegate Protocol
 
 - (void)applicationWillFinishLaunching:(NSNotification *)notification {
   [[SPJSessionController sharedController] initializeAudioHijackPro];
@@ -70,6 +81,16 @@
     return NO;
   }
   return YES;
+}
+
+#pragma mark - IBActions
+
+- (IBAction)openPreferencesWindow:(id)sender {
+  if (!self.preferencesWindowController) {
+    self.preferencesWindowController = [[SPJPreferencesWindowController alloc]
+                                        initWithWindowNibName:@"SPJPreferencesWindow"];
+  }
+  [self.preferencesWindowController showWindow:self];
 }
 
 @end

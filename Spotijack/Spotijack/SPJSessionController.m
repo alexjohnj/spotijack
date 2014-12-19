@@ -96,7 +96,8 @@ static NSString * const SPJSpotifyIdentifier = @"com.spotify.client";
   
   [self.audioHijackSpotifySession startHijackingRelaunch:AudioHijackRelaunchOptionsYes];
   [self.audioHijackSpotifySession startRecording];
-  
+  self.audioHijackSpotifySession.speakerMuted = [[NSUserDefaults standardUserDefaults]
+                                                 boolForKey:SPJMuteSpotifyForSessionKey];
   [self.spotifyApp setPlayerPosition:0.0];
   [self.spotifyApp play];
   self.playingMusic = YES;
@@ -107,6 +108,11 @@ static NSString * const SPJSpotifyIdentifier = @"com.spotify.client";
   [self.spotifyApp pause];
   [self.audioHijackSpotifySession stopRecording];
   self.playingMusic = NO;
+  
+  if ([[NSUserDefaults standardUserDefaults] boolForKey:SPJMuteSpotifyForSessionKey]) {
+    self.audioHijackSpotifySession.speakerMuted = NO;
+  }
+  
   [self.spotifyPollingTimer invalidate];
   [[NSProcessInfo processInfo] endActivity:self.recordingActivityToken];
 }
