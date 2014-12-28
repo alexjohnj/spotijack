@@ -1,3 +1,4 @@
+//
 // SPJPreferencesWindowController.m
 // 
 // Copyright (c) 2014 Alex Jackson
