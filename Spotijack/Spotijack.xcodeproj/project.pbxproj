@@ -27,8 +27,6 @@
 		FA9503631A421B76009D7149 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		FA9503651A421B76009D7149 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		FA9503681A421B76009D7149 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		FA9503731A421B76009D7149 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		FA9503741A421B76009D7149 /* SpotijackTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SpotijackTests.m; sourceTree = "<group>"; };
 		FA95037F1A421C8D009D7149 /* Spotify.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Spotify.h; sourceTree = "<group>"; };
 		FA9503801A421CB1009D7149 /* AudioHijack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioHijack.h; sourceTree = "<group>"; };
 		FA9503841A421D6B009D7149 /* SPJMainWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPJMainWindowController.h; sourceTree = "<group>"; };
@@ -58,7 +56,6 @@
 			isa = PBXGroup;
 			children = (
 				FA95035D1A421B76009D7149 /* Spotijack */,
-				FA9503711A421B76009D7149 /* SpotijackTests */,
 				FA95035C1A421B76009D7149 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -96,23 +93,6 @@
 			children = (
 				FA95035F1A421B76009D7149 /* Info.plist */,
 				FA9503631A421B76009D7149 /* main.m */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		FA9503711A421B76009D7149 /* SpotijackTests */ = {
-			isa = PBXGroup;
-			children = (
-				FA9503741A421B76009D7149 /* SpotijackTests.m */,
-				FA9503721A421B76009D7149 /* Supporting Files */,
-			);
-			path = SpotijackTests;
-			sourceTree = "<group>";
-		};
-		FA9503721A421B76009D7149 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				FA9503731A421B76009D7149 /* Info.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
