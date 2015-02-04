@@ -144,6 +144,12 @@ static NSString * const SPJSpotifyIdentifier = @"com.spotify.client";
   }
   
   if (![self.currentTrackID isEqualToString:suspectTrack.id]) {
+    // Check if Spotify has reached the end of a playlist
+    if ([self.spotifyApp playerState] == SpotifyEPlSPaused) {
+      [self stopRecordingSession];
+      return;
+    }
+    
     [self.spotifyApp pause];
     [self.audioHijackSpotifySession stopRecording];
     [self updateMetadata];
