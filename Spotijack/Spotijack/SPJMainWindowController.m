@@ -70,6 +70,9 @@
       self.recordingButton.title = @"Recording";
     } else {
       self.recordingButton.title = @"Record";
+      self.recordingButton.state = NSOffState;
+      self.statusLabel.stringValue = @"Ready to Record";
+      self.artistLabel.stringValue = @"";
     }
   }
 }
