@@ -74,8 +74,8 @@
   
   if (!self.spotifyApp.currentTrack.id) { // Have to check against ID as currentTrack will never be nil
     NSAlert *noTrackAlert = [[NSAlert alloc] init];
-    noTrackAlert.messageText = @"No Track Playing";
-    noTrackAlert.informativeText = @"Please start a track in Spotify";
+    noTrackAlert.messageText = NSLocalizedString(@"No Track Playing", nil);
+    noTrackAlert.informativeText = NSLocalizedString(@"Please start a track in Spotify", nil);
     [noTrackAlert beginSheetModalForWindow:[NSApp mainWindow] completionHandler:NULL];
     return NO;
   }
@@ -83,9 +83,9 @@
   // See if we need to/should disable shuffling
   if (self.spotifyApp.shuffling) {
     NSAlert *shufflingAlert = [[NSAlert alloc] init];
-    shufflingAlert.messageText = @"Disable Shuffling?";
-    [shufflingAlert addButtonWithTitle:@"Yes"];
-    [shufflingAlert addButtonWithTitle:@"No"];
+    shufflingAlert.messageText = NSLocalizedString(@"Disable Shuffling?", nil);
+    [shufflingAlert addButtonWithTitle:NSLocalizedString(@"Yes", nil)];
+    [shufflingAlert addButtonWithTitle:NSLocalizedString(@"No", nil)];
     
     [shufflingAlert beginSheetModalForWindow:[NSApp mainWindow]
                            completionHandler:^(NSModalResponse returnCode) {

@@ -1,0 +1,29 @@
+/* 
+  Localizable.strings
+  Spotijack
+
+  Created by Alex Jackson on 16/05/2015.
+  Copyright (c) 2015 Alex Jackson. All rights reserved.
+*/
+
+// Recording UI
+"Ready to Record" = "Ready to Record";
+"Record" = "Record";
+"Recording" = "Recording";
+
+// Recording in progress quit alert
+"Recording in Progress" = "Recording in Progress";
+"Are you sure you want to quit?" = "Are you sure you want to quit?";
+
+// No track playing alert
+"No track playing" = "No Track Playing";
+"Please start a track in Spotify" = "Please start a track in Spotify.";
+
+//Disable shuffle alert
+"Disable Shuffling?" = "Disable Shuffling?";
+
+// Generic Stuff
+"Cancel" = "Cancel";
+"OK" = "OK";
+"Yes" = "Yes";
+"No" = "No";

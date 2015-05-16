@@ -55,7 +55,8 @@
   [DDLog addLogger:[DDTTYLogger sharedInstance]];
   
   [self applicationShouldHandleReopen:nil hasVisibleWindows:NO]; // Display the main window
-  [self.mainWindowController.statusLabel setStringValue:@"Ready to Record"];
+  [self.mainWindowController.statusLabel
+   setStringValue:NSLocalizedString(@"Ready to Record", nil)];
 }
 
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender {
@@ -68,10 +69,10 @@
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender {
   if ([SPJSessionController sharedController].isRecording) {
     NSAlert *sessionQuitAlert = [[NSAlert alloc] init];
-    sessionQuitAlert.messageText = @"Recording in Progress";
-    sessionQuitAlert.informativeText = @"Are you sure you want to quit?";
-    [sessionQuitAlert addButtonWithTitle:@"Cancel"];
-    [sessionQuitAlert addButtonWithTitle:@"OK"];
+    sessionQuitAlert.messageText = NSLocalizedString(@"Recording in Progress", nil);
+    sessionQuitAlert.informativeText = NSLocalizedString(@"Are you sure you want to quit?", nil);
+    [sessionQuitAlert addButtonWithTitle:NSLocalizedString(@"Cancel", nil)];
+    [sessionQuitAlert addButtonWithTitle:NSLocalizedString(@"OK", nil)];
     
     [sessionQuitAlert beginSheetModalForWindow:self.mainWindowController.window
                              completionHandler:^(NSModalResponse returnCode) {

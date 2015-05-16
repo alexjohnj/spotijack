@@ -13,10 +13,11 @@
 		FA9503661A421B76009D7149 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA9503651A421B76009D7149 /* Images.xcassets */; };
 		FA9503691A421B76009D7149 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA9503671A421B76009D7149 /* MainMenu.xib */; };
 		FA9503871A421D6B009D7149 /* SPJMainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA9503851A421D6B009D7149 /* SPJMainWindowController.m */; };
-		FA9503881A421D6B009D7149 /* SPJMainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA9503861A421D6B009D7149 /* SPJMainWindow.xib */; };
 		FAD1392B1A44A082006351F0 /* SPJPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = FAD1392A1A44A082006351F0 /* SPJPreferencesWindowController.m */; };
-		FAD1392D1A44A0B3006351F0 /* SPJPreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAD1392C1A44A0B3006351F0 /* SPJPreferencesWindow.xib */; };
 		FAE1C14A1B07D67D007FF95C /* SPJConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = FAE1C1491B07D67D007FF95C /* SPJConstants.m */; };
+		FAE1C14D1B07DC64007FF95C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = FAE1C14F1B07DC64007FF95C /* Localizable.strings */; };
+		FAE1C1501B07DF5F007FF95C /* SPJMainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAE1C1521B07DF5F007FF95C /* SPJMainWindow.xib */; };
+		FAE1C1531B07DF63007FF95C /* SPJPreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAE1C1551B07DF63007FF95C /* SPJPreferencesWindow.xib */; };
 		FAF81BEA1A421FB5008F3360 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAF81BE91A421FB5008F3360 /* ScriptingBridge.framework */; };
 		FAF81BED1A422351008F3360 /* SPJSessionController.m in Sources */ = {isa = PBXBuildFile; fileRef = FAF81BEC1A422351008F3360 /* SPJSessionController.m */; };
 /* End PBXBuildFile section */
@@ -36,13 +37,14 @@
 		FA9503801A421CB1009D7149 /* AudioHijack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioHijack.h; sourceTree = "<group>"; };
 		FA9503841A421D6B009D7149 /* SPJMainWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPJMainWindowController.h; sourceTree = "<group>"; };
 		FA9503851A421D6B009D7149 /* SPJMainWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPJMainWindowController.m; sourceTree = "<group>"; };
-		FA9503861A421D6B009D7149 /* SPJMainWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SPJMainWindow.xib; sourceTree = "<group>"; };
 		FAD139291A44A082006351F0 /* SPJPreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPJPreferencesWindowController.h; sourceTree = "<group>"; };
 		FAD1392A1A44A082006351F0 /* SPJPreferencesWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPJPreferencesWindowController.m; sourceTree = "<group>"; };
-		FAD1392C1A44A0B3006351F0 /* SPJPreferencesWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SPJPreferencesWindow.xib; sourceTree = "<group>"; };
 		FAE1C1471B07D06A007FF95C /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		FAE1C1481B07D67D007FF95C /* SPJConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPJConstants.h; sourceTree = "<group>"; };
 		FAE1C1491B07D67D007FF95C /* SPJConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPJConstants.m; sourceTree = "<group>"; };
+		FAE1C1591B07DF7C007FF95C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/SPJMainWindow.xib; sourceTree = "<group>"; };
+		FAE1C15A1B07DF80007FF95C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/SPJPreferencesWindow.xib; sourceTree = "<group>"; };
+		FAE1C15B1B07DFB7007FF95C /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		FAF81BE91A421FB5008F3360 /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
 		FAF81BEB1A422351008F3360 /* SPJSessionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPJSessionController.h; sourceTree = "<group>"; };
 		FAF81BEC1A422351008F3360 /* SPJSessionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPJSessionController.m; sourceTree = "<group>"; };
@@ -124,6 +126,7 @@
 				FA95035F1A421B76009D7149 /* Info.plist */,
 				FA9503631A421B76009D7149 /* main.m */,
 				FAE1C1471B07D06A007FF95C /* PrefixHeader.pch */,
+				FAE1C14F1B07DC64007FF95C /* Localizable.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -140,8 +143,8 @@
 		FAF81BE81A421ED9008F3360 /* XIBs */ = {
 			isa = PBXGroup;
 			children = (
-				FAD1392C1A44A0B3006351F0 /* SPJPreferencesWindow.xib */,
-				FA9503861A421D6B009D7149 /* SPJMainWindow.xib */,
+				FAE1C1551B07DF63007FF95C /* SPJPreferencesWindow.xib */,
+				FAE1C1521B07DF5F007FF95C /* SPJMainWindow.xib */,
 				FA9503671A421B76009D7149 /* MainMenu.xib */,
 			);
 			name = XIBs;
@@ -207,10 +210,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FAD1392D1A44A0B3006351F0 /* SPJPreferencesWindow.xib in Resources */,
+				FAE1C14D1B07DC64007FF95C /* Localizable.strings in Resources */,
+				FAE1C1531B07DF63007FF95C /* SPJPreferencesWindow.xib in Resources */,
 				FA9503661A421B76009D7149 /* Images.xcassets in Resources */,
 				FA9503691A421B76009D7149 /* MainMenu.xib in Resources */,
-				FA9503881A421D6B009D7149 /* SPJMainWindow.xib in Resources */,
+				FAE1C1501B07DF5F007FF95C /* SPJMainWindow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -272,6 +276,30 @@
 				FA9503681A421B76009D7149 /* Base */,
 			);
 			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+		FAE1C14F1B07DC64007FF95C /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FAE1C15B1B07DFB7007FF95C /* Base */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		FAE1C1521B07DF5F007FF95C /* SPJMainWindow.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FAE1C1591B07DF7C007FF95C /* Base */,
+			);
+			name = SPJMainWindow.xib;
+			sourceTree = "<group>";
+		};
+		FAE1C1551B07DF63007FF95C /* SPJPreferencesWindow.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FAE1C15A1B07DF80007FF95C /* Base */,
+			);
+			name = SPJPreferencesWindow.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

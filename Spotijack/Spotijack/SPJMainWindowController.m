@@ -48,7 +48,7 @@
 - (IBAction)recordButtonPressed:(id)sender {
   if ([SPJSessionController sharedController].isRecording) {
     [[SPJSessionController sharedController] stopRecordingSession];
-    self.statusLabel.stringValue = @"Ready to Record";
+    self.statusLabel.stringValue = NSLocalizedString(@"Ready to Record", nil);
     self.artistLabel.stringValue = @"";
   } else {
     self.recordingButton.state = [[SPJSessionController sharedController]
@@ -69,11 +69,11 @@
                         change:(NSDictionary *)change context:(void *)context {
   if ([keyPath isEqualToString:@"isRecording"]) {
     if ([change[NSKeyValueChangeNewKey] isEqualTo:@YES]) {
-      self.recordingButton.title = @"Recording";
+      self.recordingButton.title = NSLocalizedString(@"Recording", nil);
     } else {
-      self.recordingButton.title = @"Record";
+      self.recordingButton.title = NSLocalizedString(@"Record", nil);
       self.recordingButton.state = NSOffState;
-      self.statusLabel.stringValue = @"Ready to Record";
+      self.statusLabel.stringValue = NSLocalizedString(@"Ready to Record", nil);
       self.artistLabel.stringValue = @"";
     }
   }
