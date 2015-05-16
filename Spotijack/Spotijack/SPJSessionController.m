@@ -26,7 +26,7 @@
 NSString * const SPJTrackDidChangeNotification = @"SPJTrackChanged";
 
 static NSString * const SPJAudioHijackIdentifier = @"com.rogueamoeba.AudioHijackPro2";
-static NSString * const SPJSpotifyIdentifier = @"com.spotify.client";
+static NSString * const SPJSpotifyIdentifier = @"com.spotify.clienst";
 
 @interface SPJSessionController ()
 @property (copy) NSString *currentTrackID;
@@ -46,12 +46,12 @@ static NSString * const SPJSpotifyIdentifier = @"com.spotify.client";
     sharedController.audioHijackApp = [SBApplication
                                        applicationWithBundleIdentifier:SPJAudioHijackIdentifier];
     if (!sharedController.audioHijackApp) {
-      NSLog(@"Unable to open Audio Hijack Pro for Scripting! Prepare to crash...");
+      DDLogError(@"Unable to open Audio Hijack Pro for Scripting! Prepare to crash...");
     }
     
     sharedController.spotifyApp = [SBApplication applicationWithBundleIdentifier:SPJSpotifyIdentifier];
     if (!sharedController.spotifyApp) {
-      NSLog(@"Unable to open Spotify for Scripting!");
+      DDLogError(@"Unable to open Spotify for Scripting!");
     }
   });
   return sharedController;
@@ -73,7 +73,7 @@ static NSString * const SPJSpotifyIdentifier = @"com.spotify.client";
 
 - (BOOL)startRecordingSession {
   if (self.isRecording) {
-    NSLog(@"Attempted to start new recording session while previous session was active. Aborting.");
+    DDLogWarn(@"Attempted to start new recording session while previous session was active. Aborting.");
     return NO;
   }
   

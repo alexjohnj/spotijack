@@ -55,6 +55,9 @@
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+  [DDLog addLogger:[DDASLLogger sharedInstance]];
+  [DDLog addLogger:[DDTTYLogger sharedInstance]];
+  
   [self applicationShouldHandleReopen:nil hasVisibleWindows:NO]; // Display the main window
   [self.mainWindowController.statusLabel setStringValue:@"Ready to Record"];
 }
