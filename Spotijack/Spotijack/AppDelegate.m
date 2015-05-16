@@ -34,7 +34,8 @@
   self = [super init];
   
   if (self) {
-    _mainWindowController = [[SPJMainWindowController alloc] initWithWindowNibName:@"SPJMainWindow"];
+    _mainWindowController = [[SPJMainWindowController alloc]
+                             initWithWindowNibName:@"SPJMainWindow"];
   }
   return self;
 }
@@ -90,10 +91,12 @@
   if ([SPJSessionController sharedController].isRecording) {
     [[SPJSessionController sharedController] stopRecordingSession];
   }
-  [[[SPJSessionController sharedController] audioHijackSpotifySession] stopHijacking];
+  [[[SPJSessionController sharedController] audioHijackSpotifySession]
+   stopHijacking];
 }
 
-- (BOOL)applicationShouldHandleReopen:(NSApplication *)sender hasVisibleWindows:(BOOL)flag {
+- (BOOL)applicationShouldHandleReopen:(NSApplication *)sender
+                    hasVisibleWindows:(BOOL)flag {
   if (!flag) {
     [self.mainWindowController showWindow:self];
     return NO;

@@ -43,7 +43,8 @@ static NSString * const SPJSpotifyIdentifier = @"com.spotify.client";
     sharedController = [[self alloc] init];
     sharedController.isRecording = NO;
     
-    sharedController.audioHijackApp = [SBApplication applicationWithBundleIdentifier:SPJAudioHijackIdentifier];
+    sharedController.audioHijackApp = [SBApplication
+                                       applicationWithBundleIdentifier:SPJAudioHijackIdentifier];
     if (!sharedController.audioHijackApp) {
       NSLog(@"Unable to open Audio Hijack Pro for Scripting! Prepare to crash...");
     }
@@ -91,11 +92,12 @@ static NSString * const SPJSpotifyIdentifier = @"com.spotify.client";
     [shufflingAlert addButtonWithTitle:@"Yes"];
     [shufflingAlert addButtonWithTitle:@"No"];
     
-    [shufflingAlert beginSheetModalForWindow:[NSApp mainWindow] completionHandler:^(NSModalResponse returnCode) {
-      if (returnCode == NSAlertFirstButtonReturn) {
-        self.spotifyApp.shuffling = false;
-      }
-    }];
+    [shufflingAlert beginSheetModalForWindow:[NSApp mainWindow]
+                           completionHandler:^(NSModalResponse returnCode) {
+                             if (returnCode == NSAlertFirstButtonReturn) {
+                               self.spotifyApp.shuffling = false;
+                             }
+                           }];
   }
   
   
@@ -123,7 +125,8 @@ static NSString * const SPJSpotifyIdentifier = @"com.spotify.client";
   [self.audioHijackSpotifySession stopRecording];
   self.isRecording = NO;
   
-  if ([[NSUserDefaults standardUserDefaults] boolForKey:SPJMuteSpotifyForSessionKey]) {
+  if ([[NSUserDefaults standardUserDefaults]
+       boolForKey:SPJMuteSpotifyForSessionKey]) {
     self.audioHijackSpotifySession.speakerMuted = NO;
   }
   
@@ -134,8 +137,9 @@ static NSString * const SPJSpotifyIdentifier = @"com.spotify.client";
 #pragma mark Private Methods
 
 /**
- Polls Spotify, comparing the stored track ID with the current track's ID. Posts a track change notification if the IDs
- are different and sets up the next recording session for AH.
+ Polls Spotify, comparing the stored track ID with the current track's ID.
+ Posts a track change notification if the IDs are different and sets up the
+ next recording session for AH.
  */
 - (void)pollSpotify {
   SpotifyTrack *suspectTrack = self.spotifyApp.currentTrack;
@@ -168,7 +172,8 @@ static NSString * const SPJSpotifyIdentifier = @"com.spotify.client";
 }
 
 /**
- Updates as much metadata as possible for the current AH recording session using what's available from Spotify.
+ Updates as much metadata as possible for the current AH recording session using
+ what's available from Spotify.
  */
 - (void)updateMetadata {
   self.audioHijackSpotifySession.titleTag = self.spotifyApp.currentTrack.name;

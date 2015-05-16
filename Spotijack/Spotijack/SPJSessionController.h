@@ -39,20 +39,21 @@
 + (SPJSessionController *)sharedController;
 
 /**
- Initialises Audio Hijack Pro by hijacking the first session who's name is Spotify. Will restart Spotify if Instant 
- Hijack isn't set up.
+ Initialises Audio Hijack Pro by hijacking the first session who's name is 
+ Spotify. Will restart Spotify if Instant Hijack isn't set up.
  */
 - (void)initializeAudioHijackPro;
 
 /**
- Starts the recording session. Pauses Spotify, sets play position to 0, starts AH Session, creates timer, starts playing 
- Spotify. That's it.
+ Starts the recording session. Pauses Spotify, sets play position to 0, 
+ starts AH Session, creates timer, starts playing Spotify. That's it.
 
  @return A bool indicating if the recording session started successfully
  */
 - (BOOL)startRecordingSession;
 /** 
- Stops the recording session. Pauses Spotify, ends AH Session, invalidates timer. 
+ Stops the recording session. Pauses Spotify, ends AH Session, invalidates 
+ timer.
  */
 - (void)stopRecordingSession;
 

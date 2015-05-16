@@ -51,7 +51,8 @@
     self.statusLabel.stringValue = @"Ready to Record";
     self.artistLabel.stringValue = @"";
   } else {
-    self.recordingButton.state = [[SPJSessionController sharedController] startRecordingSession];
+    self.recordingButton.state = [[SPJSessionController sharedController]
+                                  startRecordingSession];
   }
 }
 
@@ -64,7 +65,8 @@
 
 #pragma mark - KVO
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
+                        change:(NSDictionary *)change context:(void *)context {
   if ([keyPath isEqualToString:@"isRecording"]) {
     if ([change[NSKeyValueChangeNewKey] isEqualTo:@YES]) {
       self.recordingButton.title = @"Recording";
@@ -80,8 +82,10 @@
 #pragma mark - Object Lifecycle
 
 - (void)dealloc {
-  [[SPJSessionController sharedController] removeObserver:self forKeyPath:@"recording"];
-  [[NSNotificationCenter defaultCenter] removeObserver:self forKeyPath:SPJTrackDidChangeNotification];
+  [[SPJSessionController sharedController] removeObserver:self
+                                               forKeyPath:@"recording"];
+  [[NSNotificationCenter defaultCenter] removeObserver:self
+                                            forKeyPath:SPJTrackDidChangeNotification];
 }
 
 @end
