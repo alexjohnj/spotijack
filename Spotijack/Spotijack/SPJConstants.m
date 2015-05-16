@@ -30,6 +30,10 @@ NSString * const SPJSpotifyIdentifier = @"com.spotify.client";
 #pragma mark - NSNotificationCenter Keys
 NSString * const SPJTrackDidChangeNotification = @"SPJTrackChanged";
 
-
 #pragma mark - NSUserDefaults Key
 NSString * const SPJMuteSpotifyForSessionKey = @"muteSpotifyWhenRecording";
+
+#pragma mark - Error Codes
+NSInteger const SPJAudioHijackScriptingError = 1;
+NSInteger const SPJSpotifyScriptingError = 2;
+NSInteger const SPJAudioHijackSessionError = 3;

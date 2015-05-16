@@ -8,6 +8,7 @@
 
 // Recording UI
 "Ready to Record" = "Ready to Record";
+"Not ready to record" = "Not Ready to Record";
 "Record" = "Record";
 "Recording" = "Recording";
 
@@ -27,3 +28,16 @@
 "OK" = "OK";
 "Yes" = "Yes";
 "No" = "No";
+
+// Error Localised Descriptions
+"AHP_OPEN_ERROR" = "Unable to open Audio Hijack Pro.";
+"AHP_OPEN_ERROR_REASON" = "Audio Hijack Pro is not installed.";
+"AHP_OPEN_ERROR_SUGGESTION" = "Install Audio Hijack Pro and restart Spotijack.";
+
+"SPOT_OPEN_ERROR" = "Unable to open Spotify.";
+"SPOT_OPEN_ERROR_REASON" = "Spotify is not installed.";
+"SPOT_OPEN_ERROR_SUGGESTION" = "Install Spotify and restart Spotijack.";
+
+"AHP_NO_SESS_ERROR" = "Could not start a recording session in Audio Hijack Pro.";
+"AHP_NO_SESS_ERROR_REASON" = "No recording sessions with the name \"Spotify\" exist.";
+"AHP_NO_SESS_ERROR_SUGGESTION" = "Create a new recording session called \"Spotify\" in Audio Hijack Pro and restart Spotijack.";

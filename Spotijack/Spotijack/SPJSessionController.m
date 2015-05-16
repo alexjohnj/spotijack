@@ -37,35 +37,63 @@
   dispatch_once(&onceToken, ^{
     sharedController = [[self alloc] init];
     sharedController.isRecording = NO;
-    
-    sharedController.audioHijackApp = [SBApplication
-                                       applicationWithBundleIdentifier:SPJAudioHijackIdentifier];
-    if (!sharedController.audioHijackApp) {
-      DDLogError(@"Unable to open Audio Hijack Pro for Scripting! Prepare to crash...");
-    }
-    
-    sharedController.spotifyApp = [SBApplication applicationWithBundleIdentifier:SPJSpotifyIdentifier];
-    if (!sharedController.spotifyApp) {
-      DDLogError(@"Unable to open Spotify for Scripting!");
-    }
   });
   return sharedController;
 }
 
 #pragma mark - Session Recording
-/**
- Initializes AH by selecting the first recording session who's name is Spotify.
- */
-- (void)initializeAudioHijackPro {
+- (BOOL)initializeRecordingSessions:(NSError *__autoreleasing *)error {
+  // Try and start Audio Hijack Pro and Spotijack for scripting
+  self.audioHijackApp = [SBApplication
+                         applicationWithBundleIdentifier:SPJAudioHijackIdentifier];
+  if (!self.audioHijackApp) {
+    NSDictionary *userInfo = @{
+                               NSLocalizedDescriptionKey: NSLocalizedString(@"AHP_OPEN_ERROR", nil),
+                               NSLocalizedFailureReasonErrorKey: NSLocalizedString(@"AHP_OPEN_ERROR_REASON", nil),
+                               NSLocalizedRecoverySuggestionErrorKey: NSLocalizedString(@"AHP_OPEN_ERROR_SUGGESTION", nil)
+                               };
+    *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
+                                 code:SPJAudioHijackScriptingError
+                             userInfo:userInfo];
+    return NO;
+  }
+  self.spotifyApp = [SBApplication applicationWithBundleIdentifier:SPJSpotifyIdentifier];
+  if (!self.spotifyApp) {
+    NSDictionary *userInfo = @{
+                               NSLocalizedDescriptionKey: NSLocalizedString(@"SPOT_OPEN_ERROR", nil),
+                               NSLocalizedFailureReasonErrorKey: NSLocalizedString(@"SPOT_OPEN_ERROR_REASON", nil),
+                               NSLocalizedRecoverySuggestionErrorKey: NSLocalizedString(@"SPOT_OPEN_ERROR_SUGGESTION", nil)
+                               };
+    *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
+                                 code:SPJSpotifyScriptingError
+                             userInfo:userInfo];
+    return NO;
+  }
+  
+  // Try and find a recording session for Spotify and make it active
   for (AudioHijackSession *session in self.audioHijackApp.sessions) {
     if ([session.name isEqualToString:@"Spotify"]) {
       self.audioHijackSpotifySession = session;
       break;
     }
   }
+  if (!self.audioHijackSpotifySession) {
+    NSDictionary *userInfo = @{
+                               NSLocalizedDescriptionKey: NSLocalizedString(@"AHP_NO_SESS_ERROR", nil),
+                               NSLocalizedFailureReasonErrorKey: NSLocalizedString(@"AHP_NO_SESS_ERROR_REASON", nil),
+                               NSLocalizedRecoverySuggestionErrorKey: NSLocalizedString(@"AHP_NO_SESS_ERROR_SUGGESTION", nil)
+                               };
+    *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
+                                 code:SPJAudioHijackSessionError
+                             userInfo:userInfo];
+    //TODO: Add recovery option to create a session (if possible)
+    return NO;
+  }
+  
   [self.audioHijackSpotifySession startHijackingRelaunch:AudioHijackRelaunchOptionsYes];
+  
+  return YES;
 }
-
 - (BOOL)startRecordingSession {
   if (self.isRecording) {
     DDLogWarn(@"Attempted to start new recording session while previous session was active. Aborting.");

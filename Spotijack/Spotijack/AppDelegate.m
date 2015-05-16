@@ -46,17 +46,26 @@
 
 #pragma mark - NSApplicationDelegate Protocol
 
-- (void)applicationWillFinishLaunching:(NSNotification *)notification {
-  [[SPJSessionController sharedController] initializeAudioHijackPro];
-}
-
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
   [DDLog addLogger:[DDASLLogger sharedInstance]];
   [DDLog addLogger:[DDTTYLogger sharedInstance]];
   
   [self applicationShouldHandleReopen:nil hasVisibleWindows:NO]; // Display the main window
-  [self.mainWindowController.statusLabel
-   setStringValue:NSLocalizedString(@"Ready to Record", nil)];
+  // Initialise and handle any errors
+  NSError *error;
+  BOOL success = [[SPJSessionController sharedController]
+                  initializeRecordingSessions:&error];
+  if (!success) {
+    NSAlert *alert = [NSAlert alertWithError:error];
+    [alert beginSheetModalForWindow:[self.mainWindowController window]
+                  completionHandler:nil];
+    [[self.mainWindowController recordingButton] setEnabled:NO];
+    [self.mainWindowController.statusLabel
+     setStringValue:NSLocalizedString(@"Not ready to record", nil)];
+  } else {
+    [self.mainWindowController.statusLabel
+     setStringValue:NSLocalizedString(@"Ready to Record", nil)];
+  }
 }
 
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender {

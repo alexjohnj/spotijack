@@ -39,10 +39,16 @@
 + (SPJSessionController *)sharedController;
 
 /**
- Initialises Audio Hijack Pro by hijacking the first session who's name is 
- Spotify. Will restart Spotify if Instant Hijack isn't set up.
+ *  Launches Spotify and Audio Hijack Pro for scripting and attempts to start 
+ *  the hijacking session called "Spotify". This method should be called before 
+ *  doing anything. Failure to do so will probably result in crashes.
+ *
+ *  @param error A pointer to an error object that contains information on any 
+ *         errors that may have occurred.
+ *
+ *  @return @p YES on successful initialisation or @p NO otherwise.
  */
-- (void)initializeAudioHijackPro;
+- (BOOL)initializeRecordingSessions:(NSError **)error;
 
 /**
  Starts the recording session. Pauses Spotify, sets play position to 0, 
@@ -56,7 +62,5 @@
  timer.
  */
 - (void)stopRecordingSession;
-
-extern NSString * const SPJTrackDidChangeNotification;
 
 @end
