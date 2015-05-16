@@ -23,10 +23,6 @@
 
 #import "AppDelegate.h"
 
-@interface AppDelegate ()
-
-@end
-
 @implementation AppDelegate
 
 #pragma mark - Object Lifecycle

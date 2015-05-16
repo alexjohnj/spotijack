@@ -16,6 +16,7 @@
 		FA9503881A421D6B009D7149 /* SPJMainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA9503861A421D6B009D7149 /* SPJMainWindow.xib */; };
 		FAD1392B1A44A082006351F0 /* SPJPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = FAD1392A1A44A082006351F0 /* SPJPreferencesWindowController.m */; };
 		FAD1392D1A44A0B3006351F0 /* SPJPreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAD1392C1A44A0B3006351F0 /* SPJPreferencesWindow.xib */; };
+		FAE1C14A1B07D67D007FF95C /* SPJConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = FAE1C1491B07D67D007FF95C /* SPJConstants.m */; };
 		FAF81BEA1A421FB5008F3360 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAF81BE91A421FB5008F3360 /* ScriptingBridge.framework */; };
 		FAF81BED1A422351008F3360 /* SPJSessionController.m in Sources */ = {isa = PBXBuildFile; fileRef = FAF81BEC1A422351008F3360 /* SPJSessionController.m */; };
 /* End PBXBuildFile section */
@@ -40,6 +41,8 @@
 		FAD1392A1A44A082006351F0 /* SPJPreferencesWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPJPreferencesWindowController.m; sourceTree = "<group>"; };
 		FAD1392C1A44A0B3006351F0 /* SPJPreferencesWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SPJPreferencesWindow.xib; sourceTree = "<group>"; };
 		FAE1C1471B07D06A007FF95C /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
+		FAE1C1481B07D67D007FF95C /* SPJConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPJConstants.h; sourceTree = "<group>"; };
+		FAE1C1491B07D67D007FF95C /* SPJConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPJConstants.m; sourceTree = "<group>"; };
 		FAF81BE91A421FB5008F3360 /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
 		FAF81BEB1A422351008F3360 /* SPJSessionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPJSessionController.h; sourceTree = "<group>"; };
 		FAF81BEC1A422351008F3360 /* SPJSessionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPJSessionController.m; sourceTree = "<group>"; };
@@ -116,6 +119,8 @@
 		FA95035E1A421B76009D7149 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				FAE1C1481B07D67D007FF95C /* SPJConstants.h */,
+				FAE1C1491B07D67D007FF95C /* SPJConstants.m */,
 				FA95035F1A421B76009D7149 /* Info.plist */,
 				FA9503631A421B76009D7149 /* main.m */,
 				FAE1C1471B07D06A007FF95C /* PrefixHeader.pch */,
@@ -252,6 +257,7 @@
 				FA9503641A421B76009D7149 /* main.m in Sources */,
 				FA9503621A421B76009D7149 /* AppDelegate.m in Sources */,
 				FAF81BED1A422351008F3360 /* SPJSessionController.m in Sources */,
+				FAE1C14A1B07D67D007FF95C /* SPJConstants.m in Sources */,
 				FAD1392B1A44A082006351F0 /* SPJPreferencesWindowController.m in Sources */,
 				FA9503871A421D6B009D7149 /* SPJMainWindowController.m in Sources */,
 			);

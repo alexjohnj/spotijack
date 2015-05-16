@@ -23,8 +23,6 @@
 
 #import "SPJPreferencesWindowController.h"
 
-NSString * const SPJMuteSpotifyForSessionKey = @"muteSpotifyWhenRecording";
-
 @implementation SPJPreferencesWindowController
 
 @end

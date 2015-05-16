@@ -23,11 +23,6 @@
 
 #import "SPJSessionController.h"
 
-NSString * const SPJTrackDidChangeNotification = @"SPJTrackChanged";
-
-static NSString * const SPJAudioHijackIdentifier = @"com.rogueamoeba.AudioHijackPro2";
-static NSString * const SPJSpotifyIdentifier = @"com.spotify.clienst";
-
 @interface SPJSessionController ()
 @property (copy) NSString *currentTrackID;
 @property (strong) id recordingActivityToken;
