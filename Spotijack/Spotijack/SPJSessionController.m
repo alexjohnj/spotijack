@@ -72,7 +72,7 @@
   
   // Try and find a recording session for Spotify and make it active
   for (AudioHijackSession *session in self.audioHijackApp.sessions) {
-    if ([session.name isEqualToString:@"Spotify"]) {
+    if ([session.name isEqualToString:@"Spotijack"]) {
       self.audioHijackSpotifySession = session;
       break;
     }

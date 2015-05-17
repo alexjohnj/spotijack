@@ -39,5 +39,5 @@
 "SPOT_OPEN_ERROR_SUGGESTION" = "Install Spotify and restart Spotijack.";
 
 "AHP_NO_SESS_ERROR" = "Could not start a recording session in Audio Hijack Pro.";
-"AHP_NO_SESS_ERROR_REASON" = "No recording sessions with the name \"Spotify\" exist.";
-"AHP_NO_SESS_ERROR_SUGGESTION" = "Create a new recording session called \"Spotify\" in Audio Hijack Pro and restart Spotijack.";
+"AHP_NO_SESS_ERROR_REASON" = "No recording sessions with the name \"Spotijack\" exist.";
+"AHP_NO_SESS_ERROR_SUGGESTION" = "Create a new recording session called \"Spotijack\" in Audio Hijack Pro and restart Spotijack.";
