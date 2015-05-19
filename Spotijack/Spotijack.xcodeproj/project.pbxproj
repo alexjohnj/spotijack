@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		B92ACBBECD6459DCBD59F723 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A619190DEA0FB1858A01A5E /* libPods.a */; };
+		FA02961A1B0BC28500BFCA84 /* ConfigureSpotijackSession.applescript in Sources */ = {isa = PBXBuildFile; fileRef = FA0296191B0BC28500BFCA84 /* ConfigureSpotijackSession.applescript */; };
+		FA02961B1B0BC2B200BFCA84 /* ConfigureSpotijackSession.applescript in Resources */ = {isa = PBXBuildFile; fileRef = FA0296191B0BC28500BFCA84 /* ConfigureSpotijackSession.applescript */; };
+		FA93A2741B0914D500A61F6E /* SPJSessionCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = FA93A2731B0914D500A61F6E /* SPJSessionCreator.m */; };
+		FA93A2761B09150500A61F6E /* SessionProperties.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA93A2751B09150500A61F6E /* SessionProperties.plist */; };
 		FA9503621A421B76009D7149 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FA9503611A421B76009D7149 /* AppDelegate.m */; };
 		FA9503641A421B76009D7149 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FA9503631A421B76009D7149 /* main.m */; };
 		FA9503661A421B76009D7149 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA9503651A421B76009D7149 /* Images.xcassets */; };
@@ -26,6 +30,10 @@
 		2A619190DEA0FB1858A01A5E /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5FB157FFDD0A08CFF43A974D /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		E81427338A3066164135FDAD /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		FA0296191B0BC28500BFCA84 /* ConfigureSpotijackSession.applescript */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.applescript; path = ConfigureSpotijackSession.applescript; sourceTree = "<group>"; };
+		FA93A2721B0914D500A61F6E /* SPJSessionCreator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPJSessionCreator.h; sourceTree = "<group>"; };
+		FA93A2731B0914D500A61F6E /* SPJSessionCreator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPJSessionCreator.m; sourceTree = "<group>"; };
+		FA93A2751B09150500A61F6E /* SessionProperties.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = SessionProperties.plist; sourceTree = "<group>"; };
 		FA95035B1A421B76009D7149 /* Spotijack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Spotijack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA95035F1A421B76009D7149 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FA9503601A421B76009D7149 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -80,6 +88,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		FA93A2701B090C6100A61F6E /* Error Recovery */ = {
+			isa = PBXGroup;
+			children = (
+				FA93A2721B0914D500A61F6E /* SPJSessionCreator.h */,
+				FA93A2731B0914D500A61F6E /* SPJSessionCreator.m */,
+			);
+			name = "Error Recovery";
+			sourceTree = "<group>";
+		};
 		FA9503521A421B76009D7149 = {
 			isa = PBXGroup;
 			children = (
@@ -101,6 +118,7 @@
 		FA95035D1A421B76009D7149 /* Spotijack */ = {
 			isa = PBXGroup;
 			children = (
+				FA93A2701B090C6100A61F6E /* Error Recovery */,
 				FAF81BEB1A422351008F3360 /* SPJSessionController.h */,
 				FAF81BEC1A422351008F3360 /* SPJSessionController.m */,
 				FA9503841A421D6B009D7149 /* SPJMainWindowController.h */,
@@ -121,6 +139,8 @@
 		FA95035E1A421B76009D7149 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				FA0296191B0BC28500BFCA84 /* ConfigureSpotijackSession.applescript */,
+				FA93A2751B09150500A61F6E /* SessionProperties.plist */,
 				FAE1C1481B07D67D007FF95C /* SPJConstants.h */,
 				FAE1C1491B07D67D007FF95C /* SPJConstants.m */,
 				FA95035F1A421B76009D7149 /* Info.plist */,
@@ -210,10 +230,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA02961B1B0BC2B200BFCA84 /* ConfigureSpotijackSession.applescript in Resources */,
 				FAE1C14D1B07DC64007FF95C /* Localizable.strings in Resources */,
 				FAE1C1531B07DF63007FF95C /* SPJPreferencesWindow.xib in Resources */,
 				FA9503661A421B76009D7149 /* Images.xcassets in Resources */,
 				FA9503691A421B76009D7149 /* MainMenu.xib in Resources */,
+				FA93A2761B09150500A61F6E /* SessionProperties.plist in Resources */,
 				FAE1C1501B07DF5F007FF95C /* SPJMainWindow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -258,8 +280,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA02961A1B0BC28500BFCA84 /* ConfigureSpotijackSession.applescript in Sources */,
 				FA9503641A421B76009D7149 /* main.m in Sources */,
 				FA9503621A421B76009D7149 /* AppDelegate.m in Sources */,
+				FA93A2741B0914D500A61F6E /* SPJSessionCreator.m in Sources */,
 				FAF81BED1A422351008F3360 /* SPJSessionController.m in Sources */,
 				FAE1C14A1B07D67D007FF95C /* SPJConstants.m in Sources */,
 				FAD1392B1A44A082006351F0 /* SPJPreferencesWindowController.m in Sources */,

@@ -26,6 +26,7 @@
 #import "AudioHijack.h"
 #import "Spotify.h"
 #import "SPJPreferencesWindowController.h"
+#import "SPJSessionCreator.h"
 
 @interface SPJSessionController : NSObject
 

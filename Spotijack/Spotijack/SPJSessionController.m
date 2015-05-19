@@ -78,15 +78,17 @@
     }
   }
   if (!self.audioHijackSpotifySession) {
+    SPJSessionCreator *recoveryAttempter = [[SPJSessionCreator alloc] init];
     NSDictionary *userInfo = @{
                                NSLocalizedDescriptionKey: NSLocalizedString(@"AHP_NO_SESS_ERROR", nil),
                                NSLocalizedFailureReasonErrorKey: NSLocalizedString(@"AHP_NO_SESS_ERROR_REASON", nil),
-                               NSLocalizedRecoverySuggestionErrorKey: NSLocalizedString(@"AHP_NO_SESS_ERROR_SUGGESTION", nil)
+                               NSLocalizedRecoverySuggestionErrorKey: NSLocalizedString(@"AHP_NO_SESS_ERROR_SUGGESTION", nil),
+                               NSLocalizedRecoveryOptionsErrorKey: @[NSLocalizedString(@"AHP_NO_SESS_ERROR_FIX_CREATE", nil), NSLocalizedString(@"No", nil)],
+                               NSRecoveryAttempterErrorKey: recoveryAttempter
                                };
     *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
                                  code:SPJAudioHijackSessionError
                              userInfo:userInfo];
-    //TODO: Add recovery option to create a session (if possible)
     return NO;
   }
   

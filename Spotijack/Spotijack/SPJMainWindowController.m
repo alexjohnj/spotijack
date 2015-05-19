@@ -41,6 +41,14 @@
                                            selector:@selector(trackChanged:)
                                                name:SPJTrackDidChangeNotification
                                              object:nil];
+  [[NSNotificationCenter defaultCenter] addObserverForName:SPJSessionCreatedNotification
+                                                    object:nil
+                                                     queue:nil
+                                                usingBlock:^(NSNotification *note) {
+                                                  self.statusLabel.stringValue = NSLocalizedString(@"Ready to Record", nil);
+                                                  self.artistLabel.stringValue = @"";
+                                                  self.recordingButton.enabled = YES;
+                                                }];
 }
 
 #pragma mark - IBActions
@@ -84,8 +92,7 @@
 - (void)dealloc {
   [[SPJSessionController sharedController] removeObserver:self
                                                forKeyPath:@"recording"];
-  [[NSNotificationCenter defaultCenter] removeObserver:self
-                                            forKeyPath:SPJTrackDidChangeNotification];
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end

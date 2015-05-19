@@ -17,6 +17,10 @@ extern NSString * const SPJMuteSpotifyForSessionKey;
 
 #pragma mark NSNotificationCentre Keys
 extern NSString * const SPJTrackDidChangeNotification;
+/**
+ *  Posted when an @p SPJAudioHijackSessionError is succesfully resolved.
+ */
+extern NSString * const SPJSessionCreatedNotification;
 
 #pragma mark Error codes
 extern NSInteger const SPJAudioHijackScriptingError;

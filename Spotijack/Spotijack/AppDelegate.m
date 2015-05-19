@@ -58,7 +58,12 @@
   if (!success) {
     NSAlert *alert = [NSAlert alertWithError:error];
     [alert beginSheetModalForWindow:[self.mainWindowController window]
-                  completionHandler:nil];
+                  completionHandler:^(NSModalResponse returnCode) {
+                    if (error.recoveryAttempter) {
+                      [error.recoveryAttempter attemptRecoveryFromError:error
+                                                            optionIndex:returnCode];
+                    }
+                  }];
     [[self.mainWindowController recordingButton] setEnabled:NO];
     [self.mainWindowController.statusLabel
      setStringValue:NSLocalizedString(@"Not ready to record", nil)];

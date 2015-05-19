@@ -40,4 +40,5 @@
 
 "AHP_NO_SESS_ERROR" = "Could not start a recording session in Audio Hijack Pro.";
 "AHP_NO_SESS_ERROR_REASON" = "No recording sessions with the name \"Spotijack\" exist.";
-"AHP_NO_SESS_ERROR_SUGGESTION" = "Create a new recording session called \"Spotijack\" in Audio Hijack Pro and restart Spotijack.";
+"AHP_NO_SESS_ERROR_SUGGESTION" = "Do you want me to create a recording session called \"Spotijack\" in Audio Hijack Pro?";
+"AHP_NO_SESS_ERROR_FIX_CREATE" = "Create it";

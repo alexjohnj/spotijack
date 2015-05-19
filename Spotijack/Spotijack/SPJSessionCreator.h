@@ -1,6 +1,5 @@
-//
-// SPJConstants.m
-//
+// SPJSessionCreator.h
+// 
 // Copyright (c) 2015 Alex Jackson
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -9,10 +8,10 @@
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-//
+// 
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-//
+// 
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,20 +20,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "SPJConstants.h"
+#import <Cocoa/Cocoa.h>
+#import "AudioHijack.h"
+#import "SPJSessionController.h"
 
-#pragma mark - Bundle Identifiers
-NSString * const SPJAudioHijackIdentifier = @"com.rogueamoeba.AudioHijackPro2";
-NSString * const SPJSpotifyIdentifier = @"com.spotify.client";
+@interface SPJSessionCreator : NSObject
 
-#pragma mark - NSNotificationCenter Keys
-NSString * const SPJTrackDidChangeNotification = @"SPJTrackChanged";
-NSString * const SPJSessionCreatedNotification = @"SPJSessionCreatedNotification";
-
-#pragma mark - NSUserDefaults Key
-NSString * const SPJMuteSpotifyForSessionKey = @"muteSpotifyWhenRecording";
-
-#pragma mark - Error Codes
-NSInteger const SPJAudioHijackScriptingError = 1;
-NSInteger const SPJSpotifyScriptingError = 2;
-NSInteger const SPJAudioHijackSessionError = 3;
+@end
