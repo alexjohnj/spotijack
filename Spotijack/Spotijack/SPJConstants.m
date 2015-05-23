@@ -38,3 +38,4 @@ NSString * const SPJMuteSpotifyForSessionKey = @"muteSpotifyWhenRecording";
 NSInteger const SPJAudioHijackScriptingError = 1;
 NSInteger const SPJSpotifyScriptingError = 2;
 NSInteger const SPJAudioHijackSessionError = 3;
+NSInteger const SPJSpotifyNoSongPlayingError = 4;

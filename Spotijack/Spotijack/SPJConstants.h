@@ -26,3 +26,4 @@ extern NSString * const SPJSessionCreatedNotification;
 extern NSInteger const SPJAudioHijackScriptingError;
 extern NSInteger const SPJSpotifyScriptingError;
 extern NSInteger const SPJAudioHijackSessionError;
+extern NSInteger const SPJSpotifyNoSongPlayingError;

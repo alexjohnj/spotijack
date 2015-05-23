@@ -49,15 +49,18 @@
  *
  *  @return @p YES on successful initialisation or @p NO otherwise.
  */
-- (BOOL)initializeRecordingSessions:(NSError **)error;
+- (BOOL)initializeRecordingSessions:(NSError *__autoreleasing *)error;
 
 /**
  Starts the recording session. Pauses Spotify, sets play position to 0, 
  starts AH Session, creates timer, starts playing Spotify. That's it.
+ 
+ @param error A pointer to an error object that contains information on any 
+        errors that may have occurred. May be @p nil.
 
  @return A bool indicating if the recording session started successfully
  */
-- (BOOL)startRecordingSession;
+- (BOOL)startRecordingSession:(NSError *__autoreleasing *)error;
 /** 
  Stops the recording session. Pauses Spotify, ends AH Session, invalidates 
  timer.

@@ -59,8 +59,34 @@
     self.statusLabel.stringValue = NSLocalizedString(@"Ready to Record", nil);
     self.artistLabel.stringValue = @"";
   } else {
-    self.recordingButton.state = [[SPJSessionController sharedController]
-                                  startRecordingSession];
+    NSError *recordingInitError;
+    BOOL success = [[SPJSessionController sharedController]
+                                  startRecordingSession:&recordingInitError];
+    if (!success) {
+      NSAlert *recordingFailAlert = [NSAlert alertWithError:recordingInitError];
+      [recordingFailAlert beginSheetModalForWindow:self.window
+                                 completionHandler:nil];
+      return;
+    }
+    
+    // Offer to disable shuffling if it's enabled
+    BOOL shufflingEnabled = [[[SPJSessionController sharedController]
+                              spotifyApp]
+                             shuffling];
+    if (shufflingEnabled) {
+      NSAlert *shufflingAlert = [[NSAlert alloc] init];
+      shufflingAlert.messageText = NSLocalizedString(@"Disable Shuffling?", nil);
+      [shufflingAlert addButtonWithTitle:NSLocalizedString(@"Yes", nil)];
+      [shufflingAlert addButtonWithTitle:NSLocalizedString(@"No", nil)];
+      [shufflingAlert beginSheetModalForWindow:self.window
+                             completionHandler:^(NSModalResponse returnCode) {
+                               if (returnCode == NSAlertFirstButtonReturn) {
+                                 [[[SPJSessionController sharedController]
+                                   spotifyApp]
+                                  setShuffling:NO];
+                               }
+                             }];
+    }
   }
 }
 
@@ -78,6 +104,7 @@
   if ([keyPath isEqualToString:@"isRecording"]) {
     if ([change[NSKeyValueChangeNewKey] isEqualTo:@YES]) {
       self.recordingButton.title = NSLocalizedString(@"Recording", nil);
+      self.recordingButton.state = NSOnState;
     } else {
       self.recordingButton.title = NSLocalizedString(@"Record", nil);
       self.recordingButton.state = NSOffState;

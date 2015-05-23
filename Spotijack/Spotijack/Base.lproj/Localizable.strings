@@ -42,3 +42,7 @@
 "AHP_NO_SESS_ERROR_REASON" = "No recording sessions with the name \"Spotijack\" exist.";
 "AHP_NO_SESS_ERROR_SUGGESTION" = "Do you want me to create a recording session called \"Spotijack\" in Audio Hijack Pro?";
 "AHP_NO_SESS_ERROR_FIX_CREATE" = "Create it";
+
+"SPOT_NO_SONG_ERROR" = "Could not start recording.";
+"SPOT_NO_SONG_ERROR_REASON" = "Spotify is not playing any songs to record.";
+"SPOT_NO_SONG_ERROR_SUGGESTION" = "Start playing a song in Spotify and try recording again.";
