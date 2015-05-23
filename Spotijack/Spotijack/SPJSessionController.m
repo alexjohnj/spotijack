@@ -166,12 +166,16 @@
   SpotifyTrack *suspectTrack = self.spotifyApp.currentTrack;
   if (!suspectTrack) {
     [self stopRecordingSession];
+    [[NSNotificationCenter defaultCenter] postNotificationName:SPJRecordingSessionFinishedNotificaiton
+                                                        object:self];
   }
   
   if (![self.currentTrackID isEqualToString:suspectTrack.id]) {
     // Check if Spotify has reached the end of a playlist
     if ([self.spotifyApp playerState] == SpotifyEPlSPaused) {
       [self stopRecordingSession];
+      [[NSNotificationCenter defaultCenter] postNotificationName:SPJRecordingSessionFinishedNotificaiton
+                                                          object:self];
       return;
     }
     

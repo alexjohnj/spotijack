@@ -41,6 +41,10 @@
                                            selector:@selector(trackChanged:)
                                                name:SPJTrackDidChangeNotification
                                              object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(recordingSessionEnded:)
+                                               name:SPJRecordingSessionFinishedNotificaiton
+                                             object:nil];
   [[NSNotificationCenter defaultCenter] addObserverForName:SPJSessionCreatedNotification
                                                     object:nil
                                                      queue:nil
@@ -61,7 +65,7 @@
   } else {
     NSError *recordingInitError;
     BOOL success = [[SPJSessionController sharedController]
-                                  startRecordingSession:&recordingInitError];
+                    startRecordingSession:&recordingInitError];
     if (!success) {
       NSAlert *recordingFailAlert = [NSAlert alertWithError:recordingInitError];
       [recordingFailAlert beginSheetModalForWindow:self.window
@@ -95,6 +99,18 @@
 - (void)trackChanged:(NSNotification *)notification {
   self.statusLabel.stringValue = notification.userInfo[@"TrackTitle"];
   self.artistLabel.stringValue = notification.userInfo[@"TrackArtist"];
+}
+
+- (void)recordingSessionEnded:(NSNotification *)notification {
+  if (![[NSUserDefaults standardUserDefaults] boolForKey:SPJNotifyWhenRecordingFinishesKey]) {
+    return;
+  }
+  NSUserNotification *endNoti = [[NSUserNotification alloc] init];
+  endNoti.title = NSLocalizedString(@"SESSION_END_NOTI", nil);
+  endNoti.subtitle = NSLocalizedString(@"SESSION_END_NOTI_SUBT", nil);
+  endNoti.hasActionButton = NO;
+  [[NSUserNotificationCenter defaultUserNotificationCenter]
+   deliverNotification:endNoti];
 }
 
 #pragma mark - KVO

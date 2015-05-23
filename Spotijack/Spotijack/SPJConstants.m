@@ -29,10 +29,12 @@ NSString * const SPJSpotifyIdentifier = @"com.spotify.client";
 
 #pragma mark - NSNotificationCenter Keys
 NSString * const SPJTrackDidChangeNotification = @"SPJTrackChanged";
+NSString * const SPJRecordingSessionFinishedNotificaiton = @"SPJRecordingSessionFinishedNotificaiton";
 NSString * const SPJSessionCreatedNotification = @"SPJSessionCreatedNotification";
 
 #pragma mark - NSUserDefaults Key
 NSString * const SPJMuteSpotifyForSessionKey = @"muteSpotifyWhenRecording";
+NSString * const SPJNotifyWhenRecordingFinishesKey = @"notifyWhenRecordingFinishes";
 
 #pragma mark - Error Codes
 NSInteger const SPJAudioHijackScriptingError = 1;

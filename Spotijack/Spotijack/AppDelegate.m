@@ -39,7 +39,10 @@
 + (void)initialize
 {
   if (self == [AppDelegate class]) {
-    NSDictionary *userDefaultsDict = @{SPJMuteSpotifyForSessionKey:@NO};
+    NSDictionary *userDefaultsDict = @{
+                                       SPJMuteSpotifyForSessionKey: @NO,
+                                       SPJNotifyWhenRecordingFinishesKey: @YES,
+                                       };
     [[NSUserDefaults standardUserDefaults] registerDefaults:userDefaultsDict];
   }
 }

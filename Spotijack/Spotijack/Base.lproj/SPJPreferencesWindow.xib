@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7531" systemVersion="14D136" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14E17e" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7531"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="SPJPreferencesWindowController">
@@ -14,14 +14,14 @@
         <window title="Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" animationBehavior="default" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="196" y="240" width="236" height="54"/>
+            <rect key="contentRect" x="196" y="240" width="244" height="74"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1080"/>
             <view key="contentView" id="EiT-Mj-1SZ">
-                <rect key="frame" x="0.0" y="0.0" width="236" height="54"/>
+                <rect key="frame" x="0.0" y="-5" width="244" height="74"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button toolTip="Mutes Spotify's audio using Audio Hijack Pro. Does not affect the actual recording." translatesAutoresizingMaskIntoConstraints="NO" id="FSA-qZ-Ofi">
-                        <rect key="frame" x="18" y="18" width="200" height="18"/>
+                        <rect key="frame" x="18" y="38" width="208" height="18"/>
                         <buttonCell key="cell" type="check" title="Mute Spotify when recording" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="swm-11-LX4">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
@@ -30,9 +30,21 @@
                             <binding destination="5gL-iE-OaE" name="value" keyPath="values.muteSpotifyWhenRecording" id="gS4-5e-NQ7"/>
                         </connections>
                     </button>
+                    <button translatesAutoresizingMaskIntoConstraints="NO" id="35y-f9-rwE">
+                        <rect key="frame" x="18" y="18" width="208" height="18"/>
+                        <buttonCell key="cell" type="check" title="Notify when recording finishes" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="y9N-bu-jH5">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <binding destination="5gL-iE-OaE" name="value" keyPath="values.notifyWhenRecordingFinishes" id="cyy-AD-jjc"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="bottom" secondItem="FSA-qZ-Ofi" secondAttribute="bottom" constant="20" symbolic="YES" id="SUf-YG-Slg"/>
+                    <constraint firstItem="FSA-qZ-Ofi" firstAttribute="trailing" secondItem="35y-f9-rwE" secondAttribute="trailing" id="8G7-q3-B6d"/>
+                    <constraint firstItem="35y-f9-rwE" firstAttribute="top" secondItem="FSA-qZ-Ofi" secondAttribute="bottom" constant="6" symbolic="YES" id="Nwf-kZ-ZjL"/>
+                    <constraint firstItem="FSA-qZ-Ofi" firstAttribute="leading" secondItem="35y-f9-rwE" secondAttribute="leading" id="U8T-n4-cUT"/>
                     <constraint firstAttribute="trailing" secondItem="FSA-qZ-Ofi" secondAttribute="trailing" constant="20" symbolic="YES" id="WPp-pW-acY"/>
                     <constraint firstItem="FSA-qZ-Ofi" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" constant="20" symbolic="YES" id="hKp-zR-1gm"/>
                     <constraint firstItem="FSA-qZ-Ofi" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" symbolic="YES" id="qRn-Nl-n9p"/>
@@ -41,7 +53,7 @@
             <connections>
                 <outlet property="delegate" destination="-2" id="xYA-6V-MCd"/>
             </connections>
-            <point key="canvasLocation" x="188" y="461"/>
+            <point key="canvasLocation" x="-119" y="132"/>
         </window>
         <userDefaultsController representsSharedInstance="YES" id="5gL-iE-OaE"/>
     </objects>

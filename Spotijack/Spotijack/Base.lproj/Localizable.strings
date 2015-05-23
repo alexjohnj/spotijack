@@ -28,6 +28,11 @@
 "OK" = "OK";
 "Yes" = "Yes";
 "No" = "No";
+"Close" = "Close";
+
+// User Notifications
+"SESSION_END_NOTI" = "Recording Finished";
+"SESSION_END_NOTI_SUBT" = "There are no more songs to record in Spotify.";
 
 // Error Localised Descriptions
 "AHP_OPEN_ERROR" = "Unable to open Audio Hijack Pro.";
