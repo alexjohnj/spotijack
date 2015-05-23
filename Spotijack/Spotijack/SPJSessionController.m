@@ -118,11 +118,6 @@
   self.recordingActivityToken = [[NSProcessInfo processInfo]
                                  beginActivityWithOptions:(NSActivityUserInitiated|NSActivityIdleSystemSleepDisabled)
                                  reason:@"Recording session in progress"];
-  self.spotifyPollingTimer = [NSTimer scheduledTimerWithTimeInterval:0.1
-                                                              target:self
-                                                            selector:@selector(pollSpotify)
-                                                            userInfo:nil
-                                                             repeats:TRUE];
   [self.audioHijackSpotifySession startHijackingRelaunch:AudioHijackRelaunchOptionsYes];
   [self.audioHijackSpotifySession startRecording];
   self.audioHijackSpotifySession.speakerMuted = [[NSUserDefaults standardUserDefaults]
@@ -130,6 +125,18 @@
   [self.spotifyApp setPlayerPosition:0.0];
   [self.spotifyApp play];
   self.isRecording = YES;
+  self.currentTrackID = self.spotifyApp.currentTrack.id;
+  self.spotifyPollingTimer = [NSTimer scheduledTimerWithTimeInterval:0.1
+                                                              target:self
+                                                            selector:@selector(pollSpotify)
+                                                            userInfo:nil
+                                                             repeats:TRUE];
+  [[NSNotificationCenter defaultCenter] postNotificationName:SPJTrackDidChangeNotification
+                                                      object:self
+                                                    userInfo:@{
+                                                               @"TrackTitle": self.spotifyApp.currentTrack.name,
+                                                               @"TrackArtist": self.spotifyApp.currentTrack.artist,
+                                                               }];
   return YES;
 }
 
