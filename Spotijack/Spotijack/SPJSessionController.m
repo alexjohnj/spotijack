@@ -126,6 +126,7 @@
   [self.spotifyApp play];
   self.isRecording = YES;
   self.currentTrackID = self.spotifyApp.currentTrack.id;
+  [self updateMetadata];
   self.spotifyPollingTimer = [NSTimer scheduledTimerWithTimeInterval:0.1
                                                               target:self
                                                             selector:@selector(pollSpotify)
