@@ -19,7 +19,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="335" y="390" width="305" height="119"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="900"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1080"/>
             <view key="contentView" id="d0Y-fb-agL">
                 <rect key="frame" x="0.0" y="0.0" width="305" height="119"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -47,7 +47,7 @@
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="AKD-kg-1UY">
+                    <button toolTip="Start recording" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="AKD-kg-1UY">
                         <rect key="frame" x="124" y="7" width="58" height="19"/>
                         <buttonCell key="cell" type="recessed" title="Record" bezelStyle="recessed" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="VHG-XA-Bdi">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
@@ -57,7 +57,7 @@
                             <action selector="recordButtonPressed:" target="-2" id="CC7-sB-kyZ"/>
                         </connections>
                     </button>
-                    <button horizontalHuggingPriority="1000" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="L0G-Ma-Vh5">
+                    <button toolTip="Mute Spotify without affecting recordings" horizontalHuggingPriority="1000" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="L0G-Ma-Vh5">
                         <rect key="frame" x="261" y="7" width="24" height="19"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="24" id="lSB-xv-Vt6"/>
