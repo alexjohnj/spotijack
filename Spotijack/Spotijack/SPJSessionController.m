@@ -57,6 +57,18 @@
                              userInfo:userInfo];
     return NO;
   }
+  // Initialise the mute polling timer
+  if (self.audioHijackProMutePollingTimer) {
+    if (self.audioHijackProMutePollingTimer.isValid) {
+      [self.audioHijackProMutePollingTimer invalidate];
+    }
+  }
+  self.audioHijackProMutePollingTimer = [NSTimer scheduledTimerWithTimeInterval:0.2
+                                                                target:self
+                                                              selector:@selector(pollAudioHijackPro)
+                                                              userInfo:nil
+                                                               repeats:YES];
+  self.audioHijackProMutePollingTimer.tolerance = 0.5;
   self.spotifyApp = [SBApplication applicationWithBundleIdentifier:SPJSpotifyIdentifier];
   if (!self.spotifyApp) {
     NSDictionary *userInfo = @{
@@ -155,6 +167,11 @@
   [[NSProcessInfo processInfo] endActivity:self.recordingActivityToken];
 }
 
+- (void)setIsMuted:(BOOL)isMuted {
+  _isMuted = isMuted;
+  [self.audioHijackSpotifySession setSpeakerMuted:isMuted];
+}
+
 #pragma mark Private Methods
 
 /**
@@ -194,6 +211,10 @@
                                                                  @"TrackArtist": self.spotifyApp.currentTrack.artist,
                                                                  }];
   }
+}
+
+- (void)pollAudioHijackPro {
+  self.isMuted = self.audioHijackSpotifySession.speakerMuted;
 }
 
 /**

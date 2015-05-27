@@ -37,6 +37,11 @@
                                             forKeyPath:@"isRecording"
                                                options:NSKeyValueObservingOptionNew
                                                context:NULL];
+  [[SPJSessionController sharedController] addObserver:self
+                                            forKeyPath:@"isMuted"
+                                               options:NSKeyValueObservingOptionNew
+                                               context:NULL];
+  
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(trackChanged:)
                                                name:SPJTrackDidChangeNotification
@@ -94,6 +99,10 @@
   }
 }
 
+- (IBAction)muteButtonPressed:(id)sender {
+  [[SPJSessionController sharedController] setIsMuted:self.muteButton.state];
+}
+
 #pragma mark - Private Methods
 
 - (void)trackChanged:(NSNotification *)notification {
@@ -127,6 +136,8 @@
       self.statusLabel.stringValue = NSLocalizedString(@"Ready to Record", nil);
       self.artistLabel.stringValue = @"";
     }
+  } else if ([keyPath isEqualToString:@"isMuted"]) {
+    self.muteButton.state = [change[NSKeyValueChangeNewKey] boolValue];
   }
 }
 

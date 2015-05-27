@@ -29,7 +29,9 @@
 @property (weak) IBOutlet NSTextField *statusLabel;
 @property (weak) IBOutlet NSTextField *artistLabel;
 @property (weak) IBOutlet NSButton *recordingButton;
+@property (weak) IBOutlet NSButton *muteButton;
 
 - (IBAction)recordButtonPressed:(id)sender;
+- (IBAction)muteButtonPressed:(id)sender;
 
 @end

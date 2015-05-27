@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7531" systemVersion="14D136" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14E26a" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7531"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="SPJMainWindowController">
             <connections>
                 <outlet property="artistLabel" destination="2zZ-cK-X9C" id="8PI-34-9gX"/>
+                <outlet property="muteButton" destination="L0G-Ma-Vh5" id="4uV-AU-ajE"/>
                 <outlet property="recordingButton" destination="AKD-kg-1UY" id="jTx-Tp-kuF"/>
                 <outlet property="statusLabel" destination="SVJ-Xv-L1m" id="y2s-5Z-4AB"/>
                 <outlet property="window" destination="uSh-TC-Nzq" id="y6Z-WO-648"/>
@@ -18,7 +19,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="335" y="390" width="305" height="119"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1080"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="900"/>
             <view key="contentView" id="d0Y-fb-agL">
                 <rect key="frame" x="0.0" y="0.0" width="305" height="119"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -56,8 +57,24 @@
                             <action selector="recordButtonPressed:" target="-2" id="CC7-sB-kyZ"/>
                         </connections>
                     </button>
+                    <button horizontalHuggingPriority="1000" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="L0G-Ma-Vh5">
+                        <rect key="frame" x="261" y="7" width="24" height="19"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="24" id="lSB-xv-Vt6"/>
+                        </constraints>
+                        <buttonCell key="cell" type="recessed" bezelStyle="recessed" image="Unmuted" imagePosition="only" alignment="center" alternateImage="Muted" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="N93-EO-Qj4">
+                            <behavior key="behavior" pushIn="YES" changeContents="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="systemBold" size="12"/>
+                            <string key="keyEquivalent">e</string>
+                            <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="muteButtonPressed:" target="-2" id="Jff-bw-zT2"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="L0G-Ma-Vh5" firstAttribute="centerY" secondItem="AKD-kg-1UY" secondAttribute="centerY" id="0JM-N2-7eS"/>
                     <constraint firstItem="SVJ-Xv-L1m" firstAttribute="top" secondItem="d0Y-fb-agL" secondAttribute="top" constant="20" symbolic="YES" id="0l0-eM-fs2"/>
                     <constraint firstAttribute="trailing" secondItem="SVJ-Xv-L1m" secondAttribute="trailing" constant="20" symbolic="YES" id="Adj-mT-vj8"/>
                     <constraint firstAttribute="bottom" secondItem="AKD-kg-1UY" secondAttribute="bottom" constant="8" id="C2a-UX-LNE"/>
@@ -66,6 +83,7 @@
                     <constraint firstItem="2zZ-cK-X9C" firstAttribute="leading" secondItem="d0Y-fb-agL" secondAttribute="leading" constant="20" symbolic="YES" id="fQW-Oj-RuK"/>
                     <constraint firstItem="AKD-kg-1UY" firstAttribute="top" secondItem="2zZ-cK-X9C" secondAttribute="bottom" constant="26" id="hGX-yQ-44W"/>
                     <constraint firstItem="SVJ-Xv-L1m" firstAttribute="leading" secondItem="d0Y-fb-agL" secondAttribute="leading" constant="20" symbolic="YES" id="j8x-MT-Ivf"/>
+                    <constraint firstAttribute="trailing" secondItem="L0G-Ma-Vh5" secondAttribute="trailing" constant="20" symbolic="YES" id="kk9-No-lIs"/>
                     <constraint firstItem="2zZ-cK-X9C" firstAttribute="top" secondItem="SVJ-Xv-L1m" secondAttribute="bottom" constant="8" symbolic="YES" id="vM3-j3-LGg"/>
                 </constraints>
             </view>
@@ -73,7 +91,11 @@
             <connections>
                 <outlet property="delegate" destination="-2" id="ea6-We-iEi"/>
             </connections>
-            <point key="canvasLocation" x="-194.5" y="-24.5"/>
+            <point key="canvasLocation" x="-875.5" y="-10.5"/>
         </window>
     </objects>
+    <resources>
+        <image name="Muted" width="80" height="80"/>
+        <image name="Unmuted" width="80" height="80"/>
+    </resources>
 </document>

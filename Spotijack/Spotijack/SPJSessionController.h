@@ -31,7 +31,9 @@
 @interface SPJSessionController : NSObject
 
 @property (assign) BOOL isRecording;
+@property (assign,nonatomic) BOOL isMuted;
 @property (strong) NSTimer *spotifyPollingTimer;
+@property (strong) NSTimer *audioHijackProMutePollingTimer;
 
 @property (strong) SpotifyApplication *spotifyApp;
 @property (strong) AudioHijackApplication *audioHijackApp;
@@ -66,5 +68,12 @@
  timer.
  */
 - (void)stopRecordingSession;
+/**
+ *  Mutes or unmutes the current Audio Hijack Pro recording session.
+ *
+ *  @param isMuted A bool indicating if the session should be muted. @p YES to 
+           mute, @p NO to unmute.
+ */
+- (void)setIsMuted:(BOOL)isMuted;
 
 @end
