@@ -56,17 +56,28 @@
   [self applicationShouldHandleReopen:nil hasVisibleWindows:NO]; // Display the main window
   // Initialise and handle any errors
   NSError *error;
-  BOOL success = [[SPJSessionController sharedController]
-                  initializeRecordingSessions:&error];
+  BOOL success = [[SPJSessionController sharedController] initializeRecordingSessions:&error];
+  
   if (!success) {
+    void (^completionHandler)(NSModalResponse);
     NSAlert *alert = [NSAlert alertWithError:error];
+    
+    if (error.code == SPJAudioHijackScriptingError || error.code == SPJSpotifyScriptingError) {
+      completionHandler = ^(NSModalResponse returnCode) {
+        [[NSApplication sharedApplication] terminate:self];
+      };
+      [alert addButtonWithTitle:NSLocalizedString(@"Quit", nil)];
+    } else {
+      completionHandler = ^(NSModalResponse returnCode) {
+        if (error.recoveryAttempter) {
+          [error.recoveryAttempter attemptRecoveryFromError:error
+                                                optionIndex:returnCode];
+        }
+      };
+    }
     [alert beginSheetModalForWindow:[self.mainWindowController window]
-                  completionHandler:^(NSModalResponse returnCode) {
-                    if (error.recoveryAttempter) {
-                      [error.recoveryAttempter attemptRecoveryFromError:error
-                                                            optionIndex:returnCode];
-                    }
-                  }];
+                  completionHandler:completionHandler];
+    
     [[self.mainWindowController recordingButton] setEnabled:NO];
     [self.mainWindowController.statusLabel
      setStringValue:NSLocalizedString(@"Not ready to record", nil)];
