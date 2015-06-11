@@ -46,7 +46,7 @@
   // Try and start Audio Hijack Pro and Spotijack for scripting
   self.audioHijackApp = [SBApplication
                          applicationWithBundleIdentifier:SPJAudioHijackIdentifier];
-  if (!self.audioHijackApp) {
+  if (!self.audioHijackApp || [NSRunningApplication runningApplicationsWithBundleIdentifier:SPJAudioHijackIdentifier].count == 0) {
     NSDictionary *userInfo = @{
                                NSLocalizedDescriptionKey: NSLocalizedString(@"AHP_OPEN_ERROR", nil),
                                NSLocalizedFailureReasonErrorKey: NSLocalizedString(@"AHP_OPEN_ERROR_REASON", nil),
@@ -70,7 +70,7 @@
                                                                repeats:YES];
   self.audioHijackProMutePollingTimer.tolerance = 0.5;
   self.spotifyApp = [SBApplication applicationWithBundleIdentifier:SPJSpotifyIdentifier];
-  if (!self.spotifyApp) {
+  if (!self.spotifyApp || [NSRunningApplication runningApplicationsWithBundleIdentifier:SPJSpotifyIdentifier].count == 0) {
     NSDictionary *userInfo = @{
                                NSLocalizedDescriptionKey: NSLocalizedString(@"SPOT_OPEN_ERROR", nil),
                                NSLocalizedFailureReasonErrorKey: NSLocalizedString(@"SPOT_OPEN_ERROR_REASON", nil),
