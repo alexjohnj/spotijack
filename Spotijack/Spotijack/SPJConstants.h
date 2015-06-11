@@ -27,7 +27,9 @@ extern NSString * const SPJRecordingSessionFinishedNotificaiton;
 extern NSString * const SPJSessionCreatedNotification;
 
 #pragma mark Error codes
+extern NSInteger const SPJAudioHijackLaunchError;
 extern NSInteger const SPJAudioHijackScriptingError;
+extern NSInteger const SPJSpotifyLaunchError;
 extern NSInteger const SPJSpotifyScriptingError;
 extern NSInteger const SPJAudioHijackSessionError;
 extern NSInteger const SPJSpotifyNoSongPlayingError;

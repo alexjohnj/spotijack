@@ -43,19 +43,37 @@
 
 #pragma mark - Session Recording
 - (BOOL)initializeRecordingSessions:(NSError *__autoreleasing *)error {
-  // Try and start Audio Hijack Pro and Spotijack for scripting
-  self.audioHijackApp = [SBApplication
-                         applicationWithBundleIdentifier:SPJAudioHijackIdentifier];
-  if (!self.audioHijackApp || [NSRunningApplication runningApplicationsWithBundleIdentifier:SPJAudioHijackIdentifier].count == 0) {
+  // Try and launch Audio Hijack Pro
+  BOOL audioHijackProLaunched = [[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:SPJAudioHijackIdentifier
+                                                                                     options:NSWorkspaceLaunchAndHide
+                                                              additionalEventParamDescriptor:nil
+                                                                            launchIdentifier:NULL];
+  if (!audioHijackProLaunched) {
     NSDictionary *userInfo = @{
                                NSLocalizedDescriptionKey: NSLocalizedString(@"AHP_OPEN_ERROR", nil),
                                NSLocalizedFailureReasonErrorKey: NSLocalizedString(@"AHP_OPEN_ERROR_REASON", nil),
+                               NSLocalizedRecoverySuggestionErrorKey: NSLocalizedString(@"AHP_OPEN_ERROR_SUGGESTION", nil),
+                               };
+    *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
+                                 code:SPJAudioHijackLaunchError
+                             userInfo:userInfo];
+    return NO;
+  }
+  
+  // Try and enable scripting in Audio Hijack Pro
+  self.audioHijackApp = [SBApplication
+                         applicationWithBundleIdentifier:SPJAudioHijackIdentifier];
+  if (!self.audioHijackApp) {
+    NSDictionary *userInfo = @{
+                               NSLocalizedDescriptionKey: NSLocalizedString(@"AHP_SCRIPT_OPEN_ERROR", nil),
+                               NSLocalizedFailureReasonErrorKey: NSLocalizedString(@"AHP_SCRIPT_OPEN_REASON", nil),
                                NSLocalizedRecoverySuggestionErrorKey: NSLocalizedString(@"AHP_OPEN_ERROR_SUGGESTION", nil)
                                };
     *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
                                  code:SPJAudioHijackScriptingError
                              userInfo:userInfo];
     return NO;
+    
   }
   // Initialise the mute polling timer
   if (self.audioHijackProMutePollingTimer) {
@@ -64,17 +82,35 @@
     }
   }
   self.audioHijackProMutePollingTimer = [NSTimer scheduledTimerWithTimeInterval:0.2
-                                                                target:self
-                                                              selector:@selector(pollAudioHijackPro)
-                                                              userInfo:nil
-                                                               repeats:YES];
+                                                                         target:self
+                                                                       selector:@selector(pollAudioHijackPro)
+                                                                       userInfo:nil
+                                                                        repeats:YES];
   self.audioHijackProMutePollingTimer.tolerance = 0.5;
-  self.spotifyApp = [SBApplication applicationWithBundleIdentifier:SPJSpotifyIdentifier];
-  if (!self.spotifyApp || [NSRunningApplication runningApplicationsWithBundleIdentifier:SPJSpotifyIdentifier].count == 0) {
+  // Try and launch Spotify
+  BOOL spotifyLaunched = [[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:SPJSpotifyIdentifier
+                                                                              options:NSWorkspaceLaunchAndHide
+                                                       additionalEventParamDescriptor:nil
+                                                                     launchIdentifier:NULL];
+  if (!spotifyLaunched) {
     NSDictionary *userInfo = @{
                                NSLocalizedDescriptionKey: NSLocalizedString(@"SPOT_OPEN_ERROR", nil),
                                NSLocalizedFailureReasonErrorKey: NSLocalizedString(@"SPOT_OPEN_ERROR_REASON", nil),
                                NSLocalizedRecoverySuggestionErrorKey: NSLocalizedString(@"SPOT_OPEN_ERROR_SUGGESTION", nil)
+                               };
+    *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
+                                 code:SPJSpotifyLaunchError
+                             userInfo:userInfo];
+    return NO;
+  }
+  
+  // Try and enable scripting in Spotify
+  self.spotifyApp = [SBApplication applicationWithBundleIdentifier:SPJSpotifyIdentifier];
+  if (!self.spotifyApp) {
+    NSDictionary *userInfo = @{
+                               NSLocalizedDescriptionKey: NSLocalizedString(@"SPOT_SCRIPT_OPEN_ERROR", nil),
+                               NSLocalizedFailureReasonErrorKey: NSLocalizedString(@"SPOT_SCRIPT_OPEN_REASON", nil),
+                               NSLocalizedRecoverySuggestionErrorKey: NSLocalizedString(@"SPOT_SCRIPT_OPEN_SUGGESTION", nil)
                                };
     *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
                                  code:SPJSpotifyScriptingError

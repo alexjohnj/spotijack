@@ -62,7 +62,8 @@
     void (^completionHandler)(NSModalResponse);
     NSAlert *alert = [NSAlert alertWithError:error];
     
-    if (error.code == SPJAudioHijackScriptingError || error.code == SPJSpotifyScriptingError) {
+    if (error.code == SPJAudioHijackScriptingError || error.code == SPJSpotifyScriptingError
+        || error.code == SPJSpotifyLaunchError || error.code == SPJAudioHijackLaunchError) {
       completionHandler = ^(NSModalResponse returnCode) {
         [[NSApplication sharedApplication] terminate:self];
       };
