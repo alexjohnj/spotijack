@@ -54,9 +54,11 @@
                                NSLocalizedFailureReasonErrorKey: NSLocalizedString(@"AHP_OPEN_ERROR_REASON", nil),
                                NSLocalizedRecoverySuggestionErrorKey: NSLocalizedString(@"AHP_OPEN_ERROR_SUGGESTION", nil),
                                };
-    *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
-                                 code:SPJAudioHijackLaunchError
-                             userInfo:userInfo];
+    if (error) {
+      *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
+                                   code:SPJAudioHijackLaunchError
+                               userInfo:userInfo];
+    }
     return NO;
   }
   
@@ -69,9 +71,11 @@
                                NSLocalizedFailureReasonErrorKey: NSLocalizedString(@"AHP_SCRIPT_OPEN_REASON", nil),
                                NSLocalizedRecoverySuggestionErrorKey: NSLocalizedString(@"AHP_OPEN_ERROR_SUGGESTION", nil)
                                };
-    *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
-                                 code:SPJAudioHijackScriptingError
-                             userInfo:userInfo];
+    if (error) {
+      *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
+                                   code:SPJAudioHijackScriptingError
+                               userInfo:userInfo];
+    }
     return NO;
     
   }
@@ -98,9 +102,11 @@
                                NSLocalizedFailureReasonErrorKey: NSLocalizedString(@"SPOT_OPEN_ERROR_REASON", nil),
                                NSLocalizedRecoverySuggestionErrorKey: NSLocalizedString(@"SPOT_OPEN_ERROR_SUGGESTION", nil)
                                };
-    *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
-                                 code:SPJSpotifyLaunchError
-                             userInfo:userInfo];
+    if (error) {
+      *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
+                                   code:SPJSpotifyLaunchError
+                               userInfo:userInfo];
+    }
     return NO;
   }
   
@@ -112,9 +118,11 @@
                                NSLocalizedFailureReasonErrorKey: NSLocalizedString(@"SPOT_SCRIPT_OPEN_REASON", nil),
                                NSLocalizedRecoverySuggestionErrorKey: NSLocalizedString(@"SPOT_SCRIPT_OPEN_SUGGESTION", nil)
                                };
-    *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
-                                 code:SPJSpotifyScriptingError
-                             userInfo:userInfo];
+    if (error) {
+      *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
+                                   code:SPJSpotifyScriptingError
+                               userInfo:userInfo];
+    }
     return NO;
   }
   
@@ -134,9 +142,11 @@
                                NSLocalizedRecoveryOptionsErrorKey: @[NSLocalizedString(@"AHP_NO_SESS_ERROR_FIX_CREATE", nil), NSLocalizedString(@"No", nil)],
                                NSRecoveryAttempterErrorKey: recoveryAttempter
                                };
-    *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
-                                 code:SPJAudioHijackSessionError
-                             userInfo:userInfo];
+    if (error) {
+      *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
+                                   code:SPJAudioHijackSessionError
+                               userInfo:userInfo];
+    }
     return NO;
   }
   
@@ -158,9 +168,11 @@
                                     NSLocalizedFailureReasonErrorKey: NSLocalizedString(@"SPOT_NO_SONG_ERROR_REASON", nil),
                                     NSLocalizedRecoverySuggestionErrorKey: NSLocalizedString(@"SPOT_NO_SONG_ERROR_SUGGESTION", nil)
                                     };
-    *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
-                                 code:SPJSpotifyNoSongPlayingError
-                             userInfo:errorUserInfo];
+    if (error) {
+      *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
+                                   code:SPJSpotifyNoSongPlayingError
+                               userInfo:errorUserInfo];
+    }
     return NO;
   }
   self.recordingActivityToken = [[NSProcessInfo processInfo]
