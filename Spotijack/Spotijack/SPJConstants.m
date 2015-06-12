@@ -35,11 +35,3 @@ NSString * const SPJSessionCreatedNotification = @"SPJSessionCreatedNotification
 #pragma mark - NSUserDefaults Key
 NSString * const SPJMuteSpotifyForSessionKey = @"muteSpotifyWhenRecording";
 NSString * const SPJNotifyWhenRecordingFinishesKey = @"notifyWhenRecordingFinishes";
-
-#pragma mark - Error Codes
-NSInteger const SPJAudioHijackLaunchError = 1;
-NSInteger const SPJAudioHijackScriptingError = 2;
-NSInteger const SPJSpotifyLaunchError = 3;
-NSInteger const SPJSpotifyScriptingError = 4;
-NSInteger const SPJAudioHijackSessionError = 5;
-NSInteger const SPJSpotifyNoSongPlayingError = 6;

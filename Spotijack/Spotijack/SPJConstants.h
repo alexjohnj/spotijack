@@ -26,10 +26,14 @@ extern NSString * const SPJRecordingSessionFinishedNotificaiton;
  */
 extern NSString * const SPJSessionCreatedNotification;
 
-#pragma mark Error codes
-extern NSInteger const SPJAudioHijackLaunchError;
-extern NSInteger const SPJAudioHijackScriptingError;
-extern NSInteger const SPJSpotifyLaunchError;
-extern NSInteger const SPJSpotifyScriptingError;
-extern NSInteger const SPJAudioHijackSessionError;
-extern NSInteger const SPJSpotifyNoSongPlayingError;
+typedef NS_ENUM(NSUInteger, SPJAudioHijackError) {
+  SPJAudioHijackLaunchError = 1000,
+  SPJAudioHijackScriptingError,
+  SPJAudioHijackSessionError,
+};
+
+typedef NS_ENUM(NSUInteger, SPJSpotifyError) {
+  SPJSpotifyLaunchError = 2000,
+  SPJSpotifyScriptingError,
+  SPJSpotifyNoSongPlayingError,
+};
