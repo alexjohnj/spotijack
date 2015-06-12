@@ -53,7 +53,7 @@
   [DDLog addLogger:[DDASLLogger sharedInstance]];
   [DDLog addLogger:[DDTTYLogger sharedInstance]];
   
-  [self applicationShouldHandleReopen:nil hasVisibleWindows:NO]; // Display the main window
+  [self applicationShouldHandleReopen:[NSApplication sharedApplication] hasVisibleWindows:NO]; // Display the main window
   // Initialise and handle any errors
   NSError *error;
   BOOL success = [[SPJSessionController sharedController] initializeRecordingSessions:&error];
