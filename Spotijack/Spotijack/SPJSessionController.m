@@ -93,7 +93,7 @@
   self.audioHijackProMutePollingTimer.tolerance = 0.5;
   // Try and launch Spotify
   BOOL spotifyLaunched = [[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:SPJSpotifyIdentifier
-                                                                              options:NSWorkspaceLaunchAndHide
+                                                                              options:NSWorkspaceLaunchWithoutActivation
                                                        additionalEventParamDescriptor:nil
                                                                      launchIdentifier:NULL];
   if (!spotifyLaunched) {
