@@ -45,7 +45,7 @@
 - (BOOL)initializeRecordingSessions:(NSError *__autoreleasing *)error {
   // Try and launch Audio Hijack Pro
   BOOL audioHijackProLaunched = [[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:SPJAudioHijackIdentifier
-                                                                                     options:NSWorkspaceLaunchAndHide
+                                                                                     options:(NSWorkspaceLaunchWithoutActivation|NSWorkspaceLaunchAndHide)
                                                               additionalEventParamDescriptor:nil
                                                                             launchIdentifier:NULL];
   if (!audioHijackProLaunched) {
@@ -93,7 +93,7 @@
   self.audioHijackProMutePollingTimer.tolerance = 0.5;
   // Try and launch Spotify
   BOOL spotifyLaunched = [[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:SPJSpotifyIdentifier
-                                                                              options:NSWorkspaceLaunchWithoutActivation
+                                                                              options:(NSWorkspaceLaunchWithoutActivation|NSWorkspaceLaunchAndHide)
                                                        additionalEventParamDescriptor:nil
                                                                      launchIdentifier:NULL];
   if (!spotifyLaunched) {
