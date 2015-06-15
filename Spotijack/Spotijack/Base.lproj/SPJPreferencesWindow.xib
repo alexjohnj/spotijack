@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14E17e" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="8121.17" systemVersion="14E36b" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
+        <development version="6300" identifier="xcode"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="8121.17"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="SPJPreferencesWindowController">
@@ -14,46 +15,131 @@
         <window title="Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" animationBehavior="default" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="196" y="240" width="244" height="74"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1080"/>
-            <view key="contentView" id="EiT-Mj-1SZ">
-                <rect key="frame" x="0.0" y="-5" width="244" height="74"/>
+            <rect key="contentRect" x="196" y="240" width="348" height="222"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1057"/>
+            <view key="contentView" horizontalHuggingPriority="1000" id="EiT-Mj-1SZ">
+                <rect key="frame" x="0.0" y="0.0" width="348" height="222"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <button toolTip="Mutes Spotify's audio using Audio Hijack Pro. Does not affect the actual recording." translatesAutoresizingMaskIntoConstraints="NO" id="FSA-qZ-Ofi">
-                        <rect key="frame" x="18" y="38" width="208" height="18"/>
-                        <buttonCell key="cell" type="check" title="Mute Spotify when recording" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="swm-11-LX4">
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="lfu-Bn-XRA">
+                        <rect key="frame" x="18" y="185" width="63" height="17"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="General:" id="DUd-Qh-Nei">
+                            <font key="font" metaFont="systemBold"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <button translatesAutoresizingMaskIntoConstraints="NO" id="0LC-4s-NHJ">
+                        <rect key="frame" x="85" y="184" width="173" height="18"/>
+                        <buttonCell key="cell" type="check" title="Disable repeat in Spotify" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="Hc0-76-KjH">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
-                        <connections>
-                            <binding destination="5gL-iE-OaE" name="value" keyPath="values.muteSpotifyWhenRecording" id="gS4-5e-NQ7"/>
-                        </connections>
                     </button>
-                    <button translatesAutoresizingMaskIntoConstraints="NO" id="35y-f9-rwE">
-                        <rect key="frame" x="18" y="18" width="208" height="18"/>
-                        <buttonCell key="cell" type="check" title="Notify when recording finishes" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="y9N-bu-jH5">
+                    <button translatesAutoresizingMaskIntoConstraints="NO" id="xY3-Vs-sTi">
+                        <rect key="frame" x="85" y="164" width="174" height="18"/>
+                        <buttonCell key="cell" type="check" title="Disable shuffle in Spotify" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="cHp-gj-onD">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
-                        <connections>
-                            <binding destination="5gL-iE-OaE" name="value" keyPath="values.notifyWhenRecordingFinishes" id="cyy-AD-jjc"/>
-                        </connections>
                     </button>
+                    <button horizontalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="aM0-C3-Na5">
+                        <rect key="frame" x="85" y="144" width="200" height="18"/>
+                        <buttonCell key="cell" type="check" title="Mute Spotify when recording" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="CxM-nT-VUr">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                    </button>
+                    <button translatesAutoresizingMaskIntoConstraints="NO" id="atc-Ls-izj">
+                        <rect key="frame" x="85" y="124" width="208" height="18"/>
+                        <buttonCell key="cell" type="check" title="Notify when recording finishes" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="Lnp-IU-VHC">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                    </button>
+                    <box verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="JHe-83-im5">
+                        <rect key="frame" x="12" y="103" width="324" height="5"/>
+                        <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
+                        <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <font key="titleFont" metaFont="system"/>
+                    </box>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="jFV-GF-2nd">
+                        <rect key="frame" x="18" y="68" width="63" height="17"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Updates:" id="fmu-P9-aVI">
+                            <font key="font" metaFont="systemBold"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <button translatesAutoresizingMaskIntoConstraints="NO" id="50A-RJ-sDn">
+                        <rect key="frame" x="85" y="67" width="221" height="18"/>
+                        <buttonCell key="cell" type="check" title="Automatically check for updates" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="Fhb-ch-99f">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                    </button>
+                    <button translatesAutoresizingMaskIntoConstraints="NO" id="BeV-Kw-ipi">
+                        <rect key="frame" x="85" y="47" width="199" height="18"/>
+                        <buttonCell key="cell" type="check" title="Automatically install updates" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="uhs-vF-2FR">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                    </button>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="oFb-A2-7fp">
+                        <rect key="frame" x="85" y="23" width="118" height="17"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Check for updates" id="SfW-Wa-Kjf">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <popUpButton verticalHuggingPriority="750" horizontalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="Vey-Bo-lYC">
+                        <rect key="frame" x="207" y="17" width="84" height="26"/>
+                        <popUpButtonCell key="cell" type="push" title="Daily" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="bye-cn-WNf" id="5JW-Ia-kUD">
+                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="menu"/>
+                            <menu key="menu" id="wxF-mo-Arh">
+                                <items>
+                                    <menuItem title="Daily" state="on" id="bye-cn-WNf"/>
+                                    <menuItem title="Weekly" id="q3e-8w-PXy"/>
+                                    <menuItem title="Monthly" id="gQA-mn-xkN"/>
+                                </items>
+                            </menu>
+                        </popUpButtonCell>
+                    </popUpButton>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="FSA-qZ-Ofi" firstAttribute="trailing" secondItem="35y-f9-rwE" secondAttribute="trailing" id="8G7-q3-B6d"/>
-                    <constraint firstItem="35y-f9-rwE" firstAttribute="top" secondItem="FSA-qZ-Ofi" secondAttribute="bottom" constant="6" symbolic="YES" id="Nwf-kZ-ZjL"/>
-                    <constraint firstItem="FSA-qZ-Ofi" firstAttribute="leading" secondItem="35y-f9-rwE" secondAttribute="leading" id="U8T-n4-cUT"/>
-                    <constraint firstAttribute="trailing" secondItem="FSA-qZ-Ofi" secondAttribute="trailing" constant="20" symbolic="YES" id="WPp-pW-acY"/>
-                    <constraint firstItem="FSA-qZ-Ofi" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" constant="20" symbolic="YES" id="hKp-zR-1gm"/>
-                    <constraint firstItem="FSA-qZ-Ofi" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" symbolic="YES" id="qRn-Nl-n9p"/>
+                    <constraint firstItem="50A-RJ-sDn" firstAttribute="leading" secondItem="0LC-4s-NHJ" secondAttribute="leading" id="6O8-MX-WhQ"/>
+                    <constraint firstItem="BeV-Kw-ipi" firstAttribute="leading" secondItem="50A-RJ-sDn" secondAttribute="leading" id="9Zi-6o-8v6"/>
+                    <constraint firstItem="atc-Ls-izj" firstAttribute="leading" secondItem="0LC-4s-NHJ" secondAttribute="leading" id="Cle-EM-ZEe"/>
+                    <constraint firstItem="lfu-Bn-XRA" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" constant="20" symbolic="YES" id="GeL-qp-Loa"/>
+                    <constraint firstItem="JHe-83-im5" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="12" symbolic="YES" id="Gno-N7-4vx"/>
+                    <constraint firstAttribute="trailing" secondItem="JHe-83-im5" secondAttribute="trailing" constant="12" symbolic="YES" id="HxG-EW-iCe"/>
+                    <constraint firstItem="aM0-C3-Na5" firstAttribute="leading" secondItem="0LC-4s-NHJ" secondAttribute="leading" id="JNv-g1-oAs"/>
+                    <constraint firstItem="oFb-A2-7fp" firstAttribute="leading" secondItem="50A-RJ-sDn" secondAttribute="leading" id="Jhj-XK-93s"/>
+                    <constraint firstItem="0LC-4s-NHJ" firstAttribute="leading" secondItem="lfu-Bn-XRA" secondAttribute="trailing" constant="8" symbolic="YES" id="LHs-6x-IXz"/>
+                    <constraint firstItem="jFV-GF-2nd" firstAttribute="top" secondItem="JHe-83-im5" secondAttribute="bottom" constant="20" id="P4o-gb-JJa"/>
+                    <constraint firstItem="Vey-Bo-lYC" firstAttribute="top" secondItem="BeV-Kw-ipi" secondAttribute="bottom" constant="8" id="Qyy-6w-pyw"/>
+                    <constraint firstItem="atc-Ls-izj" firstAttribute="top" secondItem="aM0-C3-Na5" secondAttribute="bottom" constant="6" symbolic="YES" id="RQ9-qF-YLE"/>
+                    <constraint firstItem="BeV-Kw-ipi" firstAttribute="top" secondItem="50A-RJ-sDn" secondAttribute="bottom" constant="6" symbolic="YES" id="Vbg-db-uFI"/>
+                    <constraint firstItem="JHe-83-im5" firstAttribute="top" secondItem="atc-Ls-izj" secondAttribute="bottom" constant="20" id="XEu-Tb-qR4"/>
+                    <constraint firstItem="lfu-Bn-XRA" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" symbolic="YES" id="cSG-0S-gYj"/>
+                    <constraint firstItem="xY3-Vs-sTi" firstAttribute="leading" secondItem="0LC-4s-NHJ" secondAttribute="leading" id="d46-8f-49D"/>
+                    <constraint firstItem="jFV-GF-2nd" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" symbolic="YES" id="mHx-6O-Z0g"/>
+                    <constraint firstItem="aM0-C3-Na5" firstAttribute="top" secondItem="xY3-Vs-sTi" secondAttribute="bottom" constant="6" symbolic="YES" id="mR6-yr-8Am"/>
+                    <constraint firstItem="0LC-4s-NHJ" firstAttribute="baseline" secondItem="lfu-Bn-XRA" secondAttribute="baseline" id="nPE-6E-BU9"/>
+                    <constraint firstItem="Vey-Bo-lYC" firstAttribute="leading" secondItem="oFb-A2-7fp" secondAttribute="trailing" constant="8" symbolic="YES" id="pSp-Yg-ddZ"/>
+                    <constraint firstAttribute="bottom" secondItem="Vey-Bo-lYC" secondAttribute="bottom" constant="20" symbolic="YES" id="r4D-dQ-jqk"/>
+                    <constraint firstItem="50A-RJ-sDn" firstAttribute="baseline" secondItem="jFV-GF-2nd" secondAttribute="baseline" id="rSf-Cy-ISh"/>
+                    <constraint firstItem="50A-RJ-sDn" firstAttribute="leading" secondItem="jFV-GF-2nd" secondAttribute="trailing" constant="8" symbolic="YES" id="vgZ-3n-Glf"/>
+                    <constraint firstItem="Vey-Bo-lYC" firstAttribute="baseline" secondItem="oFb-A2-7fp" secondAttribute="baseline" id="wSu-AG-tkp"/>
+                    <constraint firstItem="xY3-Vs-sTi" firstAttribute="top" secondItem="0LC-4s-NHJ" secondAttribute="bottom" constant="6" symbolic="YES" id="xui-K7-W9n"/>
                 </constraints>
             </view>
             <connections>
                 <outlet property="delegate" destination="-2" id="xYA-6V-MCd"/>
             </connections>
-            <point key="canvasLocation" x="-119" y="132"/>
+            <point key="canvasLocation" x="-559" y="244"/>
         </window>
         <userDefaultsController representsSharedInstance="YES" id="5gL-iE-OaE"/>
     </objects>
