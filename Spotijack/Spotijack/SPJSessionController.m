@@ -179,10 +179,17 @@
                                  beginActivityWithOptions:(NSActivityUserInitiated|NSActivityIdleSystemSleepDisabled)
                                  reason:@"Recording session in progress"];
   [self.audioHijackSpotifySession startHijackingRelaunch:AudioHijackRelaunchOptionsYes];
-  [self.audioHijackSpotifySession startRecording];
-  self.audioHijackSpotifySession.speakerMuted = [[NSUserDefaults standardUserDefaults]
-                                                 boolForKey:SPJMuteSpotifyForSessionKey];
+  if ([[NSUserDefaults standardUserDefaults] boolForKey:SPJMuteSpotifyForSessionKey]) {
+    self.audioHijackSpotifySession.speakerMuted = YES;
+  }
+  if ([[NSUserDefaults standardUserDefaults] boolForKey:SPJDisableShuffleForSessionKey]) {
+    self.spotifyApp.shuffling = NO;
+  }
+  if ([[NSUserDefaults standardUserDefaults] boolForKey:SPJDisableRepeatForSessionKey]) {
+    self.spotifyApp.repeating = NO;
+  }
   [self.spotifyApp setPlayerPosition:0.0];
+  [self.audioHijackSpotifySession startRecording];
   [self.spotifyApp play];
   self.isRecording = YES;
   self.currentTrackID = self.spotifyApp.currentTrack.id;
