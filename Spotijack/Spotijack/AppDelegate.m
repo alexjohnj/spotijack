@@ -58,7 +58,7 @@
   [self applicationShouldHandleReopen:[NSApplication sharedApplication] hasVisibleWindows:NO]; // Display the main window
   // Initialise and handle any errors
   NSError *error;
-  BOOL success = [[SPJSessionController sharedController] initializeRecordingSessions:&error];
+  BOOL success = [[SPJSessionController sharedController] initializeRecordingSession:&error];
   
   if (!success) {
     void (^completionHandler)(NSModalResponse);
@@ -122,7 +122,7 @@
   if ([SPJSessionController sharedController].isRecording) {
     [[SPJSessionController sharedController] stopRecordingSession];
   }
-  [[[SPJSessionController sharedController] audioHijackSpotifySession]
+  [[[SPJSessionController sharedController] spotifySession]
    stopHijacking];
 }
 

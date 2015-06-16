@@ -25,54 +25,51 @@
 
 #import "AudioHijack.h"
 #import "Spotify.h"
-#import "SPJPreferencesWindowController.h"
 #import "SPJSessionCreator.h"
 
 @interface SPJSessionController : NSObject
 
 @property (assign) BOOL isRecording;
-@property (assign,nonatomic) BOOL isMuted;
-@property (strong) NSTimer *spotifyPollingTimer;
-@property (strong) NSTimer *audioHijackProMutePollingTimer;
+@property (assign, nonatomic) BOOL isMuted;
+@property (strong) NSTimer *applicationPollingTimer;
 
 @property (strong) SpotifyApplication *spotifyApp;
 @property (strong) AudioHijackApplication *audioHijackApp;
-@property (strong) AudioHijackSession *audioHijackSpotifySession;
+@property (strong) AudioHijackApplicationSession *spotifySession;
 
 + (SPJSessionController *)sharedController;
 
 /**
- *  Launches Spotify and Audio Hijack Pro for scripting and attempts to start 
- *  the hijacking session called "Spotify". This method should be called before 
+ *  Launches Spotify and Audio Hijack Pro for scripting and attempts to start
+ *  the hijacking session called "Spotify". This method should be called before
  *  doing anything. Failure to do so will probably result in crashes.
  *
- *  @param error A pointer to an error object that contains information on any 
+ *  @param error A pointer to an error object that contains information on any
  *         errors that may have occurred.
  *
  *  @return @p YES on successful initialisation or @p NO otherwise.
  */
-- (BOOL)initializeRecordingSessions:(NSError *__autoreleasing *)error;
-
+- (BOOL)initializeRecordingSession:(NSError *__autoreleasing *)error;
 /**
- Starts the recording session. Pauses Spotify, sets play position to 0, 
+ Starts the recording session. Pauses Spotify, sets play position to 0,
  starts AH Session, creates timer, starts playing Spotify. That's it.
  
- @param error A pointer to an error object that contains information on any 
-        errors that may have occurred. May be @p nil.
-
+ @param error A pointer to an error object that contains information on any
+ errors that may have occurred. May be @p nil.
+ 
  @return A bool indicating if the recording session started successfully
  */
 - (BOOL)startRecordingSession:(NSError *__autoreleasing *)error;
-/** 
- Stops the recording session. Pauses Spotify, ends AH Session, invalidates 
+/**
+ Stops the recording session. Pauses Spotify, ends AH Session, invalidates
  timer.
  */
 - (void)stopRecordingSession;
 /**
  *  Mutes or unmutes the current Audio Hijack Pro recording session.
  *
- *  @param isMuted A bool indicating if the session should be muted. @p YES to 
-           mute, @p NO to unmute.
+ *  @param isMuted A bool indicating if the session should be muted. @p YES to
+ mute, @p NO to unmute.
  */
 - (void)setIsMuted:(BOOL)isMuted;
 

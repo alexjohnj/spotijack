@@ -41,8 +41,28 @@
   return sharedController;
 }
 
-#pragma mark - Session Recording
-- (BOOL)initializeRecordingSessions:(NSError *__autoreleasing *)error {
+#pragma mark - Session Initialisation
+- (BOOL)initializeRecordingSession:(NSError *__autoreleasing *)error {
+  BOOL ahpInitSuccess = [self initializeAudioHijackPro:error];
+  if (!ahpInitSuccess) {
+    if (error) {
+      DDLogError(@"Error initialising Audio Hijack Pro: %@", (*error).localizedDescription);
+    }
+    return NO;
+  }
+  
+  BOOL spotifyInitSuccess = [self initializeSpotify:error];
+  if (!spotifyInitSuccess) {
+    if (error) {
+      DDLogError(@"Error initialising Spotify: %@", (*error).localizedDescription);
+    }
+    return NO;
+  }
+  [self.spotifySession startHijackingRelaunch:AudioHijackRelaunchOptionsYes];
+  return YES;
+}
+
+- (BOOL)initializeAudioHijackPro:(NSError *__autoreleasing *)error {
   // Try and launch Audio Hijack Pro
   BOOL audioHijackProLaunched = [[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:SPJAudioHijackIdentifier
                                                                                      options:(NSWorkspaceLaunchWithoutActivation|NSWorkspaceLaunchAndHide)
@@ -77,20 +97,36 @@
                                userInfo:userInfo];
     }
     return NO;
-    
   }
-  // Initialise the mute polling timer
-  if (self.audioHijackProMutePollingTimer) {
-    if (self.audioHijackProMutePollingTimer.isValid) {
-      [self.audioHijackProMutePollingTimer invalidate];
+  
+  // Try and find Spotijack recording session
+  // Try and find a recording session for Spotify and make it active
+  for (AudioHijackApplicationSession *session in self.audioHijackApp.sessions) {
+    if ([session.name isEqualToString:@"Spotijack"]) {
+      self.spotifySession = session;
+      break;
     }
   }
-  self.audioHijackProMutePollingTimer = [NSTimer scheduledTimerWithTimeInterval:0.2
-                                                                         target:self
-                                                                       selector:@selector(pollAudioHijackPro)
-                                                                       userInfo:nil
-                                                                        repeats:YES];
-  self.audioHijackProMutePollingTimer.tolerance = 0.5;
+  if (!self.spotifySession) {
+    SPJSessionCreator *recoveryAttempter = [[SPJSessionCreator alloc] init];
+    NSDictionary *userInfo = @{
+                               NSLocalizedDescriptionKey: NSLocalizedString(@"AHP_NO_SESS_ERROR", nil),
+                               NSLocalizedFailureReasonErrorKey: NSLocalizedString(@"AHP_NO_SESS_ERROR_REASON", nil),
+                               NSLocalizedRecoverySuggestionErrorKey: NSLocalizedString(@"AHP_NO_SESS_ERROR_SUGGESTION", nil),
+                               NSLocalizedRecoveryOptionsErrorKey: @[NSLocalizedString(@"AHP_NO_SESS_ERROR_FIX_CREATE", nil), NSLocalizedString(@"No", nil)],
+                               NSRecoveryAttempterErrorKey: recoveryAttempter
+                               };
+    if (error) {
+      *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
+                                   code:SPJAudioHijackSessionError
+                               userInfo:userInfo];
+    }
+    return NO;
+  }
+  return YES;
+}
+
+- (BOOL)initializeSpotify:(NSError *__autoreleasing *)error {
   // Try and launch Spotify
   BOOL spotifyLaunched = [[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:SPJSpotifyIdentifier
                                                                               options:(NSWorkspaceLaunchWithoutActivation|NSWorkspaceLaunchAndHide)
@@ -110,7 +146,7 @@
     return NO;
   }
   
-  // Try and enable scripting in Spotify
+  //Try and enable scripting in Spotify
   self.spotifyApp = [SBApplication applicationWithBundleIdentifier:SPJSpotifyIdentifier];
   if (!self.spotifyApp) {
     NSDictionary *userInfo = @{
@@ -125,40 +161,13 @@
     }
     return NO;
   }
-  
-  // Try and find a recording session for Spotify and make it active
-  for (AudioHijackSession *session in self.audioHijackApp.sessions) {
-    if ([session.name isEqualToString:@"Spotijack"]) {
-      self.audioHijackSpotifySession = session;
-      break;
-    }
-  }
-  if (!self.audioHijackSpotifySession) {
-    SPJSessionCreator *recoveryAttempter = [[SPJSessionCreator alloc] init];
-    NSDictionary *userInfo = @{
-                               NSLocalizedDescriptionKey: NSLocalizedString(@"AHP_NO_SESS_ERROR", nil),
-                               NSLocalizedFailureReasonErrorKey: NSLocalizedString(@"AHP_NO_SESS_ERROR_REASON", nil),
-                               NSLocalizedRecoverySuggestionErrorKey: NSLocalizedString(@"AHP_NO_SESS_ERROR_SUGGESTION", nil),
-                               NSLocalizedRecoveryOptionsErrorKey: @[NSLocalizedString(@"AHP_NO_SESS_ERROR_FIX_CREATE", nil), NSLocalizedString(@"No", nil)],
-                               NSRecoveryAttempterErrorKey: recoveryAttempter
-                               };
-    if (error) {
-      *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
-                                   code:SPJAudioHijackSessionError
-                               userInfo:userInfo];
-    }
-    return NO;
-  }
-  
-  [self.audioHijackSpotifySession startHijackingRelaunch:AudioHijackRelaunchOptionsYes];
-  
   return YES;
 }
 
+#pragma mark - Session Control
 - (BOOL)startRecordingSession:(NSError *__autoreleasing *)error {
   if (self.isRecording) {
-    DDLogWarn(@"Attempted to start a new recording session while a previous "
-              "session was active");
+    DDLogWarn(@"Attempted to start a new recording session while a previous session was active");
     return NO;
   }
   // Check that a song is available to play
@@ -178,7 +187,7 @@
   self.recordingActivityToken = [[NSProcessInfo processInfo]
                                  beginActivityWithOptions:(NSActivityUserInitiated|NSActivityIdleSystemSleepDisabled)
                                  reason:@"Recording session in progress"];
-  [self.audioHijackSpotifySession startHijackingRelaunch:AudioHijackRelaunchOptionsYes];
+  [self.spotifySession startHijackingRelaunch:AudioHijackRelaunchOptionsYes];
   if ([[NSUserDefaults standardUserDefaults] boolForKey:SPJMuteSpotifyForSessionKey]) {
     self.isMuted = YES;
   }
@@ -186,9 +195,14 @@
   [self.spotifyApp setPlayerPosition:0.0];
   self.currentTrackID = self.spotifyApp.currentTrack.id;
   [self updateMetadata];
-  [self.audioHijackSpotifySession startRecording];
+  [self.spotifySession startRecording];
   [self.spotifyApp play];
   self.isRecording = YES;
+  self.applicationPollingTimer = [NSTimer scheduledTimerWithTimeInterval:0.1
+                                                                  target:self
+                                                                selector:@selector(pollApplications)
+                                                                userInfo:nil
+                                                                 repeats:YES];
   
   if ([[NSUserDefaults standardUserDefaults] boolForKey:SPJDisableShuffleForSessionKey]) {
     self.spotifyApp.shuffling = NO;
@@ -197,11 +211,6 @@
     self.spotifyApp.repeating = NO;
   }
   
-  self.spotifyPollingTimer = [NSTimer scheduledTimerWithTimeInterval:0.1
-                                                              target:self
-                                                            selector:@selector(pollSpotify)
-                                                            userInfo:nil
-                                                             repeats:TRUE];
   [[NSNotificationCenter defaultCenter] postNotificationName:SPJTrackDidChangeNotification
                                                       object:self
                                                     userInfo:@{
@@ -213,23 +222,27 @@
 
 - (void)stopRecordingSession {
   [self.spotifyApp pause];
-  [self.audioHijackSpotifySession stopRecording];
+  [self.spotifySession stopRecording];
   self.isRecording = NO;
   
   if ([[NSUserDefaults standardUserDefaults] boolForKey:SPJMuteSpotifyForSessionKey]) {
     self.isMuted = NO;
   }
-  
-  [self.spotifyPollingTimer invalidate];
+  [self.applicationPollingTimer invalidate];
   [[NSProcessInfo processInfo] endActivity:self.recordingActivityToken];
 }
 
 - (void)setIsMuted:(BOOL)isMuted {
   _isMuted = isMuted;
-  [self.audioHijackSpotifySession setSpeakerMuted:isMuted];
+  [self.spotifySession setSpeakerMuted:isMuted];
 }
 
-#pragma mark Private Methods
+#pragma mark - Application Polling
+
+- (void)pollApplications {
+  [self pollSpotify];
+  [self pollAudioHijackPro];
+}
 
 /**
  Polls Spotify, comparing the stored track ID with the current track's ID.
@@ -237,12 +250,6 @@
  next recording session for AH.
  */
 - (void)pollSpotify {
-  // Make sure the user hasn't stopped recording in AHP
-  if (!self.audioHijackSpotifySession.recording) {
-    [self stopRecordingSession];
-    return;
-  }
-  
   SpotifyTrack *suspectTrack = self.spotifyApp.currentTrack;
   if (!suspectTrack) {
     [self stopRecordingSession];
@@ -261,10 +268,10 @@
     }
     
     [self.spotifyApp pause];
-    [self.audioHijackSpotifySession stopRecording];
+    [self.spotifySession stopRecording];
     [self updateMetadata];
     
-    [self.audioHijackSpotifySession startRecording];
+    [self.spotifySession startRecording];
     [self.spotifyApp play];
     self.currentTrackID = suspectTrack.id;
     
@@ -278,20 +285,20 @@
 }
 
 - (void)pollAudioHijackPro {
-  self.isMuted = self.audioHijackSpotifySession.speakerMuted;
+  if (!self.spotifySession.recording && self.isRecording) {
+    [self stopRecordingSession];
+  }
+  self.isMuted = self.spotifySession.speakerMuted;
 }
 
-/**
- Updates as much metadata as possible for the current AH recording session using
- what's available from Spotify.
- */
 - (void)updateMetadata {
-  self.audioHijackSpotifySession.titleTag = self.spotifyApp.currentTrack.name;
-  self.audioHijackSpotifySession.artistTag = self.spotifyApp.currentTrack.artist;
-  self.audioHijackSpotifySession.albumArtistTag = self.spotifyApp.currentTrack.albumArtist;
-  self.audioHijackSpotifySession.albumTag = self.spotifyApp.currentTrack.album;
-  self.audioHijackSpotifySession.trackNumberTag = [NSString stringWithFormat:@"%lu", self.spotifyApp.currentTrack.trackNumber];
-  self.audioHijackSpotifySession.discNumberTag = [NSString stringWithFormat:@"%lu", self.spotifyApp.currentTrack.discNumber];
+  self.spotifySession.titleTag = self.spotifyApp.currentTrack.name;
+  self.spotifySession.artistTag = self.spotifyApp.currentTrack.artist;
+  self.spotifySession.albumArtistTag = self.spotifyApp.currentTrack.albumArtist;
+  self.spotifySession.albumTag = self.spotifyApp.currentTrack.album;
+  self.spotifySession.trackNumberTag = [NSString stringWithFormat:@"%lu", self.spotifyApp.currentTrack.trackNumber];
+  self.spotifySession.discNumberTag = [NSString stringWithFormat:@"%lu", self.spotifyApp.currentTrack.discNumber];
+  
 }
 
 @end

@@ -76,7 +76,7 @@
     
     NSError *newAttemptError;
     BOOL success = [[SPJSessionController sharedController]
-                    initializeRecordingSessions:&newAttemptError];
+                    initializeRecordingSession:&newAttemptError];
     if (!success) {
       DDLogError(@"%@", newAttemptError.localizedDescription);
     } else {
