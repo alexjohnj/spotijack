@@ -77,25 +77,6 @@
                                  completionHandler:nil];
       return;
     }
-    
-    // Offer to disable shuffling if it's enabled
-    BOOL shufflingEnabled = [[[SPJSessionController sharedController]
-                              spotifyApp]
-                             shuffling];
-    if (shufflingEnabled) {
-      NSAlert *shufflingAlert = [[NSAlert alloc] init];
-      shufflingAlert.messageText = NSLocalizedString(@"Disable Shuffling?", nil);
-      [shufflingAlert addButtonWithTitle:NSLocalizedString(@"Yes", nil)];
-      [shufflingAlert addButtonWithTitle:NSLocalizedString(@"No", nil)];
-      [shufflingAlert beginSheetModalForWindow:self.window
-                             completionHandler:^(NSModalResponse returnCode) {
-                               if (returnCode == NSAlertFirstButtonReturn) {
-                                 [[[SPJSessionController sharedController]
-                                   spotifyApp]
-                                  setShuffling:NO];
-                               }
-                             }];
-    }
   }
 }
 
