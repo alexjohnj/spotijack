@@ -180,20 +180,23 @@
                                  reason:@"Recording session in progress"];
   [self.audioHijackSpotifySession startHijackingRelaunch:AudioHijackRelaunchOptionsYes];
   if ([[NSUserDefaults standardUserDefaults] boolForKey:SPJMuteSpotifyForSessionKey]) {
-    self.audioHijackSpotifySession.speakerMuted = YES;
+    self.isMuted = YES;
   }
+  
+  [self.spotifyApp setPlayerPosition:0.0];
+  self.currentTrackID = self.spotifyApp.currentTrack.id;
+  [self updateMetadata];
+  [self.audioHijackSpotifySession startRecording];
+  [self.spotifyApp play];
+  self.isRecording = YES;
+  
   if ([[NSUserDefaults standardUserDefaults] boolForKey:SPJDisableShuffleForSessionKey]) {
     self.spotifyApp.shuffling = NO;
   }
   if ([[NSUserDefaults standardUserDefaults] boolForKey:SPJDisableRepeatForSessionKey]) {
     self.spotifyApp.repeating = NO;
   }
-  [self.spotifyApp setPlayerPosition:0.0];
-  [self.audioHijackSpotifySession startRecording];
-  [self.spotifyApp play];
-  self.isRecording = YES;
-  self.currentTrackID = self.spotifyApp.currentTrack.id;
-  [self updateMetadata];
+  
   self.spotifyPollingTimer = [NSTimer scheduledTimerWithTimeInterval:0.1
                                                               target:self
                                                             selector:@selector(pollSpotify)
@@ -213,9 +216,8 @@
   [self.audioHijackSpotifySession stopRecording];
   self.isRecording = NO;
   
-  if ([[NSUserDefaults standardUserDefaults]
-       boolForKey:SPJMuteSpotifyForSessionKey]) {
-    self.audioHijackSpotifySession.speakerMuted = NO;
+  if ([[NSUserDefaults standardUserDefaults] boolForKey:SPJMuteSpotifyForSessionKey]) {
+    self.isMuted = NO;
   }
   
   [self.spotifyPollingTimer invalidate];
