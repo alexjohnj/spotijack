@@ -237,11 +237,18 @@
  next recording session for AH.
  */
 - (void)pollSpotify {
+  // Make sure the user hasn't stopped recording in AHP
+  if (!self.audioHijackSpotifySession.recording) {
+    [self stopRecordingSession];
+    return;
+  }
+  
   SpotifyTrack *suspectTrack = self.spotifyApp.currentTrack;
   if (!suspectTrack) {
     [self stopRecordingSession];
     [[NSNotificationCenter defaultCenter] postNotificationName:SPJRecordingSessionFinishedNotificaiton
                                                         object:self];
+    return;
   }
   
   if (![self.currentTrackID isEqualToString:suspectTrack.id]) {
