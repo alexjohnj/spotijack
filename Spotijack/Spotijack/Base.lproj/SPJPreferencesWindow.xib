@@ -58,7 +58,7 @@
                         </buttonCell>
                     </button>
                     <box verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="JHe-83-im5">
-                        <rect key="frame" x="12" y="103" width="324" height="5"/>
+                        <rect key="frame" x="20" y="103" width="308" height="5"/>
                         <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                         <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <font key="titleFont" metaFont="system"/>
@@ -72,7 +72,7 @@
                         </textFieldCell>
                     </textField>
                     <button translatesAutoresizingMaskIntoConstraints="NO" id="50A-RJ-sDn">
-                        <rect key="frame" x="85" y="67" width="221" height="18"/>
+                        <rect key="frame" x="85" y="67" width="245" height="18"/>
                         <buttonCell key="cell" type="check" title="Automatically check for updates" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="Fhb-ch-99f">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
@@ -113,8 +113,7 @@
                     <constraint firstItem="BeV-Kw-ipi" firstAttribute="leading" secondItem="50A-RJ-sDn" secondAttribute="leading" id="9Zi-6o-8v6"/>
                     <constraint firstItem="atc-Ls-izj" firstAttribute="leading" secondItem="0LC-4s-NHJ" secondAttribute="leading" id="Cle-EM-ZEe"/>
                     <constraint firstItem="lfu-Bn-XRA" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" constant="20" symbolic="YES" id="GeL-qp-Loa"/>
-                    <constraint firstItem="JHe-83-im5" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="12" symbolic="YES" id="Gno-N7-4vx"/>
-                    <constraint firstAttribute="trailing" secondItem="JHe-83-im5" secondAttribute="trailing" constant="12" symbolic="YES" id="HxG-EW-iCe"/>
+                    <constraint firstItem="50A-RJ-sDn" firstAttribute="trailing" secondItem="JHe-83-im5" secondAttribute="trailing" id="HKg-ro-nHV"/>
                     <constraint firstItem="aM0-C3-Na5" firstAttribute="leading" secondItem="0LC-4s-NHJ" secondAttribute="leading" id="JNv-g1-oAs"/>
                     <constraint firstItem="oFb-A2-7fp" firstAttribute="leading" secondItem="50A-RJ-sDn" secondAttribute="leading" id="Jhj-XK-93s"/>
                     <constraint firstItem="0LC-4s-NHJ" firstAttribute="leading" secondItem="lfu-Bn-XRA" secondAttribute="trailing" constant="8" symbolic="YES" id="LHs-6x-IXz"/>
@@ -122,9 +121,11 @@
                     <constraint firstItem="Vey-Bo-lYC" firstAttribute="top" secondItem="BeV-Kw-ipi" secondAttribute="bottom" constant="8" id="Qyy-6w-pyw"/>
                     <constraint firstItem="atc-Ls-izj" firstAttribute="top" secondItem="aM0-C3-Na5" secondAttribute="bottom" constant="6" symbolic="YES" id="RQ9-qF-YLE"/>
                     <constraint firstItem="BeV-Kw-ipi" firstAttribute="top" secondItem="50A-RJ-sDn" secondAttribute="bottom" constant="6" symbolic="YES" id="Vbg-db-uFI"/>
+                    <constraint firstAttribute="trailing" secondItem="50A-RJ-sDn" secondAttribute="trailing" constant="20" symbolic="YES" id="WlJ-a5-Oa1"/>
                     <constraint firstItem="JHe-83-im5" firstAttribute="top" secondItem="atc-Ls-izj" secondAttribute="bottom" constant="20" id="XEu-Tb-qR4"/>
                     <constraint firstItem="lfu-Bn-XRA" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" symbolic="YES" id="cSG-0S-gYj"/>
                     <constraint firstItem="xY3-Vs-sTi" firstAttribute="leading" secondItem="0LC-4s-NHJ" secondAttribute="leading" id="d46-8f-49D"/>
+                    <constraint firstItem="JHe-83-im5" firstAttribute="leading" secondItem="lfu-Bn-XRA" secondAttribute="leading" id="f2X-cF-MjA"/>
                     <constraint firstItem="jFV-GF-2nd" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" symbolic="YES" id="mHx-6O-Z0g"/>
                     <constraint firstItem="aM0-C3-Na5" firstAttribute="top" secondItem="xY3-Vs-sTi" secondAttribute="bottom" constant="6" symbolic="YES" id="mR6-yr-8Am"/>
                     <constraint firstItem="0LC-4s-NHJ" firstAttribute="baseline" secondItem="lfu-Bn-XRA" secondAttribute="baseline" id="nPE-6E-BU9"/>
@@ -139,7 +140,7 @@
             <connections>
                 <outlet property="delegate" destination="-2" id="xYA-6V-MCd"/>
             </connections>
-            <point key="canvasLocation" x="-559" y="244"/>
+            <point key="canvasLocation" x="-792" y="321"/>
         </window>
         <userDefaultsController representsSharedInstance="YES" id="5gL-iE-OaE"/>
     </objects>
