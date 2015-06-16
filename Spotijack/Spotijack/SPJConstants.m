@@ -33,5 +33,7 @@ NSString * const SPJRecordingSessionFinishedNotificaiton = @"SPJRecordingSession
 NSString * const SPJSessionCreatedNotification = @"SPJSessionCreatedNotification";
 
 #pragma mark - NSUserDefaults Key
+NSString * const SPJDisableShuffleForSessionKey = @"disableShuffle";
+NSString * const SPJDisableRepeatForSessionKey = @"disableRepeat";
 NSString * const SPJMuteSpotifyForSessionKey = @"muteSpotifyWhenRecording";
 NSString * const SPJNotifyWhenRecordingFinishesKey = @"notifyWhenRecordingFinishes";

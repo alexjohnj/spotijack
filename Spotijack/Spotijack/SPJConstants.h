@@ -13,6 +13,8 @@ extern NSString * const SPJAudioHijackIdentifier;
 extern NSString * const SPJSpotifyIdentifier;
 
 #pragma mark - NSUserDefaults Key
+extern NSString * const SPJDisableShuffleForSessionKey;
+extern NSString * const SPJDisableRepeatForSessionKey;
 extern NSString * const SPJMuteSpotifyForSessionKey;
 extern NSString * const SPJNotifyWhenRecordingFinishesKey;
 

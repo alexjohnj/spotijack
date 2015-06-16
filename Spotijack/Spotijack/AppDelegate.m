@@ -40,6 +40,8 @@
 {
   if (self == [AppDelegate class]) {
     NSDictionary *userDefaultsDict = @{
+                                       SPJDisableShuffleForSessionKey: @YES,
+                                       SPJDisableRepeatForSessionKey: @YES,
                                        SPJMuteSpotifyForSessionKey: @NO,
                                        SPJNotifyWhenRecordingFinishesKey: @YES,
                                        };

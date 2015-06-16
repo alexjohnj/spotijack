@@ -16,7 +16,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="240" width="348" height="222"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1057"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1080"/>
             <view key="contentView" horizontalHuggingPriority="1000" id="EiT-Mj-1SZ">
                 <rect key="frame" x="0.0" y="0.0" width="348" height="222"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -35,6 +35,9 @@
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
+                        <connections>
+                            <binding destination="5gL-iE-OaE" name="value" keyPath="values.disableRepeat" id="54M-x7-6aR"/>
+                        </connections>
                     </button>
                     <button translatesAutoresizingMaskIntoConstraints="NO" id="xY3-Vs-sTi">
                         <rect key="frame" x="85" y="164" width="174" height="18"/>
@@ -42,6 +45,9 @@
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
+                        <connections>
+                            <binding destination="5gL-iE-OaE" name="value" keyPath="values.disableShuffle" id="hEu-rq-PPD"/>
+                        </connections>
                     </button>
                     <button horizontalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="aM0-C3-Na5">
                         <rect key="frame" x="85" y="144" width="200" height="18"/>
@@ -49,6 +55,9 @@
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
+                        <connections>
+                            <binding destination="5gL-iE-OaE" name="value" keyPath="values.muteSpotifyWhenRecording" id="WMb-bU-erX"/>
+                        </connections>
                     </button>
                     <button translatesAutoresizingMaskIntoConstraints="NO" id="atc-Ls-izj">
                         <rect key="frame" x="85" y="124" width="208" height="18"/>
@@ -56,6 +65,9 @@
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
+                        <connections>
+                            <binding destination="5gL-iE-OaE" name="value" keyPath="values.notifyWhenRecordingFinishes" id="lip-nF-uMM"/>
+                        </connections>
                     </button>
                     <box verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="JHe-83-im5">
                         <rect key="frame" x="20" y="103" width="308" height="5"/>
@@ -140,7 +152,7 @@
             <connections>
                 <outlet property="delegate" destination="-2" id="xYA-6V-MCd"/>
             </connections>
-            <point key="canvasLocation" x="-792" y="321"/>
+            <point key="canvasLocation" x="-1015" y="242"/>
         </window>
         <userDefaultsController representsSharedInstance="YES" id="5gL-iE-OaE"/>
     </objects>
