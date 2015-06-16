@@ -54,7 +54,7 @@ through a Swift rewrite in early 2015). Maybe things will be better with OS
 
 ## Old Versions
 
-I have included the original AppleScript versions in the `legacy` directory.
+I have included the original AppleScript versions in the `Legacy` directory.
 There's a changelog available in the `changelog.md` file. It's pretty sparse
 since I didn't consider releasing this until recently. 
 
