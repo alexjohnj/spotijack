@@ -10,6 +10,7 @@
 		B92ACBBECD6459DCBD59F723 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A619190DEA0FB1858A01A5E /* libPods.a */; };
 		FA02961A1B0BC28500BFCA84 /* ConfigureSpotijackSession.applescript in Sources */ = {isa = PBXBuildFile; fileRef = FA0296191B0BC28500BFCA84 /* ConfigureSpotijackSession.applescript */; };
 		FA02961B1B0BC2B200BFCA84 /* ConfigureSpotijackSession.applescript in Resources */ = {isa = PBXBuildFile; fileRef = FA0296191B0BC28500BFCA84 /* ConfigureSpotijackSession.applescript */; };
+		FA3CF4E81B3C5AB700E8EF60 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = FA3CF4E71B3C5AB700E8EF60 /* Credits.rtf */; };
 		FA8393761B16539A006736C8 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA8393751B16539A006736C8 /* Media.xcassets */; };
 		FA93A2741B0914D500A61F6E /* SPJSessionCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = FA93A2731B0914D500A61F6E /* SPJSessionCreator.m */; };
 		FA93A2761B09150500A61F6E /* SessionProperties.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA93A2751B09150500A61F6E /* SessionProperties.plist */; };
@@ -32,6 +33,7 @@
 		5FB157FFDD0A08CFF43A974D /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		E81427338A3066164135FDAD /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		FA0296191B0BC28500BFCA84 /* ConfigureSpotijackSession.applescript */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.applescript; path = ConfigureSpotijackSession.applescript; sourceTree = "<group>"; };
+		FA3CF4E71B3C5AB700E8EF60 /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		FA8393751B16539A006736C8 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		FA93A2721B0914D500A61F6E /* SPJSessionCreator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPJSessionCreator.h; sourceTree = "<group>"; };
 		FA93A2731B0914D500A61F6E /* SPJSessionCreator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPJSessionCreator.m; sourceTree = "<group>"; };
@@ -150,6 +152,7 @@
 				FA9503631A421B76009D7149 /* main.m */,
 				FAE1C1471B07D06A007FF95C /* PrefixHeader.pch */,
 				FAE1C14F1B07DC64007FF95C /* Localizable.strings */,
+				FA3CF4E71B3C5AB700E8EF60 /* Credits.rtf */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -237,6 +240,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA02961B1B0BC2B200BFCA84 /* ConfigureSpotijackSession.applescript in Resources */,
+				FA3CF4E81B3C5AB700E8EF60 /* Credits.rtf in Resources */,
 				FAE1C14D1B07DC64007FF95C /* Localizable.strings in Resources */,
 				FA8393761B16539A006736C8 /* Media.xcassets in Resources */,
 				FAE1C1531B07DF63007FF95C /* SPJPreferencesWindow.xib in Resources */,
@@ -450,6 +454,7 @@
 				GCC_PREFIX_HEADER = Spotijack/PrefixHeader.pch;
 				INFOPLIST_FILE = Spotijack/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -464,6 +469,7 @@
 				GCC_PREFIX_HEADER = Spotijack/PrefixHeader.pch;
 				INFOPLIST_FILE = Spotijack/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
