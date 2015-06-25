@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="8121.17" systemVersion="14E36b" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="8121.20" systemVersion="14D136" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <development version="6300" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="8121.17"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="8121.20"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="SPJPreferencesWindowController">
@@ -16,7 +16,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="240" width="348" height="222"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1080"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1057"/>
             <view key="contentView" horizontalHuggingPriority="1000" id="EiT-Mj-1SZ">
                 <rect key="frame" x="0.0" y="0.0" width="348" height="222"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -89,6 +89,9 @@
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
+                        <connections>
+                            <binding destination="arv-EU-iOU" name="value" keyPath="automaticallyChecksForUpdates" id="VdS-aG-WaA"/>
+                        </connections>
                     </button>
                     <button translatesAutoresizingMaskIntoConstraints="NO" id="BeV-Kw-ipi">
                         <rect key="frame" x="85" y="47" width="199" height="18"/>
@@ -96,6 +99,9 @@
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
+                        <connections>
+                            <binding destination="arv-EU-iOU" name="value" keyPath="automaticallyDownloadsUpdates" id="Nov-CC-PdM"/>
+                        </connections>
                     </button>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="oFb-A2-7fp">
                         <rect key="frame" x="85" y="23" width="118" height="17"/>
@@ -107,17 +113,21 @@
                     </textField>
                     <popUpButton verticalHuggingPriority="750" horizontalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="Vey-Bo-lYC">
                         <rect key="frame" x="207" y="17" width="84" height="26"/>
-                        <popUpButtonCell key="cell" type="push" title="Daily" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="bye-cn-WNf" id="5JW-Ia-kUD">
+                        <popUpButtonCell key="cell" type="push" title="Daily" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" tag="86400" imageScaling="proportionallyDown" inset="2" selectedItem="bye-cn-WNf" id="5JW-Ia-kUD">
                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="menu"/>
                             <menu key="menu" id="wxF-mo-Arh">
                                 <items>
-                                    <menuItem title="Daily" state="on" id="bye-cn-WNf"/>
-                                    <menuItem title="Weekly" id="q3e-8w-PXy"/>
-                                    <menuItem title="Monthly" id="gQA-mn-xkN"/>
+                                    <menuItem title="Daily" state="on" tag="86400" id="bye-cn-WNf"/>
+                                    <menuItem title="Weekly" tag="604800" id="q3e-8w-PXy"/>
+                                    <menuItem title="Monthly" tag="2629800" id="gQA-mn-xkN"/>
                                 </items>
                             </menu>
                         </popUpButtonCell>
+                        <connections>
+                            <binding destination="arv-EU-iOU" name="enabled" keyPath="automaticallyChecksForUpdates" id="XJX-1s-dHd"/>
+                            <binding destination="arv-EU-iOU" name="selectedTag" keyPath="updateCheckInterval" id="6Zy-wE-3wX"/>
+                        </connections>
                     </popUpButton>
                 </subviews>
                 <constraints>
@@ -152,8 +162,9 @@
             <connections>
                 <outlet property="delegate" destination="-2" id="xYA-6V-MCd"/>
             </connections>
-            <point key="canvasLocation" x="-1015" y="242"/>
+            <point key="canvasLocation" x="-952" y="293"/>
         </window>
+        <customObject id="arv-EU-iOU" customClass="SUUpdater"/>
         <userDefaultsController representsSharedInstance="YES" id="5gL-iE-OaE"/>
     </objects>
 </document>
