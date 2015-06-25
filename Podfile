@@ -6,3 +6,4 @@ source 'https://github.com/CocoaPods/Specs.git'
 inhibit_all_warnings!
 
 pod 'CocoaLumberjack'
+pod 'Sparkle', '~> 1.9'

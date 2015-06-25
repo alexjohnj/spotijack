@@ -185,6 +185,7 @@
 				FA9503581A421B76009D7149 /* Frameworks */,
 				FA9503591A421B76009D7149 /* Resources */,
 				FACCE9D51DF844B32D5AED53 /* Copy Pods Resources */,
+				FAB775691B3C0A01009E1CFE /* Sign Sparkle */,
 				FAC8659F1B3965510086BF2A /* Update build number */,
 			);
 			buildRules = (
@@ -263,6 +264,20 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
+		};
+		FAB775691B3C0A01009E1CFE /* Sign Sparkle */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Sign Sparkle";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "LOCATION=\"${BUILT_PRODUCTS_DIR}\"/\"${FRAMEWORKS_FOLDER_PATH}\"\n\n# Usually set by Xcode\nCODE_SIGN_IDENTITY=\"Developer ID Application: Alex Jackson\"\n\ncodesign --verbose --force --sign \"$CODE_SIGN_IDENTITY\" \"$LOCATION/Sparkle.framework/Versions/A\"";
 		};
 		FAC8659F1B3965510086BF2A /* Update build number */ = {
 			isa = PBXShellScriptBuildPhase;
