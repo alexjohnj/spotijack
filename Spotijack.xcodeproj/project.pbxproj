@@ -208,6 +208,7 @@
 				TargetAttributes = {
 					FA95035A1A421B76009D7149 = {
 						CreatedOnToolsVersion = 6.1.1;
+						DevelopmentTeam = LMVB86HGC7;
 					};
 				};
 			};
@@ -429,6 +430,7 @@
 			baseConfigurationReference = E81427338A3066164135FDAD /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PREFIX_HEADER = Spotijack/PrefixHeader.pch;
 				INFOPLIST_FILE = Spotijack/Info.plist;
@@ -442,6 +444,7 @@
 			baseConfigurationReference = 5FB157FFDD0A08CFF43A974D /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PREFIX_HEADER = Spotijack/PrefixHeader.pch;
 				INFOPLIST_FILE = Spotijack/Info.plist;
