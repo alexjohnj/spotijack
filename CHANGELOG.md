@@ -10,6 +10,7 @@
 - Added an option to disable shuffle when recording (on by default).
 - Added an option to disable repeat when recording (on by default).
 - Added a button to mute Spotify using Audio Hijack Pro.
+- Spotijack now has an icon!
 
 ### Improved
 
