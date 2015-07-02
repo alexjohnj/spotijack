@@ -1,6 +1,6 @@
 # Spotijack Changelog
 
-## Version 0.6 (2015-??-??)
+## Version 0.6 (2015-07-03)
 
 ### New
 
