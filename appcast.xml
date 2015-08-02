@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <channel>
+        <title>Spotijack Appcast Feed</title>
+        <link>http://alexjohnj.github.io/spotijack/appcast.xml</link>
+        <description>Appcast feed for Spotijack</description>
+        <language>en</language>
+        <item>
+            <title>Spotijack 0.6</title>
+            <pubDate>Fri, 24 Jul 2015 22:00:00 +0100</pubDate>
+            <sparkle:releaseNotesLink>https://alexjohnj.github.io/spotijack/release-notes.html</sparkle:releaseNotesLink>
+            <enclosure sparkle:version="106" sparkle:shortVersionString="0.6" length="1299616" url="https://github.com/alexjohnj/spotijack/releases/download/v0.6.0/Spotijack-0.6.0.tar.gz" type="application/octet-stream"></enclosure>
+        </item>
+    </channel>
+</rss>
