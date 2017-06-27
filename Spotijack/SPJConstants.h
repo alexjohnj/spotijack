@@ -12,12 +12,6 @@
 extern NSString * const SPJAudioHijackIdentifier;
 extern NSString * const SPJSpotifyIdentifier;
 
-#pragma mark - NSUserDefaults Key
-extern NSString * const SPJDisableShuffleForSessionKey;
-extern NSString * const SPJDisableRepeatForSessionKey;
-extern NSString * const SPJMuteSpotifyForSessionKey;
-extern NSString * const SPJNotifyWhenRecordingFinishesKey;
-
 #pragma mark NSNotificationCentre Keys
 extern NSString * const SPJTrackDidChangeNotification;
 /** Posted when Spotify runs out of songs to play and the AHP recording is

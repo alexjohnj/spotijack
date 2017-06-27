@@ -22,6 +22,7 @@
 // THE SOFTWARE.
 
 #import "SPJSessionController.h"
+#import "Spotijack-Swift.h"
 
 @interface SPJSessionController ()
 @property (copy) NSString *currentTrackID;
@@ -188,7 +189,7 @@
                                  beginActivityWithOptions:(NSActivityUserInitiated|NSActivityIdleSystemSleepDisabled)
                                  reason:@"Recording session in progress"];
   [self.spotifySession startHijackingRelaunch:AudioHijackRelaunchOptionsYes];
-  if ([[NSUserDefaults standardUserDefaults] boolForKey:SPJMuteSpotifyForSessionKey]) {
+  if ([[Preferences shared] shouldMuteSpotify]){
     self.isMuted = YES;
   }
   
@@ -204,10 +205,10 @@
                                                                 userInfo:nil
                                                                  repeats:YES];
   
-  if ([[NSUserDefaults standardUserDefaults] boolForKey:SPJDisableShuffleForSessionKey]) {
+  if ([[Preferences shared] shouldDisableShuffling]) {
     self.spotifyApp.shuffling = NO;
   }
-  if ([[NSUserDefaults standardUserDefaults] boolForKey:SPJDisableRepeatForSessionKey]) {
+  if ([[Preferences shared] shouldDisableRepeat]) {
     self.spotifyApp.repeating = NO;
   }
   
@@ -225,7 +226,7 @@
   [self.spotifySession stopRecording];
   self.isRecording = NO;
   
-  if ([[NSUserDefaults standardUserDefaults] boolForKey:SPJMuteSpotifyForSessionKey]) {
+  if ([[Preferences shared] shouldMuteSpotify]) {
     self.isMuted = NO;
   }
   [self.applicationPollingTimer invalidate];

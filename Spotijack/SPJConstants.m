@@ -31,9 +31,3 @@ NSString * const SPJSpotifyIdentifier = @"com.spotify.client";
 NSString * const SPJTrackDidChangeNotification = @"SPJTrackChanged";
 NSString * const SPJRecordingSessionFinishedNotificaiton = @"SPJRecordingSessionFinishedNotificaiton";
 NSString * const SPJSessionCreatedNotification = @"SPJSessionCreatedNotification";
-
-#pragma mark - NSUserDefaults Key
-NSString * const SPJDisableShuffleForSessionKey = @"disableShuffle";
-NSString * const SPJDisableRepeatForSessionKey = @"disableRepeat";
-NSString * const SPJMuteSpotifyForSessionKey = @"muteSpotifyWhenRecording";
-NSString * const SPJNotifyWhenRecordingFinishesKey = @"notifyWhenRecordingFinishes";

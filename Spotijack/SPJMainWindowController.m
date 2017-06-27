@@ -22,6 +22,7 @@
 // THE SOFTWARE.
 
 #import "SPJMainWindowController.h"
+#import "Spotijack-Swift.h"
 
 @interface SPJMainWindowController ()
 
@@ -92,9 +93,10 @@
 }
 
 - (void)recordingSessionEnded:(NSNotification *)notification {
-  if (![[NSUserDefaults standardUserDefaults] boolForKey:SPJNotifyWhenRecordingFinishesKey]) {
+  if ([[Preferences shared] shouldNotifyWhenFinished] == NO) {
     return;
   }
+    
   NSUserNotification *endNoti = [[NSUserNotification alloc] init];
   endNoti.title = NSLocalizedString(@"SESSION_END_NOTI", nil);
   endNoti.subtitle = NSLocalizedString(@"SESSION_END_NOTI_SUBT", nil);

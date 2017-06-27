@@ -22,6 +22,7 @@
 // THE SOFTWARE.
 
 #import "AppDelegate.h"
+#import "Spotijack-Swift.h"
 
 @implementation AppDelegate
 
@@ -36,24 +37,14 @@
   return self;
 }
 
-+ (void)initialize
-{
-  if (self == [AppDelegate class]) {
-    NSDictionary *userDefaultsDict = @{
-                                       SPJDisableShuffleForSessionKey: @YES,
-                                       SPJDisableRepeatForSessionKey: @YES,
-                                       SPJMuteSpotifyForSessionKey: @NO,
-                                       SPJNotifyWhenRecordingFinishesKey: @YES,
-                                       };
-    [[NSUserDefaults standardUserDefaults] registerDefaults:userDefaultsDict];
-  }
-}
-
 #pragma mark - NSApplicationDelegate Protocol
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
   [DDLog addLogger:[DDASLLogger sharedInstance]];
   [DDLog addLogger:[DDTTYLogger sharedInstance]];
+  
+  // Register UserDefaults
+  [[Preferences shared] registerDefaultValues];  
   
   [self applicationShouldHandleReopen:[NSApplication sharedApplication] hasVisibleWindows:NO]; // Display the main window
   // Initialise and handle any errors
