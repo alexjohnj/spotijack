@@ -12,7 +12,7 @@ the years however, I've rewritten Spotijack as a native Cocoa application using
 the [ScriptingBridge][scriptingbridge-framework-link] framework. I don't use
 the program any more but it's a fun little side-project to work on.
 
-[spotify-site]: http://spotify.com 
+[spotify-site]: http://spotify.com
 [audio-hijack-pro]: http://rogueamoeba.com/legacy/
 
 ## Piracy
@@ -30,7 +30,7 @@ get used too much.
 Spotijack only runs on Mac OS 10.10 or greater. It needs a licensed copy of
 Audio Hijack Pro (that's version 2, not 3) and any version of Spotify. It
 probably also needs a premium Spotify account as it makes no attempt to
-distinguish between adverts and songs. 
+distinguish between adverts and songs.
 
 ## Usage
 
@@ -41,9 +41,9 @@ button.
 
 ## Building
 
-Spotijack uses CocoaPods to manage dependencies (there's only one). Before
-opening the Xcode project, be sure to run `pod install` to get the
-dependencies. 
+Spotijack uses Carthage to manage dependencies (there's only two). Before
+opening the Xcode project, be sure to run `carthage bootstrap` to get the
+dependencies.
 
 Spotijack is written in Objective-C. I would really like to rewrite this in
 Swift but, in 10.10 at least, the ScriptingBridge framework is almost totally
@@ -56,7 +56,7 @@ through a Swift rewrite in early 2015). Maybe things will be better with OS
 
 I have included the original AppleScript versions in the `Legacy` directory.
 There's a changelog available in the `changelog.md` file. It's pretty sparse
-since I didn't consider releasing this until recently. 
+since I didn't consider releasing this until recently.
 
 ## License
 
