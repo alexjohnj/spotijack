@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B92ACBBECD6459DCBD59F723 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A619190DEA0FB1858A01A5E /* libPods.a */; };
 		FA02961A1B0BC28500BFCA84 /* ConfigureSpotijackSession.applescript in Sources */ = {isa = PBXBuildFile; fileRef = FA0296191B0BC28500BFCA84 /* ConfigureSpotijackSession.applescript */; };
 		FA02961B1B0BC2B200BFCA84 /* ConfigureSpotijackSession.applescript in Resources */ = {isa = PBXBuildFile; fileRef = FA0296191B0BC28500BFCA84 /* ConfigureSpotijackSession.applescript */; };
 		FA3CF4E81B3C5AB700E8EF60 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = FA3CF4E71B3C5AB700E8EF60 /* Credits.rtf */; };
@@ -19,6 +18,10 @@
 		FA9503661A421B76009D7149 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA9503651A421B76009D7149 /* Images.xcassets */; };
 		FA9503691A421B76009D7149 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA9503671A421B76009D7149 /* MainMenu.xib */; };
 		FA9503871A421D6B009D7149 /* SPJMainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA9503851A421D6B009D7149 /* SPJMainWindowController.m */; };
+		FABADAF01F025D1C001751AE /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FABADAEF1F025D1C001751AE /* CocoaLumberjack.framework */; };
+		FABADAF11F025D1C001751AE /* CocoaLumberjack.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FABADAEF1F025D1C001751AE /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		FABADAF41F025D36001751AE /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FABADAF31F025D36001751AE /* Sparkle.framework */; };
+		FABADAF51F025D36001751AE /* Sparkle.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FABADAF31F025D36001751AE /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		FAD1392B1A44A082006351F0 /* SPJPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = FAD1392A1A44A082006351F0 /* SPJPreferencesWindowController.m */; };
 		FAE1C14A1B07D67D007FF95C /* SPJConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = FAE1C1491B07D67D007FF95C /* SPJConstants.m */; };
 		FAE1C14D1B07DC64007FF95C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = FAE1C14F1B07DC64007FF95C /* Localizable.strings */; };
@@ -28,10 +31,22 @@
 		FAF81BED1A422351008F3360 /* SPJSessionController.m in Sources */ = {isa = PBXBuildFile; fileRef = FAF81BEC1A422351008F3360 /* SPJSessionController.m */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		FABADAF21F025D1C001751AE /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				FABADAF11F025D1C001751AE /* CocoaLumberjack.framework in Embed Frameworks */,
+				FABADAF51F025D36001751AE /* Sparkle.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
-		2A619190DEA0FB1858A01A5E /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		5FB157FFDD0A08CFF43A974D /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
-		E81427338A3066164135FDAD /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		FA0296191B0BC28500BFCA84 /* ConfigureSpotijackSession.applescript */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.applescript; path = ConfigureSpotijackSession.applescript; sourceTree = "<group>"; };
 		FA3CF4E71B3C5AB700E8EF60 /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		FA8393751B16539A006736C8 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
@@ -49,6 +64,8 @@
 		FA9503801A421CB1009D7149 /* AudioHijack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioHijack.h; sourceTree = "<group>"; };
 		FA9503841A421D6B009D7149 /* SPJMainWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPJMainWindowController.h; sourceTree = "<group>"; };
 		FA9503851A421D6B009D7149 /* SPJMainWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPJMainWindowController.m; sourceTree = "<group>"; };
+		FABADAEF1F025D1C001751AE /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjack.framework; path = Carthage/Build/Mac/CocoaLumberjack.framework; sourceTree = "<group>"; };
+		FABADAF31F025D36001751AE /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = Carthage/Build/Mac/Sparkle.framework; sourceTree = "<group>"; };
 		FAD139291A44A082006351F0 /* SPJPreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPJPreferencesWindowController.h; sourceTree = "<group>"; };
 		FAD1392A1A44A082006351F0 /* SPJPreferencesWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPJPreferencesWindowController.m; sourceTree = "<group>"; };
 		FAE1C1471B07D06A007FF95C /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
@@ -67,27 +84,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FABADAF01F025D1C001751AE /* CocoaLumberjack.framework in Frameworks */,
+				FABADAF41F025D36001751AE /* Sparkle.framework in Frameworks */,
 				FAF81BEA1A421FB5008F3360 /* ScriptingBridge.framework in Frameworks */,
-				B92ACBBECD6459DCBD59F723 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		392D7225C1D1375DF4C4729E /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				E81427338A3066164135FDAD /* Pods.debug.xcconfig */,
-				5FB157FFDD0A08CFF43A974D /* Pods.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		AA650A731DE5571507EC5FD6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				2A619190DEA0FB1858A01A5E /* libPods.a */,
+				FABADAF31F025D36001751AE /* Sparkle.framework */,
+				FAF81BE91A421FB5008F3360 /* ScriptingBridge.framework */,
+				FABADAEF1F025D1C001751AE /* CocoaLumberjack.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -106,7 +117,6 @@
 			children = (
 				FA95035D1A421B76009D7149 /* Spotijack */,
 				FA95035C1A421B76009D7149 /* Products */,
-				392D7225C1D1375DF4C4729E /* Pods */,
 				AA650A731DE5571507EC5FD6 /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -135,7 +145,6 @@
 				FA9503651A421B76009D7149 /* Images.xcassets */,
 				FA95037E1A421C7D009D7149 /* ScriptingBridge Headers */,
 				FA95035E1A421B76009D7149 /* Supporting Files */,
-				FAF81BE91A421FB5008F3360 /* ScriptingBridge.framework */,
 			);
 			path = Spotijack;
 			sourceTree = "<group>";
@@ -183,13 +192,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FA9503781A421B76009D7149 /* Build configuration list for PBXNativeTarget "Spotijack" */;
 			buildPhases = (
-				C8C4268E71FE0EFC60353384 /* Check Pods Manifest.lock */,
 				FA9503571A421B76009D7149 /* Sources */,
 				FA9503581A421B76009D7149 /* Frameworks */,
 				FA9503591A421B76009D7149 /* Resources */,
-				FACCE9D51DF844B32D5AED53 /* Copy Pods Resources */,
-				FAB775691B3C0A01009E1CFE /* Sign Sparkle */,
 				FAC8659F1B3965510086BF2A /* Update build number */,
+				FABADAF21F025D1C001751AE /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -212,7 +219,7 @@
 				TargetAttributes = {
 					FA95035A1A421B76009D7149 = {
 						CreatedOnToolsVersion = 6.1.1;
-						DevelopmentTeam = LMVB86HGC7;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -254,35 +261,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		C8C4268E71FE0EFC60353384 /* Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		FAB775691B3C0A01009E1CFE /* Sign Sparkle */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Sign Sparkle";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "LOCATION=\"${BUILT_PRODUCTS_DIR}\"/\"${FRAMEWORKS_FOLDER_PATH}\"\n\n# Usually set by Xcode\nCODE_SIGN_IDENTITY=\"Developer ID Application: Alex Jackson\"\n\ncodesign --verbose --force --sign \"$CODE_SIGN_IDENTITY\" \"$LOCATION/Sparkle.framework/Versions/A\"";
-		};
 		FAC8659F1B3965510086BF2A /* Update build number */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -296,21 +274,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "GIT_RELEASE_VERSION=$(git describe --tags --always --dirty)\nCOMMITS=$(git rev-list HEAD | wc -l)\nCOMMITS=$(($COMMITS))\ndefaults write \"${BUILT_PRODUCTS_DIR}/${INFOPLIST_PATH%.*}\" \"CFBundleShortVersionString\" \"${GIT_RELEASE_VERSION#*v}\"\ndefaults write \"${BUILT_PRODUCTS_DIR}/${INFOPLIST_PATH%.*}\" \"CFBundleVersion\" \"${COMMITS}\"";
-		};
-		FACCE9D51DF844B32D5AED53 /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
-			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -446,31 +409,41 @@
 		};
 		FA9503791A421B76009D7149 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E81427338A3066164135FDAD /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_IDENTITY = "Developer ID Application: Alex Jackson (LMVB86HGC7)";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				GCC_PREFIX_HEADER = Spotijack/PrefixHeader.pch;
 				INFOPLIST_FILE = Spotijack/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Debug;
 		};
 		FA95037A1A421B76009D7149 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5FB157FFDD0A08CFF43A974D /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_IDENTITY = "Developer ID Application: Alex Jackson (LMVB86HGC7)";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				GCC_PREFIX_HEADER = Spotijack/PrefixHeader.pch;
 				INFOPLIST_FILE = Spotijack/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Release;
 		};
