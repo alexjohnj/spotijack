@@ -8,6 +8,7 @@
 
 import Cocoa
 import ScriptingBridge
+import Result
 
 public struct SpotijackSessionManager {
     public static let shared = SpotijackSessionManager()
@@ -31,31 +32,31 @@ public struct SpotijackSessionManager {
     /// tries to establish a scripting interface with the application.
     /// Throws if either of these fails.
     private func startApplication(fromBundle bundle: BundleInfo,
-                                  options: NSWorkspaceLaunchOptions = [.withoutActivation, .andHide]) throws -> SBApplication {
+                                  options: NSWorkspaceLaunchOptions = [.withoutActivation, .andHide]) -> Result<SBApplication> {
         let appLaunched = NSWorkspace.shared().launchApplication(withBundleIdentifier: bundle.identifier,
                                                                  options: options,
                                                                  additionalEventParamDescriptor: nil,
                                                                  launchIdentifier: nil)
         guard appLaunched == true else {
-            throw SpotijackSessionError.cantStartApplication(name: bundle.name)
+            return .fail(SpotijackSessionError.cantStartApplication(name: bundle.name))
         }
         
         if let sbInterface = SBApplication(bundleIdentifier: bundle.identifier) {
-            return sbInterface
+            return .ok(sbInterface)
         } else {
-            throw SpotijackSessionError.noScriptingInterface(appName: bundle.name)
+            return .fail(SpotijackSessionError.noScriptingInterface(appName: bundle.name))
         }
-        
     }
     
-    /// Launches Spotify and enables scripting in the application
-    private func spotify() throws -> SpotifyApplication {
-        return try startApplication(fromBundle: Bundles.spotify)
+    private var spotify: Result<SpotifyApplication> {
+        return startApplication(fromBundle: Bundles.spotify).flatMap {
+            .ok($0 as SpotifyApplication) // Always succeeds
+        }
     }
     
-    public func audioHijack() throws -> AudioHijackApplication {
-        return try startApplication(fromBundle: Bundles.audioHijack)
+    private var audioHijack: Result<AudioHijackApplication> {
+        return startApplication(fromBundle: Bundles.audioHijack).flatMap {
+            .ok($0 as AudioHijackApplication) // Always succeeds
+        }
     }
-    
-    
 }
