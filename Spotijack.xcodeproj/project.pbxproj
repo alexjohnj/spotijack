@@ -135,10 +135,9 @@
 		FA86C4B61F03FA25001ACBBA /* LibSpotijack */ = {
 			isa = PBXGroup;
 			children = (
-				FADD9EB61F03FB2800EAC2BC /* Scripting Bridge Compatibility */,
 				FA86C4AE1F03F574001ACBBA /* SpotijackSessionManager.swift */,
-				FA86C4B71F03FA25001ACBBA /* LibSpotijack.h */,
-				FA86C4B81F03FA25001ACBBA /* Info.plist */,
+				FADD9EB61F03FB2800EAC2BC /* Scripting Bridge Compatibility */,
+				FADD9ECB1F03FBCB00EAC2BC /* Supporting Files */,
 			);
 			path = LibSpotijack;
 			sourceTree = "<group>";
@@ -237,6 +236,15 @@
 				FADD9EC11F03FB2800EAC2BC /* SpotifyScripting.swift */,
 			);
 			path = Spotify;
+			sourceTree = "<group>";
+		};
+		FADD9ECB1F03FBCB00EAC2BC /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				FA86C4B71F03FA25001ACBBA /* LibSpotijack.h */,
+				FA86C4B81F03FA25001ACBBA /* Info.plist */,
+			);
+			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		FAF81BE81A421ED9008F3360 /* XIBs */ = {
