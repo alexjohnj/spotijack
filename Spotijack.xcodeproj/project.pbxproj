@@ -11,6 +11,13 @@
 		FA02961B1B0BC2B200BFCA84 /* ConfigureSpotijackSession.applescript in Resources */ = {isa = PBXBuildFile; fileRef = FA0296191B0BC28500BFCA84 /* ConfigureSpotijackSession.applescript */; };
 		FA3CF4E81B3C5AB700E8EF60 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = FA3CF4E71B3C5AB700E8EF60 /* Credits.rtf */; };
 		FA8393761B16539A006736C8 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA8393751B16539A006736C8 /* Media.xcassets */; };
+		FA86C4A51F03F472001ACBBA /* AudioHijack.sdef in Resources */ = {isa = PBXBuildFile; fileRef = FA86C49C1F03F472001ACBBA /* AudioHijack.sdef */; };
+		FA86C4A61F03F472001ACBBA /* AudioHijack.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA86C49D1F03F472001ACBBA /* AudioHijack.swift */; };
+		FA86C4A71F03F472001ACBBA /* AudioHijackScripting.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA86C49E1F03F472001ACBBA /* AudioHijackScripting.swift */; };
+		FA86C4A81F03F472001ACBBA /* ScriptingBridgeCompatProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA86C49F1F03F472001ACBBA /* ScriptingBridgeCompatProtocols.swift */; };
+		FA86C4A91F03F472001ACBBA /* Spotify.sdef in Resources */ = {isa = PBXBuildFile; fileRef = FA86C4A21F03F472001ACBBA /* Spotify.sdef */; };
+		FA86C4AA1F03F472001ACBBA /* Spotify.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA86C4A31F03F472001ACBBA /* Spotify.swift */; };
+		FA86C4AB1F03F472001ACBBA /* SpotifyScripting.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA86C4A41F03F472001ACBBA /* SpotifyScripting.swift */; };
 		FA93A2741B0914D500A61F6E /* SPJSessionCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = FA93A2731B0914D500A61F6E /* SPJSessionCreator.m */; };
 		FA93A2761B09150500A61F6E /* SessionProperties.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA93A2751B09150500A61F6E /* SessionProperties.plist */; };
 		FA9503621A421B76009D7149 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FA9503611A421B76009D7149 /* AppDelegate.m */; };
@@ -50,6 +57,15 @@
 		FA0296191B0BC28500BFCA84 /* ConfigureSpotijackSession.applescript */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.applescript; path = ConfigureSpotijackSession.applescript; sourceTree = "<group>"; };
 		FA3CF4E71B3C5AB700E8EF60 /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		FA8393751B16539A006736C8 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
+		FA86C49B1F03F472001ACBBA /* AudioHijack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioHijack.h; sourceTree = "<group>"; };
+		FA86C49C1F03F472001ACBBA /* AudioHijack.sdef */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = AudioHijack.sdef; sourceTree = "<group>"; };
+		FA86C49D1F03F472001ACBBA /* AudioHijack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioHijack.swift; sourceTree = "<group>"; };
+		FA86C49E1F03F472001ACBBA /* AudioHijackScripting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioHijackScripting.swift; sourceTree = "<group>"; };
+		FA86C49F1F03F472001ACBBA /* ScriptingBridgeCompatProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScriptingBridgeCompatProtocols.swift; sourceTree = "<group>"; };
+		FA86C4A11F03F472001ACBBA /* Spotify.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Spotify.h; sourceTree = "<group>"; };
+		FA86C4A21F03F472001ACBBA /* Spotify.sdef */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Spotify.sdef; sourceTree = "<group>"; };
+		FA86C4A31F03F472001ACBBA /* Spotify.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Spotify.swift; sourceTree = "<group>"; };
+		FA86C4A41F03F472001ACBBA /* SpotifyScripting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotifyScripting.swift; sourceTree = "<group>"; };
 		FA93A2721B0914D500A61F6E /* SPJSessionCreator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPJSessionCreator.h; sourceTree = "<group>"; };
 		FA93A2731B0914D500A61F6E /* SPJSessionCreator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPJSessionCreator.m; sourceTree = "<group>"; };
 		FA93A2751B09150500A61F6E /* SessionProperties.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = SessionProperties.plist; sourceTree = "<group>"; };
@@ -60,8 +76,6 @@
 		FA9503631A421B76009D7149 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		FA9503651A421B76009D7149 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		FA9503681A421B76009D7149 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		FA95037F1A421C8D009D7149 /* Spotify.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Spotify.h; sourceTree = "<group>"; };
-		FA9503801A421CB1009D7149 /* AudioHijack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioHijack.h; sourceTree = "<group>"; };
 		FA9503841A421D6B009D7149 /* SPJMainWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPJMainWindowController.h; sourceTree = "<group>"; };
 		FA9503851A421D6B009D7149 /* SPJMainWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPJMainWindowController.m; sourceTree = "<group>"; };
 		FABADAEF1F025D1C001751AE /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjack.framework; path = Carthage/Build/Mac/CocoaLumberjack.framework; sourceTree = "<group>"; };
@@ -101,6 +115,38 @@
 				FABADAEF1F025D1C001751AE /* CocoaLumberjack.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		FA86C4991F03F472001ACBBA /* Scripting Bridge Compatibility */ = {
+			isa = PBXGroup;
+			children = (
+				FA86C49A1F03F472001ACBBA /* Audio Hijack */,
+				FA86C49F1F03F472001ACBBA /* ScriptingBridgeCompatProtocols.swift */,
+				FA86C4A01F03F472001ACBBA /* Spotify */,
+			);
+			path = "Scripting Bridge Compatibility";
+			sourceTree = "<group>";
+		};
+		FA86C49A1F03F472001ACBBA /* Audio Hijack */ = {
+			isa = PBXGroup;
+			children = (
+				FA86C49B1F03F472001ACBBA /* AudioHijack.h */,
+				FA86C49C1F03F472001ACBBA /* AudioHijack.sdef */,
+				FA86C49D1F03F472001ACBBA /* AudioHijack.swift */,
+				FA86C49E1F03F472001ACBBA /* AudioHijackScripting.swift */,
+			);
+			path = "Audio Hijack";
+			sourceTree = "<group>";
+		};
+		FA86C4A01F03F472001ACBBA /* Spotify */ = {
+			isa = PBXGroup;
+			children = (
+				FA86C4A11F03F472001ACBBA /* Spotify.h */,
+				FA86C4A21F03F472001ACBBA /* Spotify.sdef */,
+				FA86C4A31F03F472001ACBBA /* Spotify.swift */,
+				FA86C4A41F03F472001ACBBA /* SpotifyScripting.swift */,
+			);
+			path = Spotify;
 			sourceTree = "<group>";
 		};
 		FA93A2701B090C6100A61F6E /* Error Recovery */ = {
@@ -143,7 +189,7 @@
 				FAD1392A1A44A082006351F0 /* SPJPreferencesWindowController.m */,
 				FAF81BE81A421ED9008F3360 /* XIBs */,
 				FA9503651A421B76009D7149 /* Images.xcassets */,
-				FA95037E1A421C7D009D7149 /* ScriptingBridge Headers */,
+				FA86C4991F03F472001ACBBA /* Scripting Bridge Compatibility */,
 				FA95035E1A421B76009D7149 /* Supporting Files */,
 			);
 			path = Spotijack;
@@ -164,15 +210,6 @@
 				FA3CF4E71B3C5AB700E8EF60 /* Credits.rtf */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		FA95037E1A421C7D009D7149 /* ScriptingBridge Headers */ = {
-			isa = PBXGroup;
-			children = (
-				FA9503801A421CB1009D7149 /* AudioHijack.h */,
-				FA95037F1A421C8D009D7149 /* Spotify.h */,
-			);
-			name = "ScriptingBridge Headers";
 			sourceTree = "<group>";
 		};
 		FAF81BE81A421ED9008F3360 /* XIBs */ = {
@@ -251,7 +288,9 @@
 				FAE1C14D1B07DC64007FF95C /* Localizable.strings in Resources */,
 				FA8393761B16539A006736C8 /* Media.xcassets in Resources */,
 				FAE1C1531B07DF63007FF95C /* SPJPreferencesWindow.xib in Resources */,
+				FA86C4A91F03F472001ACBBA /* Spotify.sdef in Resources */,
 				FA9503661A421B76009D7149 /* Images.xcassets in Resources */,
+				FA86C4A51F03F472001ACBBA /* AudioHijack.sdef in Resources */,
 				FA9503691A421B76009D7149 /* MainMenu.xib in Resources */,
 				FA93A2761B09150500A61F6E /* SessionProperties.plist in Resources */,
 				FAE1C1501B07DF5F007FF95C /* SPJMainWindow.xib in Resources */,
@@ -288,8 +327,13 @@
 				FA93A2741B0914D500A61F6E /* SPJSessionCreator.m in Sources */,
 				FAF81BED1A422351008F3360 /* SPJSessionController.m in Sources */,
 				FAE1C14A1B07D67D007FF95C /* SPJConstants.m in Sources */,
+				FA86C4AA1F03F472001ACBBA /* Spotify.swift in Sources */,
+				FA86C4A71F03F472001ACBBA /* AudioHijackScripting.swift in Sources */,
 				FAD1392B1A44A082006351F0 /* SPJPreferencesWindowController.m in Sources */,
+				FA86C4A81F03F472001ACBBA /* ScriptingBridgeCompatProtocols.swift in Sources */,
 				FA9503871A421D6B009D7149 /* SPJMainWindowController.m in Sources */,
+				FA86C4AB1F03F472001ACBBA /* SpotifyScripting.swift in Sources */,
+				FA86C4A61F03F472001ACBBA /* AudioHijack.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -424,6 +468,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -444,6 +489,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
