@@ -11,12 +11,48 @@ import ScriptingBridge
 import Result
 
 public class SpotijackSessionManager {
+    //MARK: Properties
     public static let shared = SpotijackSessionManager()
 
+    public var isMuted: Bool {
+        get {
+            do {
+                return try spotijackSession.dematerialize().speakerMuted!
+            } catch (let error) {
+                NotificationCenter.default.post(name: NotificationKeys.didEncounterError,
+                                                object: self,
+                                                userInfo: ["error": error])
+                return false
+            }
+        }
+
+        set {
+            do {
+                let oldValue = isMuted
+                try spotijackSession.dematerialize().setSpeakerMuted!(newValue)
+                if newValue != oldValue {
+                    NotificationCenter.default.post(name: NotificationKeys.muteStateDidChange,
+                                                    object: self,
+                                                    userInfo: ["newValue": newValue])
+                }
+            } catch (let error) {
+                NotificationCenter.default.post(name: NotificationKeys.didEncounterError,
+                                                object: self,
+                                                userInfo: ["error": error])
+            }
+        }
+    }
+
+    //MARK: Types
     private typealias BundleInfo = (name: String, identifier: String)
     private struct Bundles {
         static let spotify: BundleInfo = ("Spotify", "com.spotify.client")
         static let audioHijack: BundleInfo = ("Audio Hijack Pro", "com.rogueamoeba.AudioHijackPro2")
+    }
+
+    public struct NotificationKeys {
+        public static let didEncounterError = Notification.Name("SpotijackSessionManager.DidEncounterError")
+        public static let muteStateDidChange = Notification.Name("SpotijackSessionManager.MuteStateDidChange")
     }
 
     enum SpotijackSessionError: Error {
@@ -74,9 +110,9 @@ public class SpotijackSessionManager {
             }
         }
     }
-    
-    /// Attempts to start Audio Hijack Pro, Spotify and the Spotijack session. 
-    /// The behaviour of SpotijackSessionManager is undefined if this function 
+
+    /// Attempts to start Audio Hijack Pro, Spotify and the Spotijack session.
+    /// The behaviour of SpotijackSessionManager is undefined if this function
     /// is not called at least once.
     public func establishSession() throws {
         let _ = try spotify.dematerialize()
