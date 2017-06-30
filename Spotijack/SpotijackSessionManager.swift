@@ -10,7 +10,7 @@ import Cocoa
 import ScriptingBridge
 import Result
 
-public struct SpotijackSessionManager {
+public class SpotijackSessionManager {
     public static let shared = SpotijackSessionManager()
 
     private typealias BundleInfo = (name: String, identifier: String)
