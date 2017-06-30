@@ -30,6 +30,7 @@ public struct SpotijackSessionManager {
         case spotijackSessionNotFound
     }
 
+    //MARK: Application Intialisation
     /// Launches the application with the identifier `bundle.identifier` and
     /// tries to establish a scripting interface with the application.
     /// Throws if either of these fails.
@@ -72,5 +73,14 @@ public struct SpotijackSessionManager {
                 return .fail(SpotijackSessionError.spotijackSessionNotFound)
             }
         }
+    }
+    
+    /// Attempts to start Audio Hijack Pro, Spotify and the Spotijack session. 
+    /// The behaviour of SpotijackSessionManager is undefined if this function 
+    /// is not called at least once.
+    public func establishSession() throws {
+        let _ = try spotify.dematerialize()
+        let _ = try audioHijack.dematerialize()
+        let _ = try spotijackSession.dematerialize()
     }
 }
