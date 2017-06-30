@@ -51,7 +51,14 @@ public class SpotijackSessionManager {
     }
 
     public struct NotificationKeys {
+        /// Posted when an error occurs outside of a throwing a function.
+        /// For example, accessing the muted state of Spotify when a
+        /// scripting interface can't be obtained. The attatched userInfo
+        /// dictionary includes the key "error" mapping onto an Error object.
         public static let didEncounterError = Notification.Name("SpotijackSessionManager.DidEncounterError")
+        /// Posted when the mute state of Spotify changes. The attatched userInfo
+        /// dictionary contains the key "newValue" mapping onto a boolean
+        /// representation of the new mute state.
         public static let muteStateDidChange = Notification.Name("SpotijackSessionManager.MuteStateDidChange")
     }
 
