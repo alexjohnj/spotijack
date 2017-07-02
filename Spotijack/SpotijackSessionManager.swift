@@ -13,43 +13,41 @@ import Result
 public class SpotijackSessionManager {
     //MARK: Properties
     public static let shared = SpotijackSessionManager()
-
+    
     public var isMuted: Bool {
         get {
-            do {
-                return try spotijackSession.dematerialize().speakerMuted!
-            } catch (let error) {
+            switch spotijackSession.map({ $0.speakerMuted! }) {
+            case .ok(let status):
+                return status
+            case .fail(let error):
                 NotificationCenter.default.post(name: NotificationKeys.didEncounterError,
                                                 object: self,
                                                 userInfo: ["error": error])
                 return false
             }
         }
-
+        
         set {
-            do {
-                let oldValue = isMuted
-                try spotijackSession.dematerialize().setSpeakerMuted!(newValue)
-                if newValue != oldValue {
-                    NotificationCenter.default.post(name: NotificationKeys.muteStateDidChange,
-                                                    object: self,
-                                                    userInfo: ["newValue": newValue])
-                }
-            } catch (let error) {
+            switch spotijackSession.map({ $0.setSpeakerMuted!(newValue) }) {
+            case .ok:
+                NotificationCenter.default.post(name: NotificationKeys.muteStateDidChange,
+                                                object: self,
+                                                userInfo: ["newValue": newValue])
+            case .fail(let error):
                 NotificationCenter.default.post(name: NotificationKeys.didEncounterError,
                                                 object: self,
                                                 userInfo: ["error": error])
             }
         }
     }
-
+    
     //MARK: Types
     private typealias BundleInfo = (name: String, identifier: String)
     private struct Bundles {
         static let spotify: BundleInfo = ("Spotify", "com.spotify.client")
         static let audioHijack: BundleInfo = ("Audio Hijack Pro", "com.rogueamoeba.AudioHijackPro2")
     }
-
+    
     public struct NotificationKeys {
         /// Posted when an error occurs outside of a throwing a function.
         /// For example, accessing the muted state of Spotify when a
@@ -61,7 +59,7 @@ public class SpotijackSessionManager {
         /// representation of the new mute state.
         public static let muteStateDidChange = Notification.Name("SpotijackSessionManager.MuteStateDidChange")
     }
-
+    
     enum SpotijackSessionError: Error {
         /// The Spotify bundle could not be found or the application failed to
         /// start for some exceptional reason.
