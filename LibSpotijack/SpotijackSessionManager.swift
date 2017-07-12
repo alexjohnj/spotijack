@@ -39,6 +39,21 @@ public class SpotijackSessionManager {
         }
     }
 
+    /// Queries Audio Hijack Pro to determine if the Spotijack session is
+    /// currently recording. Returns false and posts a `DidEncounterError`
+    /// notification if Audio Hijack Pro can not be queried.
+    public var isRecording: Bool {
+        get {
+            switch spotijackSession.map({ $0.recording! }) {
+            case .ok(let status):
+                return status
+            case .fail(let error):
+                notiCenter.post(DidEncounterError(sender: self, error: error))
+                return false
+            }
+        }
+    }
+
     //MARK: Types
     private typealias BundleInfo = (name: String, identifier: String)
     private struct Bundles {
