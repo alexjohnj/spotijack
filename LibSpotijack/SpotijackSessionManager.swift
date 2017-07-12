@@ -15,10 +15,22 @@ public class SpotijackSessionManager {
     public static let shared = SpotijackSessionManager()
     private let notiCenter = NotificationCenter.default
 
+    // Internal mute state used to track changes. Does not affect the actual mute
+    // state in AHP.
+    private var lastMuteState: Bool = false {
+        didSet {
+            if lastMuteState != oldValue {
+                notiCenter.post(MuteStateDidChange(sender: self, newMuteState: lastMuteState))
+            }
+        }
+    }
+
     /// Queries Audio Hijack Pro to determine if the Spotijack session is muted.
     /// Returns false and posts a `DidEncounterError` notification if Audio
     /// Hijack Pro can not be queried.
     public var isMuted: Bool {
+        // Setting this property updates the internal mute state and AHP.
+        // Accessing it does not change the internal mute state.
         get {
             switch spotijackSession.map({ $0.speakerMuted! }) {
             case .ok(let status):
@@ -32,7 +44,7 @@ public class SpotijackSessionManager {
         set {
             switch spotijackSession.map({ $0.setSpeakerMuted!(newValue) }) {
             case .ok:
-                notiCenter.post(MuteStateDidChange(sender: self, newMuteState: newValue))
+                lastMuteState = newValue
             case .fail(let error):
                 notiCenter.post(DidEncounterError(sender: self, error: error))
             }
