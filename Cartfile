@@ -1,3 +1,4 @@
 github "CocoaLumberjack/CocoaLumberjack" ~> 3.0
 github "sparkle-project/Sparkle" ~>1.9
 github "alexjohnj/Result"
+github "alexjohnj/TypedNotification"
