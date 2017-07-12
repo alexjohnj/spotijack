@@ -15,6 +15,9 @@ public class SpotijackSessionManager {
     public static let shared = SpotijackSessionManager()
     private let notiCenter = NotificationCenter.default
 
+    /// Queries Audio Hijack Pro to determine if the Spotijack session is muted.
+    /// Returns false and posts a `DidEncounterError` notification if Audio
+    /// Hijack Pro can not be queried.
     public var isMuted: Bool {
         get {
             switch spotijackSession.map({ $0.speakerMuted! }) {
