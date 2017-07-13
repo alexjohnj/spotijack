@@ -17,10 +17,10 @@ public class SpotijackSessionManager {
 
     // Internal mute state used to track changes. Does not affect the actual mute
     // state in AHP.
-    private var lastMuteState: Bool = false {
+    private var _isMuted: Bool = false {
         didSet {
-            if lastMuteState != oldValue {
-                notiCenter.post(MuteStateDidChange(sender: self, newMuteState: lastMuteState))
+            if _isMuted != oldValue {
+                notiCenter.post(MuteStateDidChange(sender: self, newMuteState: _isMuted))
             }
         }
     }
@@ -44,7 +44,7 @@ public class SpotijackSessionManager {
         set {
             switch spotijackSession.map({ $0.setSpeakerMuted!(newValue) }) {
             case .ok:
-                lastMuteState = newValue
+                _isMuted = newValue
             case .fail(let error):
                 notiCenter.post(DidEncounterError(sender: self, error: error))
             }
