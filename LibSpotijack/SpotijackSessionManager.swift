@@ -9,6 +9,7 @@
 import Cocoa
 import ScriptingBridge
 import Result
+import TypedNotification
 
 public class SpotijackSessionManager {
     //MARK: Properties - General
@@ -133,6 +134,18 @@ public class SpotijackSessionManager {
         }
     }
 
+    private var _applicationPollingTimer: Timer? = nil
+    /// Returns `true` if SpotijackSessionManager is polling Spotify and AHP.
+    public var isPolling: Bool { return _applicationPollingTimer?.isValid ?? false }
+    private var _errorObserver: NotificationObserver? = nil
+
+    //MARK: Lifecycle
+    private init() {
+        _errorObserver = notiCenter.addObserver(forType: DidEncounterError.self, object: self, queue: nil) { [weak self] (noti) in
+            self?.didEncounterError(noti.error)
+        }
+    }
+
     //MARK: Application Intialisation
     private typealias BundleInfo = (name: String, identifier: String)
     private struct Bundles {
@@ -167,6 +180,60 @@ public class SpotijackSessionManager {
         let _ = try spotify.dematerialize()
         let _ = try audioHijack.dematerialize()
         let _ = try spotijackSession.dematerialize()
+    }
+
+    //MARK: Application Polling
+    /// Starts polling Spotify and AHP for changes. Polling is stopped when
+    /// `stopPolling()` is called or if `SpotijackSessionManager` encounters an
+    /// error.
+    ///
+    /// Calling this method when `SpotijackSessionManager` is already polling will
+    /// have no effect.
+    public func startPolling(every interval: TimeInterval) {
+        guard isPolling == false else {
+            return
+        }
+
+        _applicationPollingTimer = Timer.scheduledTimer(timeInterval: interval, target: self,
+                                                        selector: #selector(applicationPollingTimerFired(timer:)),
+                                                        userInfo: nil,
+                                                        repeats: true)
+        _applicationPollingTimer?.fire()
+    }
+
+    /// Stops polling Spotify and AHP for changes.
+    ///
+    /// Calling this method when `SpotijackSessionManager` isn't already polling
+    /// will have no effect.
+    public func stopPolling() {
+        guard isPolling == true else {
+            return
+        }
+
+        _applicationPollingTimer?.invalidate()
+        _applicationPollingTimer = nil
+    }
+
+    @objc private func applicationPollingTimerFired(timer: Timer) {
+        pollSpotify()
+        pollAudioHijackPro()
+    }
+
+    // Synchronise the internal Spotify state
+    private func pollSpotify() {
+        _currentTrack = currentTrack
+    }
+
+    // Synchronise the internal AHP state
+    private func pollAudioHijackPro() {
+        _isRecording = isRecording
+        _isMuted = isMuted
+    }
+
+    // Called when a `DidEncounterError` notification is posted. Ends polling and
+    // any Spotijack controlled recording sessions that were running.
+    private func didEncounterError(_ error: Error) {
+        stopPolling()
     }
 }
 
