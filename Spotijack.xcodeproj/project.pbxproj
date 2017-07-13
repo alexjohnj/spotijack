@@ -26,6 +26,8 @@
 		FABADAF11F025D1C001751AE /* CocoaLumberjack.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FABADAEF1F025D1C001751AE /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		FABADAF41F025D36001751AE /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FABADAF31F025D36001751AE /* Sparkle.framework */; };
 		FABADAF51F025D36001751AE /* Sparkle.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FABADAF31F025D36001751AE /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		FAC3007F1F17E04A00E47CB4 /* LibSpotijackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC3007E1F17E04A00E47CB4 /* LibSpotijackTests.swift */; };
+		FAC300811F17E04A00E47CB4 /* LibSpotijack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA86C4B51F03FA25001ACBBA /* LibSpotijack.framework */; };
 		FAC9A9F21F0403C400A19299 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAC9A9F11F0403C400A19299 /* Result.framework */; };
 		FAD1392B1A44A082006351F0 /* SPJPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = FAD1392A1A44A082006351F0 /* SPJPreferencesWindowController.m */; };
 		FADD9EC21F03FB2800EAC2BC /* AudioHijack.h in Headers */ = {isa = PBXBuildFile; fileRef = FADD9EB81F03FB2800EAC2BC /* AudioHijack.h */; };
@@ -44,6 +46,16 @@
 		FAF81BEA1A421FB5008F3360 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAF81BE91A421FB5008F3360 /* ScriptingBridge.framework */; };
 		FAF81BED1A422351008F3360 /* SPJSessionController.m in Sources */ = {isa = PBXBuildFile; fileRef = FAF81BEC1A422351008F3360 /* SPJSessionController.m */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		FAC300821F17E04A00E47CB4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FA9503531A421B76009D7149 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FA86C4B41F03FA25001ACBBA;
+			remoteInfo = LibSpotijack;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		FABADAF21F025D1C001751AE /* Embed Frameworks */ = {
@@ -84,6 +96,9 @@
 		FA9503851A421D6B009D7149 /* SPJMainWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPJMainWindowController.m; sourceTree = "<group>"; };
 		FABADAEF1F025D1C001751AE /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjack.framework; path = Carthage/Build/Mac/CocoaLumberjack.framework; sourceTree = "<group>"; };
 		FABADAF31F025D36001751AE /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = Carthage/Build/Mac/Sparkle.framework; sourceTree = "<group>"; };
+		FAC3007C1F17E04A00E47CB4 /* LibSpotijackTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LibSpotijackTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		FAC3007E1F17E04A00E47CB4 /* LibSpotijackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibSpotijackTests.swift; sourceTree = "<group>"; };
+		FAC300801F17E04A00E47CB4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FAC9A9F11F0403C400A19299 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/Mac/Result.framework; sourceTree = "<group>"; };
 		FAD139291A44A082006351F0 /* SPJPreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPJPreferencesWindowController.h; sourceTree = "<group>"; };
 		FAD1392A1A44A082006351F0 /* SPJPreferencesWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPJPreferencesWindowController.m; sourceTree = "<group>"; };
@@ -127,6 +142,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FAC300791F17E04A00E47CB4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FAC300811F17E04A00E47CB4 /* LibSpotijack.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -167,6 +190,7 @@
 			children = (
 				FA95035D1A421B76009D7149 /* Spotijack */,
 				FA86C4B61F03FA25001ACBBA /* LibSpotijack */,
+				FAC3007D1F17E04A00E47CB4 /* LibSpotijackTests */,
 				FA95035C1A421B76009D7149 /* Products */,
 				AA650A731DE5571507EC5FD6 /* Frameworks */,
 			);
@@ -177,6 +201,7 @@
 			children = (
 				FA95035B1A421B76009D7149 /* Spotijack.app */,
 				FA86C4B51F03FA25001ACBBA /* LibSpotijack.framework */,
+				FAC3007C1F17E04A00E47CB4 /* LibSpotijackTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -215,6 +240,15 @@
 				FA3CF4E71B3C5AB700E8EF60 /* Credits.rtf */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		FAC3007D1F17E04A00E47CB4 /* LibSpotijackTests */ = {
+			isa = PBXGroup;
+			children = (
+				FAC3007E1F17E04A00E47CB4 /* LibSpotijackTests.swift */,
+				FAC300801F17E04A00E47CB4 /* Info.plist */,
+			);
+			path = LibSpotijackTests;
 			sourceTree = "<group>";
 		};
 		FADD9EB61F03FB2800EAC2BC /* Scripting Bridge Compatibility */ = {
@@ -321,6 +355,24 @@
 			productReference = FA95035B1A421B76009D7149 /* Spotijack.app */;
 			productType = "com.apple.product-type.application";
 		};
+		FAC3007B1F17E04A00E47CB4 /* LibSpotijackTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FAC300861F17E04A00E47CB4 /* Build configuration list for PBXNativeTarget "LibSpotijackTests" */;
+			buildPhases = (
+				FAC300781F17E04A00E47CB4 /* Sources */,
+				FAC300791F17E04A00E47CB4 /* Frameworks */,
+				FAC3007A1F17E04A00E47CB4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FAC300831F17E04A00E47CB4 /* PBXTargetDependency */,
+			);
+			name = LibSpotijackTests;
+			productName = LibSpotijackTests;
+			productReference = FAC3007C1F17E04A00E47CB4 /* LibSpotijackTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -328,6 +380,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = SPJ;
+				LastSwiftUpdateCheck = 0900;
 				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = "Alex Jackson";
 				TargetAttributes = {
@@ -339,6 +392,10 @@
 					FA95035A1A421B76009D7149 = {
 						CreatedOnToolsVersion = 6.1.1;
 						ProvisioningStyle = Manual;
+					};
+					FAC3007B1F17E04A00E47CB4 = {
+						CreatedOnToolsVersion = 9.0;
+						DevelopmentTeam = LMVB86HGC7;
 					};
 				};
 			};
@@ -357,6 +414,7 @@
 			targets = (
 				FA95035A1A421B76009D7149 /* Spotijack */,
 				FA86C4B41F03FA25001ACBBA /* LibSpotijack */,
+				FAC3007B1F17E04A00E47CB4 /* LibSpotijackTests */,
 			);
 		};
 /* End PBXProject section */
@@ -384,6 +442,13 @@
 				FA9503691A421B76009D7149 /* MainMenu.xib in Resources */,
 				FA93A2761B09150500A61F6E /* SessionProperties.plist in Resources */,
 				FAE1C1501B07DF5F007FF95C /* SPJMainWindow.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FAC3007A1F17E04A00E47CB4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -436,7 +501,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FAC300781F17E04A00E47CB4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FAC3007F1F17E04A00E47CB4 /* LibSpotijackTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		FAC300831F17E04A00E47CB4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FA86C4B41F03FA25001ACBBA /* LibSpotijack */;
+			targetProxy = FAC300821F17E04A00E47CB4 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		FA9503671A421B76009D7149 /* MainMenu.xib */ = {
@@ -690,6 +771,60 @@
 			};
 			name = Release;
 		};
+		FAC300841F17E04A00E47CB4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = LMVB86HGC7;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = LibSpotijackTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks $(PROJECT_DIR)/Carthage/Build/Mac";
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				PRODUCT_BUNDLE_IDENTIFIER = org.alexj.LibSpotijackTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.0;
+			};
+			name = Debug;
+		};
+		FAC300851F17E04A00E47CB4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = LMVB86HGC7;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = LibSpotijackTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks $(PROJECT_DIR)/Carthage/Build/Mac";
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				PRODUCT_BUNDLE_IDENTIFIER = org.alexj.LibSpotijackTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -716,6 +851,15 @@
 			buildConfigurations = (
 				FA9503791A421B76009D7149 /* Debug */,
 				FA95037A1A421B76009D7149 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FAC300861F17E04A00E47CB4 /* Build configuration list for PBXNativeTarget "LibSpotijackTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FAC300841F17E04A00E47CB4 /* Debug */,
+				FAC300851F17E04A00E47CB4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
