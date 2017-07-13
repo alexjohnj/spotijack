@@ -33,4 +33,11 @@ public extension SpotijackSessionManager {
         public let sender: SpotijackSessionManager
         public let isRecording: Bool
     }
+
+    /// Posted when the currently playing track in Spotify changes. The
+    /// attached track can be `nil` if no more tracks are playing.
+    public struct TrackDidChange: TypedNotification {
+        public let sender: SpotijackSessionManager
+        public let newTrack: SpotifyTrack?
+    }
 }

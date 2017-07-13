@@ -111,6 +111,28 @@ public class SpotijackSessionManager {
         }
     }
 
+    private var _currentTrack: SpotifyTrack? = nil {
+        didSet {
+            if _currentTrack?.id?() != oldValue?.id?() {
+                notiCenter.post(TrackDidChange(sender: self, newTrack: _currentTrack))
+            }
+            //TODO: Handle starting a new recording here if currently Spotijacking
+        }
+    }
+    /// Returns the currently playing track in Spotify. Can return `nil` if no
+    /// track is playing or if Spotify can not be accessed. For the latter, a
+    /// `DidEncounterError` notification is also posted.
+    public var currentTrack: SpotifyTrack? {
+        let track = spotify.map { $0.currentTrack }
+        switch track {
+        case .ok(let value):
+            return value
+        case .fail(let error):
+            notiCenter.post(DidEncounterError(sender: self, error: error))
+            return nil
+        }
+    }
+
     //MARK: Application Intialisation
     private typealias BundleInfo = (name: String, identifier: String)
     private struct Bundles {
