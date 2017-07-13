@@ -92,18 +92,6 @@ public class SpotijackSessionManager {
         }
     }
 
-    //MARK: Types
-    enum SpotijackSessionError: Error {
-        /// The Spotify bundle could not be found or the application failed to
-        /// start for some exceptional reason.
-        case cantStartApplication(name: String)
-        /// Could not get an SBApplication reference to the application. Maybe
-        /// it no longer supports AppleScript?
-        case noScriptingInterface(appName: String)
-        /// Could not find a Spotijack session in AHP
-        case spotijackSessionNotFound
-    }
-
     //MARK: Application Intialisation
     private typealias BundleInfo = (name: String, identifier: String)
     private struct Bundles {
@@ -138,5 +126,19 @@ public class SpotijackSessionManager {
         let _ = try spotify.dematerialize()
         let _ = try audioHijack.dematerialize()
         let _ = try spotijackSession.dematerialize()
+    }
+}
+
+//MARK: Errors
+public extension SpotijackSessionManager {
+    public enum SpotijackSessionError: Error {
+        /// The Spotify bundle could not be found or the application failed to
+        /// start for some exceptional reason.
+        case cantStartApplication(name: String)
+        /// Could not get an SBApplication reference to the application. Maybe
+        /// it no longer supports AppleScript?
+        case noScriptingInterface(appName: String)
+        /// Could not find a Spotijack session in AHP
+        case spotijackSessionNotFound
     }
 }
