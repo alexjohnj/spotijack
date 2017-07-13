@@ -11,10 +11,36 @@ import ScriptingBridge
 import Result
 
 public class SpotijackSessionManager {
-    //MARK: Properties
+    //MARK: Properties - General
     public static let shared = SpotijackSessionManager()
     private let notiCenter = NotificationCenter.default
 
+    //MARK: Properties - Application Bridges
+    private var spotify: Result<SpotifyApplication> {
+        return startApplication(fromBundle: Bundles.spotify).flatMap {
+            .ok($0 as SpotifyApplication) // Always succeeds
+        }
+    }
+
+    private var audioHijack: Result<AudioHijackApplication> {
+        return startApplication(fromBundle: Bundles.audioHijack).flatMap {
+            .ok($0 as AudioHijackApplication) // Always succeeds
+        }
+    }
+
+    private var spotijackSession: Result<AudioHijackSession> {
+        return audioHijack.flatMap { ah in
+            let sessions = ah.sessions!() as! [AudioHijackSession] // Should never fail
+
+            if let session = sessions.first(where: { $0.name == "Spotijack" }) {
+                return .ok(session)
+            } else {
+                return .fail(SpotijackSessionError.spotijackSessionNotFound)
+            }
+        }
+    }
+
+    //MARK: Properties - State
     // Internal mute state used to track changes. Does not affect the actual mute
     // state in AHP.
     private var _isMuted: Bool = false {
@@ -67,12 +93,6 @@ public class SpotijackSessionManager {
     }
 
     //MARK: Types
-    private typealias BundleInfo = (name: String, identifier: String)
-    private struct Bundles {
-        static let spotify: BundleInfo = ("Spotify", "com.spotify.client")
-        static let audioHijack: BundleInfo = ("Audio Hijack Pro", "com.rogueamoeba.AudioHijackPro2")
-    }
-
     enum SpotijackSessionError: Error {
         /// The Spotify bundle could not be found or the application failed to
         /// start for some exceptional reason.
@@ -85,6 +105,12 @@ public class SpotijackSessionManager {
     }
 
     //MARK: Application Intialisation
+    private typealias BundleInfo = (name: String, identifier: String)
+    private struct Bundles {
+        static let spotify: BundleInfo = ("Spotify", "com.spotify.client")
+        static let audioHijack: BundleInfo = ("Audio Hijack Pro", "com.rogueamoeba.AudioHijackPro2")
+    }
+
     /// Launches the application with the identifier `bundle.identifier` and
     /// tries to establish a scripting interface with the application.
     /// Throws if either of these fails.
@@ -102,30 +128,6 @@ public class SpotijackSessionManager {
             return .ok(sbInterface)
         } else {
             return .fail(SpotijackSessionError.noScriptingInterface(appName: bundle.name))
-        }
-    }
-
-    private var spotify: Result<SpotifyApplication> {
-        return startApplication(fromBundle: Bundles.spotify).flatMap {
-            .ok($0 as SpotifyApplication) // Always succeeds
-        }
-    }
-
-    private var audioHijack: Result<AudioHijackApplication> {
-        return startApplication(fromBundle: Bundles.audioHijack).flatMap {
-            .ok($0 as AudioHijackApplication) // Always succeeds
-        }
-    }
-
-    private var spotijackSession: Result<AudioHijackSession> {
-        return audioHijack.flatMap { ah in
-            let sessions = ah.sessions!() as! [AudioHijackSession] // Should never fail
-
-            if let session = sessions.first(where: { $0.name == "Spotijack" }) {
-                return .ok(session)
-            } else {
-                return .fail(SpotijackSessionError.spotijackSessionNotFound)
-            }
         }
     }
 
