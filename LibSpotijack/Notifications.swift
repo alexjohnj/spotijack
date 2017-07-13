@@ -27,4 +27,10 @@ public extension SpotijackSessionManager {
         public let sender: SpotijackSessionManager
         public let error: Error
     }
+
+    /// Posted when the recording state of the Spotijack session changes.
+    public struct RecordingStateDidChange: TypedNotification {
+        public let sender: SpotijackSessionManager
+        public let isRecording: Bool
+    }
 }

@@ -77,9 +77,15 @@ public class SpotijackSessionManager {
         }
     }
 
-    /// Queries Audio Hijack Pro to determine if the Spotijack session is
-    /// currently recording. Returns false and posts a `DidEncounterError`
-    /// notification if Audio Hijack Pro can not be queried.
+    private var _isRecording = false {
+        didSet {
+            if _isRecording != oldValue {
+                notiCenter.post(RecordingStateDidChange(sender: self, isRecording: _isRecording))
+            }
+        }
+    }
+    /// Queries AHP to determine if the Spotijack session is recording. Returns
+    /// false and posts a `DidEncounterError` message if AHP can not be queried.
     public var isRecording: Bool {
         get {
             switch spotijackSession.map({ $0.recording! }) {
@@ -88,6 +94,19 @@ public class SpotijackSessionManager {
             case .fail(let error):
                 notiCenter.post(DidEncounterError(sender: self, error: error))
                 return false
+            }
+        }
+
+        set {
+            let result = spotijackSession.map {
+                newValue ? $0.startRecording!() : $0.stopRecording!()
+            }
+
+            switch result {
+            case .ok:
+                _isRecording = newValue
+            case .fail(let error):
+                notiCenter.post(DidEncounterError(sender: self, error: error))
             }
         }
     }
