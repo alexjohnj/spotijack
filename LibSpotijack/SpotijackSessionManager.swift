@@ -18,8 +18,9 @@ public class SpotijackSessionManager: NSObject {
     private var context = 0
 
     //MARK: Properties - Application Bridges
-    private var spotifyBridge: Result<SpotifyApplication> = .fail(SpotijackSessionError.applicationNotLaunched(name: Bundles.spotify.name))
-    private var spotifyApplication: NSRunningApplication? = nil {
+    // Access level is internal for testing purposes.
+    internal var spotifyBridge: Result<SpotifyApplication> = .fail(SpotijackSessionError.applicationNotLaunched(name: Bundles.spotify.name))
+    internal var spotifyApplication: NSRunningApplication? = nil {
         willSet {
             spotifyApplication?.removeObserver(self, forKeyPath: #keyPath(NSRunningApplication.isTerminated))
         }
@@ -34,8 +35,8 @@ public class SpotijackSessionManager: NSObject {
         }
     }
 
-    private var audioHijackBridge: Result<AudioHijackApplication> = .fail(SpotijackSessionError.applicationNotLaunched(name: Bundles.audioHijack.name))
-    private var audioHijackApplication: NSRunningApplication? = nil {
+    internal var audioHijackBridge: Result<AudioHijackApplication> = .fail(SpotijackSessionError.applicationNotLaunched(name: Bundles.audioHijack.name))
+    internal var audioHijackApplication: NSRunningApplication? = nil {
         willSet {
             audioHijackApplication?.removeObserver(self, forKeyPath: #keyPath(NSRunningApplication.isTerminated))
         }
@@ -53,7 +54,7 @@ public class SpotijackSessionManager: NSObject {
 
     /// A scripting bridge interface to the Spotijack session in Audio Hijack Pro.
     /// Accessing this property will make Audio Hijack Pro start hijacking Spotify.
-    private var spotijackSessionBridge: Result<AudioHijackSession> {
+    internal var spotijackSessionBridge: Result<AudioHijackSession> {
         return audioHijackBridge.flatMap { ah in
             let sessions = ah.sessions!() as! [AudioHijackSession] // Should never fail
 
