@@ -11,29 +11,54 @@ import ScriptingBridge
 import Result
 import TypedNotification
 
-public class SpotijackSessionManager {
+public class SpotijackSessionManager: NSObject {
     //MARK: Properties - General
-    public static let shared = SpotijackSessionManager()
+    private static let shared = SpotijackSessionManager()
     private let notiCenter = NotificationCenter.default
+    private var context = 0
 
     //MARK: Properties - Application Bridges
-    private var spotify: Result<SpotifyApplication> {
-        return startApplication(fromBundle: Bundles.spotify).flatMap {
-            .ok($0 as SpotifyApplication) // Always succeeds
+    private var spotifyBridge: Result<SpotifyApplication> = .fail(SpotijackSessionError.applicationNotLaunched(name: Bundles.spotify.name))
+    private var spotifyApplication: NSRunningApplication? = nil {
+        willSet {
+            spotifyApplication?.removeObserver(self, forKeyPath: #keyPath(NSRunningApplication.isTerminated))
+        }
+
+        didSet {
+            if let spotifyApplication = spotifyApplication {
+                spotifyBridge = establishScriptingBridge(forBundle: Bundles.spotify).map({ $0 as SpotifyApplication })
+                spotifyApplication.addObserver(self, forKeyPath: #keyPath(NSRunningApplication.isTerminated), options: [.new], context: &context)
+            } else {
+                spotifyBridge = .fail(SpotijackSessionError.applicationNotLaunched(name: Bundles.spotify.name))
+            }
         }
     }
 
-    private var audioHijack: Result<AudioHijackApplication> {
-        return startApplication(fromBundle: Bundles.audioHijack).flatMap {
-            .ok($0 as AudioHijackApplication) // Always succeeds
+    private var audioHijackBridge: Result<AudioHijackApplication> = .fail(SpotijackSessionError.applicationNotLaunched(name: Bundles.audioHijack.name))
+    private var audioHijackApplication: NSRunningApplication? = nil {
+        willSet {
+            audioHijackApplication?.removeObserver(self, forKeyPath: #keyPath(NSRunningApplication.isTerminated))
+        }
+
+        didSet {
+            if let audioHijackApplication = audioHijackApplication {
+                audioHijackBridge = establishScriptingBridge(forBundle: Bundles.audioHijack).map({ $0 as AudioHijackApplication })
+                audioHijackApplication.addObserver(self, forKeyPath: #keyPath(NSRunningApplication.isTerminated), options: [.new], context: &context)
+            }
+            else {
+                audioHijackBridge = .fail(SpotijackSessionError.applicationNotLaunched(name: Bundles.audioHijack.name))
+            }
         }
     }
 
-    private var spotijackSession: Result<AudioHijackSession> {
-        return audioHijack.flatMap { ah in
+    /// A scripting bridge interface to the Spotijack session in Audio Hijack Pro.
+    /// Accessing this property will make Audio Hijack Pro start hijacking Spotify.
+    private var spotijackSessionBridge: Result<AudioHijackSession> {
+        return audioHijackBridge.flatMap { ah in
             let sessions = ah.sessions!() as! [AudioHijackSession] // Should never fail
 
             if let session = sessions.first(where: { $0.name == "Spotijack" }) {
+                session.startHijackingRelaunch!(.yes)
                 return .ok(session)
             } else {
                 return .fail(SpotijackSessionError.spotijackSessionNotFound)
@@ -59,7 +84,7 @@ public class SpotijackSessionManager {
         // Setting this property updates the internal mute state and AHP.
         // Accessing it does not change the internal mute state.
         get {
-            switch spotijackSession.map({ $0.speakerMuted! }) {
+            switch spotijackSessionBridge.map({ $0.speakerMuted! }) {
             case .ok(let status):
                 return status
             case .fail(let error):
@@ -69,7 +94,11 @@ public class SpotijackSessionManager {
         }
 
         set {
-            switch spotijackSession.map({ $0.setSpeakerMuted!(newValue) }) {
+            let result = spotijackSessionBridge.map { session in
+                session.setSpeakerMuted!(newValue)
+            }
+
+            switch result {
             case .ok:
                 _isMuted = newValue
             case .fail(let error):
@@ -89,7 +118,7 @@ public class SpotijackSessionManager {
     /// false and posts a `DidEncounterError` message if AHP can not be queried.
     public var isRecording: Bool {
         get {
-            switch spotijackSession.map({ $0.recording! }) {
+            switch spotijackSessionBridge.map({ $0.recording! }) {
             case .ok(let status):
                 return status
             case .fail(let error):
@@ -99,8 +128,8 @@ public class SpotijackSessionManager {
         }
 
         set {
-            let result = spotijackSession.map {
-                newValue ? $0.startRecording!() : $0.stopRecording!()
+            let result = spotijackSessionBridge.map { session in
+                newValue ? session.startRecording!() : session.stopRecording!()
             }
 
             switch result {
@@ -124,7 +153,7 @@ public class SpotijackSessionManager {
     /// track is playing or if Spotify can not be accessed. For the latter, a
     /// `DidEncounterError` notification is also posted.
     public var currentTrack: SpotifyTrack? {
-        let track = spotify.map { $0.currentTrack }
+        let track = spotifyBridge.map { $0.currentTrack }
         switch track {
         case .ok(let value):
             return value
@@ -140,9 +169,46 @@ public class SpotijackSessionManager {
     private var _errorObserver: NotificationObserver? = nil
 
     //MARK: Lifecycle
-    private init() {
+    private override init() {
+        super.init()
         _errorObserver = notiCenter.addObserver(forType: DidEncounterError.self, object: self, queue: nil) { [weak self] (noti) in
             self?.didEncounterError(noti.error)
+        }
+    }
+
+    deinit {
+        // Trigger KVO observer removal for NSRunningApplication instances
+        spotifyApplication = nil
+        audioHijackApplication = nil
+    }
+
+    //MARK: KVO Methods
+    override public func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        guard context == &self.context,
+        let keyPath = keyPath,
+        let object = object,
+        let change = change
+        else {
+            return
+        }
+
+        // Handle termination of an application
+        if keyPath == #keyPath(NSRunningApplication.isTerminated),
+            let object = object as? NSRunningApplication,
+            let isTerminated = change[.newKey] as? Bool,
+            isTerminated == true
+        {
+            if let spotifyApplication = spotifyApplication,
+                object == spotifyApplication {
+                self.spotifyApplication = nil
+                return
+            }
+
+            if let audioHijackApplication = audioHijackApplication,
+                object == audioHijackApplication {
+                self.audioHijackApplication = nil
+                return
+            }
         }
     }
 
@@ -153,21 +219,31 @@ public class SpotijackSessionManager {
         static let audioHijack: BundleInfo = ("Audio Hijack Pro", "com.rogueamoeba.AudioHijackPro2")
     }
 
-    /// Launches the application with the identifier `bundle.identifier` and
-    /// tries to establish a scripting interface with the application.
-    /// Throws if either of these fails.
-    private func startApplication(fromBundle bundle: BundleInfo,
-                                  options: NSWorkspace.LaunchOptions = [.withoutActivation, .andHide]) -> Result<SBApplication> {
+    private static func startApplication(fromBundle bundle: BundleInfo,
+                                         options: NSWorkspace.LaunchOptions = [.withoutActivation, .andHide]) -> Result<NSRunningApplication> {
         let appLaunched = NSWorkspace.shared.launchApplication(withBundleIdentifier: bundle.identifier,
                                                                options: options,
                                                                additionalEventParamDescriptor: nil,
                                                                launchIdentifier: nil)
+
         guard appLaunched == true else {
             return .fail(SpotijackSessionError.cantStartApplication(name: bundle.name))
         }
 
-        if let sbInterface = SBApplication(bundleIdentifier: bundle.identifier) {
-            return .ok(sbInterface)
+        let applicationHandle = NSRunningApplication.runningApplications(withBundleIdentifier: bundle.identifier).first
+
+        if let applicationHandle = applicationHandle {
+            return .ok(applicationHandle)
+        } else {
+            return .fail(SpotijackSessionError.noRunningInstanceFound(appName: bundle.name))
+        }
+    }
+
+    private func establishScriptingBridge(forBundle bundle: BundleInfo) -> Result<SBApplication> {
+        let bridge = SBApplication(bundleIdentifier: bundle.identifier)
+
+        if let bridge = bridge {
+            return .ok(bridge)
         } else {
             return .fail(SpotijackSessionError.noScriptingInterface(appName: bundle.name))
         }
@@ -176,10 +252,52 @@ public class SpotijackSessionManager {
     /// Attempts to start Audio Hijack Pro, Spotify and the Spotijack session.
     /// The behaviour of SpotijackSessionManager is undefined if this function
     /// is not called at least once.
-    public func establishSession() throws {
-        let _ = try spotify.dematerialize()
-        let _ = try audioHijack.dematerialize()
-        let _ = try spotijackSession.dematerialize()
+
+    /// Establishes a Spotijack session, launching Audio Hijack Pro and Spotify
+    /// if they aren't already launched.
+    ///
+    /// - parameter completionHandler: A function accepting a
+    ///             `Result<SpotijackSessionManager>` to execute. Execution will
+    ///              be delayed until the applications have been launched. The
+    ///              completion handler will be called on the main queue.
+    ///
+    /// - note: Spotify's scripting interface doesn't activate until after the
+    ///         application is launched. If Spotify needs to be launched, the
+    ///         completion handler won't be activated until 0.7 seconds after
+    ///         Spotify has been launched. This still mightn't be enough time for
+    ///         Spotify to activate the scripting interface in which case what happens
+    ///         is pretty much unknown.
+    public static func establishSession(then completionHandler: @escaping ((Result<SpotijackSessionManager>) -> ())) {
+        // Call the completion handler if everything's already running.
+        let sessionManager = SpotijackSessionManager.shared
+        guard sessionManager.spotifyApplication == nil || sessionManager.audioHijackApplication == nil else {
+            DispatchQueue.main.async {
+                completionHandler(.ok(.shared))
+            }
+            return
+        }
+
+        switch (startApplication(fromBundle: Bundles.spotify), startApplication(fromBundle: Bundles.audioHijack)) {
+        case (.fail(let error), _):
+            completionHandler(.fail(error))
+            return
+        case (_, .fail(let error)):
+            completionHandler(.fail(error))
+            return
+        case (.ok(let spotifyApp), .ok(let audioHijackApp)):
+            sessionManager.spotifyApplication = spotifyApp
+            sessionManager.audioHijackApplication = audioHijackApp
+            // Wait a little bit for Spotify's scripting interface to come
+            // online after launching. I know, this is Yucky, but Spotify marks
+            // itself as having finished launching before scripting works
+            // so observing NSRunningApplication's isFinishedLaunching property
+            // is no use.
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.7) {
+                completionHandler(.ok(sessionManager))
+            }
+
+            return
+        }
     }
 
     //MARK: Application Polling
@@ -240,12 +358,22 @@ public class SpotijackSessionManager {
 //MARK: Errors
 public extension SpotijackSessionManager {
     public enum SpotijackSessionError: Error {
+        /// The application it not launched or a launch attempt has not been
+        /// made yet.
+        case applicationNotLaunched(name: String)
+
         /// The Spotify bundle could not be found or the application failed to
         /// start for some exceptional reason.
         case cantStartApplication(name: String)
+        
         /// Could not get an SBApplication reference to the application. Maybe
         /// it no longer supports AppleScript?
         case noScriptingInterface(appName: String)
+
+        /// Could not find a running instance of the application after trying
+        /// to start the application.
+        case noRunningInstanceFound(appName: String)
+
         /// Could not find a Spotijack session in AHP
         case spotijackSessionNotFound
     }
