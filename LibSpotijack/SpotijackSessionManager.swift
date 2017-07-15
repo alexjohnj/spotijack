@@ -14,7 +14,7 @@ import TypedNotification
 public class SpotijackSessionManager: NSObject {
     //MARK: Properties - General
     private static let shared = SpotijackSessionManager()
-    private let notiCenter = NotificationCenter.default
+    internal let notiCenter = NotificationCenter.default
     private var context = 0
 
     //MARK: Properties - Application Bridges
