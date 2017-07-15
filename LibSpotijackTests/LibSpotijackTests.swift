@@ -9,8 +9,34 @@
 import XCTest
 @testable import LibSpotijack
 
+let spotifyBundle = "com.spotify.client"
+let audioHijackBundle = "com.rogueamoeba.AudioHijackPro2"
+
 class LibSpotijackTests: XCTestCase {
-    func testTest() {
-        XCTAssert(true == true)
+    override func setUp() {
+        super.setUp()
+
+        killAllApplications()
+        let launchExpect = expectation(description: "Waiting to establish session.")
+        SpotijackSessionManager.establishSession { sessionResult in
+            guard case .ok = sessionResult else {
+                XCTFail()
+                return
+            }
+            launchExpect.fulfill()
+        }
+
+        wait(for: [launchExpect], timeout: 5.0)
+    }
+
+    override func tearDown() {
+        super.tearDown()
+
+        killAllApplications()
+    }
+
+    func killAllApplications() {
+        NSRunningApplication.runningApplications(withBundleIdentifier: spotifyBundle).first?.forceTerminate()
+        NSRunningApplication.runningApplications(withBundleIdentifier: audioHijackBundle).first?.forceTerminate()
     }
 }
