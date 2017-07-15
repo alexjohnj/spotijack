@@ -294,6 +294,10 @@ public class SpotijackSessionManager: NSObject {
             // so observing NSRunningApplication's isFinishedLaunching property
             // is no use.
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.7) {
+                // Update internal state
+                sessionManager.pollSpotify()
+                sessionManager.pollAudioHijackPro()
+
                 completionHandler(.ok(sessionManager))
             }
 
