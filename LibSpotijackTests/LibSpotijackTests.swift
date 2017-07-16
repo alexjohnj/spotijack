@@ -146,3 +146,87 @@ extension LibSpotijackTests {
         wait(for: [hijackExpect], timeout: 5.0)
     }
 }
+
+//MARK: Recording Tests
+extension LibSpotijackTests {
+    func testChangeSpotijackRecordingState() {
+        let recordingChangeExpect = expectation(description: "Waiting for recording state to change.")
+        var recordingErrorObserver: NotificationObserver? = nil
+
+        SpotijackSessionManager.establishSession { sessionResult in
+            guard case .ok(let session) = sessionResult else {
+                XCTFail()
+                return
+            }
+
+            recordingErrorObserver = session.notiCenter.addObserver(
+                forType: SpotijackSessionManager.DidEncounterError.self,
+                object: session,
+                queue: nil,
+                using: { noti in
+                    XCTFail("Error when changing recording state \(noti.error)")
+                })
+
+            let newRecordingState = !session.isRecording
+            session.isRecording = newRecordingState
+            XCTAssertEqual(session.isRecording, newRecordingState)
+
+            session.isRecording = !newRecordingState
+            XCTAssertEqual(session.isRecording, !newRecordingState)
+
+            session.isRecording = false // End any recordings
+            XCTAssertFalse(session.isRecording)
+
+            recordingChangeExpect.fulfill()
+        }
+
+        wait(for: [recordingChangeExpect], timeout: 5.0)
+    }
+
+    func testChangeSpotijackRecordingStatesStartsHijacking() {
+        let hijackExpect = expectation(description: "Waiting for Spotijack session to start hijacking")
+
+        SpotijackSessionManager.establishSession { sessionResult in
+            guard case .ok(let session) = sessionResult else {
+                XCTFail()
+                return
+            }
+
+            session.isRecording = false
+            session.spotijackSessionBridge.value?.stopHijacking!()
+            session.isRecording = true
+
+            XCTAssertTrue(session.spotijackSessionBridge.value?.hijacked ?? false)
+            hijackExpect.fulfill()
+        }
+
+        wait(for: [hijackExpect], timeout: 5.0)
+    }
+
+    func testChangeSpotijackRecordingStatePostsNotification() {
+        let notificationExpect = expectation(description: "Waiting for recording status did change notification")
+        var notificationObserver: NotificationObserver? = nil
+
+        SpotijackSessionManager.establishSession { sessionResult in
+            guard case .ok(let session) = sessionResult else {
+                XCTFail()
+                return
+            }
+
+            let newRecordingState = !session.isRecording
+
+            notificationObserver = session.notiCenter.addObserver(
+                forType: SpotijackSessionManager.RecordingStateDidChange.self,
+                object: session,
+                queue: nil,
+                using: { (noti) in
+                    XCTAssertEqual(newRecordingState, noti.isRecording)
+                    notificationExpect.fulfill()
+            })
+
+            session.isRecording = newRecordingState
+        }
+
+        wait(for: [notificationExpect], timeout: 5.0)
+    }
+}
