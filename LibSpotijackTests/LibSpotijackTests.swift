@@ -36,7 +36,37 @@ class LibSpotijackTests: XCTestCase {
     }
 
     func killAllApplications() {
-        NSRunningApplication.runningApplications(withBundleIdentifier: spotifyBundle).first?.forceTerminate()
-        NSRunningApplication.runningApplications(withBundleIdentifier: audioHijackBundle).first?.forceTerminate()
+        let spotifyKillExpect = expectation(description: "Waiting for Spotify to terminate.")
+        let audioHijackKillExpect = expectation(description: "Waiting for AHP to terminate.")
+        var spotifyObserver: NSKeyValueObservation? = nil
+        var audioHijackObserver: NSKeyValueObservation? = nil
+
+        if let spotify = NSRunningApplication.runningApplications(withBundleIdentifier: spotifyBundle).first {
+            spotifyObserver = spotify.observe(\.isTerminated) { (observer, _) in
+                if observer.isTerminated == true {
+                    spotifyKillExpect.fulfill()
+                }
+            }
+
+            spotify.forceTerminate()
+        } else {
+            spotifyKillExpect.fulfill()
+        }
+
+        if let audioHijack = NSRunningApplication.runningApplications(withBundleIdentifier: audioHijackBundle).first {
+            audioHijackObserver = audioHijack.observe(\.isTerminated) { (observer, _) in
+                if observer.isTerminated == true {
+                    audioHijackKillExpect.fulfill()
+                }
+            }
+
+            audioHijack.forceTerminate()
+        } else {
+            audioHijackKillExpect.fulfill()
+        }
+
+        wait(for: [audioHijackKillExpect, spotifyKillExpect], timeout: 10.0)
+    }
+}
     }
 }
