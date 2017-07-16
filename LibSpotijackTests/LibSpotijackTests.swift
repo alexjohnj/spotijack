@@ -7,6 +7,8 @@
 //
 
 import XCTest
+import TypedNotification
+import Result
 @testable import LibSpotijack
 
 let spotifyBundle = "com.spotify.client"
@@ -68,5 +70,79 @@ class LibSpotijackTests: XCTestCase {
         wait(for: [audioHijackKillExpect, spotifyKillExpect], timeout: 10.0)
     }
 }
+
+//MARK: Muting Tests
+extension LibSpotijackTests {
+    /// Test muting the Spotijack session works and does not trigger an error.
+    func testMuteSpotijackSession() {
+        let muteExpect = expectation(description: "Waiting to determine mute state")
+        var muteErrorObserver: NotificationObserver? = nil
+
+        SpotijackSessionManager.establishSession { sessionResult in
+            guard case .ok(let session) = sessionResult else {
+                XCTFail()
+                return
+            }
+
+            muteErrorObserver = session.notiCenter.addObserver(
+                forType: SpotijackSessionManager.DidEncounterError.self,
+                object: session,
+                queue: nil,
+                using: ({ (_) in XCTFail("Muting Spotijack session triggered an error.")}))
+
+            let newMuteState = !session.isMuted
+            session.isMuted = newMuteState
+            XCTAssertEqual(session.isMuted, newMuteState)
+
+            session.isMuted = !newMuteState
+            XCTAssertEqual(session.isMuted, !newMuteState)
+
+            muteExpect.fulfill()
+        }
+
+        wait(for: [muteExpect], timeout: 5.0)
+    }
+
+    func testMuteSpotijackSessionPostsNotification() {
+        let muteNotificationExpect = expectation(description: "Waiting for a MuteStateDidChange notification")
+        var muteNotificationObserver: NotificationObserver? = nil
+
+        SpotijackSessionManager.establishSession { sessionResult in
+            guard case .ok(let session) = sessionResult else {
+                XCTFail()
+                return
+            }
+
+            muteNotificationObserver = session.notiCenter.addObserver(
+                forType: SpotijackSessionManager.MuteStateDidChange.self,
+                object: nil,
+                queue: nil,
+                using: ({ noti in
+                    XCTAssertEqual(noti.newMuteState, session.isMuted)
+                    muteNotificationExpect.fulfill()
+            }))
+            session.isMuted = !session.isMuted
+        }
+
+        wait(for: [muteNotificationExpect], timeout: 5.0)
+    }
+
+    func testMuteSpotijackSessionStartsHijacking() {
+        let hijackExpect = expectation(description: "Waiting for Spotijack session to start hijacking")
+
+        SpotijackSessionManager.establishSession { sessionResult in
+            guard case .ok(let session) = sessionResult else {
+                XCTFail()
+                return
+            }
+
+            session.spotijackSessionBridge.value?.stopHijacking!()
+            session.isMuted = !session.isMuted
+
+            XCTAssertTrue(session.spotijackSessionBridge.value?.hijacked ?? false)
+            hijackExpect.fulfill()
+        }
+
+        wait(for: [hijackExpect], timeout: 5.0)
     }
 }
