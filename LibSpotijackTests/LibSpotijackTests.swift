@@ -120,7 +120,7 @@ extension LibSpotijackTests {
                 using: ({ noti in
                     XCTAssertEqual(noti.newMuteState, session.isMuted)
                     muteNotificationExpect.fulfill()
-            }))
+                }))
             session.isMuted = !session.isMuted
         }
 
@@ -165,7 +165,7 @@ extension LibSpotijackTests {
                 queue: nil,
                 using: { noti in
                     XCTFail("Error when changing recording state \(noti.error)")
-                })
+            })
 
             let newRecordingState = !session.isRecording
             session.isRecording = newRecordingState
@@ -228,5 +228,56 @@ extension LibSpotijackTests {
         }
 
         wait(for: [notificationExpect], timeout: 5.0)
+    }
+}
+
+//MARK: Currently Playing Song Tests
+extension LibSpotijackTests {
+    func testGetCurrentTrackWorks() {
+        let currentTrackExpect = expectation(description: "Waiting to get current track")
+        var errorNotificationObserver: NotificationObserver? = nil
+
+        SpotijackSessionManager.establishSession { sessionResult in
+            guard case .ok(let session) = sessionResult else {
+                XCTFail()
+                return
+            }
+
+            errorNotificationObserver = session.notiCenter.addObserver(
+                forType: SpotijackSessionManager.DidEncounterError.self,
+                object: session,
+                queue: nil,
+                using: { noti in
+                    XCTFail(String(describing: noti.error))
+            })
+
+            // Spotify takes a bit of time to switch tracks depending on network
+            // speed. The infinite while loops here are to give it chance to switch.
+            // We'll wait for 5 seconds, with the test failing otherwise.
+            // Obviously we don't wan't to block the main thread otherwise the `wait(for:timeout:)`
+            // call will be blocked so we do the polling on a background queue but
+            // all tests are run on the main queue.
+            DispatchQueue.global(qos: .userInitiated).async {
+                // Reset to a known track first
+                DispatchQueue.main.sync {
+                    session.spotifyBridge.value?.playTrack!(FakeHappy.uri, inContext: nil)
+                }
+                while session.currentTrack?.name != FakeHappy.name { continue }
+
+                DispatchQueue.main.sync {
+                    session.spotifyBridge.value?.playTrack!(LetTheFlamesBegin.uri, inContext: nil)
+                }
+                while session.currentTrack?.name != LetTheFlamesBegin.name { continue }
+
+                DispatchQueue.main.sync {
+                    XCTAssertEqual(session.currentTrack?.name, LetTheFlamesBegin.name)
+                    XCTAssertEqual(session.currentTrack?.artist, LetTheFlamesBegin.artist)
+                    XCTAssertEqual(session.currentTrack?.album, LetTheFlamesBegin.album)
+                    currentTrackExpect.fulfill()
+                }
+            }
+        }
+
+        wait(for: [currentTrackExpect], timeout: 5.0)
     }
 }

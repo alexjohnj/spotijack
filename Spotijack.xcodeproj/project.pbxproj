@@ -30,6 +30,7 @@
 		FAC300811F17E04A00E47CB4 /* LibSpotijack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA86C4B51F03FA25001ACBBA /* LibSpotijack.framework */; };
 		FAC9A9F21F0403C400A19299 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAC9A9F11F0403C400A19299 /* Result.framework */; };
 		FAD1392B1A44A082006351F0 /* SPJPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = FAD1392A1A44A082006351F0 /* SPJPreferencesWindowController.m */; };
+		FAD45AB91F2140920012EF3F /* TestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD45AB81F2140920012EF3F /* TestData.swift */; };
 		FADD9EC21F03FB2800EAC2BC /* AudioHijack.h in Headers */ = {isa = PBXBuildFile; fileRef = FADD9EB81F03FB2800EAC2BC /* AudioHijack.h */; };
 		FADD9EC31F03FB2800EAC2BC /* AudioHijack.sdef in Resources */ = {isa = PBXBuildFile; fileRef = FADD9EB91F03FB2800EAC2BC /* AudioHijack.sdef */; };
 		FADD9EC41F03FB2800EAC2BC /* AudioHijack.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADD9EBA1F03FB2800EAC2BC /* AudioHijack.swift */; };
@@ -102,6 +103,7 @@
 		FAC9A9F11F0403C400A19299 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/Mac/Result.framework; sourceTree = "<group>"; };
 		FAD139291A44A082006351F0 /* SPJPreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPJPreferencesWindowController.h; sourceTree = "<group>"; };
 		FAD1392A1A44A082006351F0 /* SPJPreferencesWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPJPreferencesWindowController.m; sourceTree = "<group>"; };
+		FAD45AB81F2140920012EF3F /* TestData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestData.swift; sourceTree = "<group>"; };
 		FADD9EB81F03FB2800EAC2BC /* AudioHijack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioHijack.h; sourceTree = "<group>"; };
 		FADD9EB91F03FB2800EAC2BC /* AudioHijack.sdef */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = AudioHijack.sdef; sourceTree = "<group>"; };
 		FADD9EBA1F03FB2800EAC2BC /* AudioHijack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioHijack.swift; sourceTree = "<group>"; };
@@ -246,6 +248,7 @@
 			isa = PBXGroup;
 			children = (
 				FAC3007E1F17E04A00E47CB4 /* LibSpotijackTests.swift */,
+				FAD45AB81F2140920012EF3F /* TestData.swift */,
 				FAC300801F17E04A00E47CB4 /* Info.plist */,
 			);
 			path = LibSpotijackTests;
@@ -506,6 +509,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FAC3007F1F17E04A00E47CB4 /* LibSpotijackTests.swift in Sources */,
+				FAD45AB91F2140920012EF3F /* TestData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
