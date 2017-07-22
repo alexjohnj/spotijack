@@ -142,19 +142,27 @@ public class SpotijackSessionManager: NSObject {
         }
     }
 
-    private var _currentTrack: SpotifyTrack? = nil {
+    private var _currentTrack: StaticSpotifyTrack? = nil {
         didSet {
-            if _currentTrack?.id?() != oldValue?.id?() {
+            if _currentTrack != oldValue {
                 notiCenter.post(TrackDidChange(sender: self, newTrack: _currentTrack))
             }
             //TODO: Handle starting a new recording here if currently Spotijacking
         }
     }
+
     /// Returns the currently playing track in Spotify. Can return `nil` if no
     /// track is playing or if Spotify can not be accessed. For the latter, a
     /// `DidEncounterError` notification is also posted.
-    public var currentTrack: SpotifyTrack? {
-        let track = spotifyBridge.map { $0.currentTrack }
+    public var currentTrack: StaticSpotifyTrack? {
+        let track = spotifyBridge.map { (spotify) -> StaticSpotifyTrack? in
+            if let currentTrack = spotify.currentTrack {
+                return StaticSpotifyTrack(from: currentTrack)
+            } else {
+                return nil
+            }
+        }
+
         switch track {
         case .ok(let value):
             return value

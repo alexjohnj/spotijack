@@ -38,6 +38,6 @@ public extension SpotijackSessionManager {
     /// attached track can be `nil` if no more tracks are playing.
     public struct TrackDidChange: TypedNotification {
         public let sender: SpotijackSessionManager
-        public let newTrack: SpotifyTrack?
+        public let newTrack: StaticSpotifyTrack?
     }
 }
