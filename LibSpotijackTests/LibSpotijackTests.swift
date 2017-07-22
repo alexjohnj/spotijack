@@ -280,4 +280,40 @@ extension LibSpotijackTests {
 
         wait(for: [currentTrackExpect], timeout: 5.0)
     }
+
+    func testChangeTrackPostsNotification() {
+        let changeTrackExpect = expectation(description: "Waiting for track change notification")
+        var trackChangeObserver: NotificationObserver? = nil
+
+        SpotijackSessionManager.establishSession { sessionResult in
+            guard case .ok(let session) = sessionResult else {
+                XCTFail()
+                return
+            }
+
+            trackChangeObserver = session.notiCenter.addObserver(
+                forType: SpotijackSessionManager.TrackDidChange.self,
+                object: session,
+                queue: nil,
+                using: { noti in
+                    changeTrackExpect.fulfill()
+            })
+
+            DispatchQueue.global(qos: .userInitiated).async {
+                DispatchQueue.main.sync {
+                    session.spotifyBridge.value?.playTrack!(LetTheFlamesBegin.uri, inContext: nil)
+                }
+
+                while session.currentTrack?.name != LetTheFlamesBegin.name { continue }
+
+                session.startPolling(every: 0.1)
+
+                DispatchQueue.main.sync {
+                    session.spotifyBridge.value?.playTrack!(FakeHappy.uri, inContext: nil)
+                }
+            }
+        }
+
+        wait(for: [changeTrackExpect], timeout: 5.0)
+    }
 }
