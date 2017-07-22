@@ -317,3 +317,72 @@ extension LibSpotijackTests {
         wait(for: [changeTrackExpect], timeout: 5.0)
     }
 }
+
+//MARK: Polling Tests
+extension LibSpotijackTests {
+    func testPollingStatusWorks() {
+        let statusExpectation = expectation(description: "Waiting to get polling status.")
+        SpotijackSessionManager.establishSession { sessionResult in
+            guard case .ok(let session) = sessionResult else {
+                XCTFail()
+                return
+            }
+
+            session.startPolling(every: 0.5)
+            XCTAssertTrue(session.isPolling)
+
+            session.stopPolling()
+            XCTAssertFalse(session.isPolling)
+
+            statusExpectation.fulfill()
+        }
+
+        wait(for: [statusExpectation], timeout: 5.0)
+    }
+
+    func testTerminatingAHPEndsPolling() {
+        let pollingEndedExpectation = expectation(description: "Waiting for Spotijack to stop polling")
+
+        SpotijackSessionManager.establishSession { sessionResult in
+            guard case .ok(let session) = sessionResult else {
+                XCTFail()
+                return
+            }
+
+            session.startPolling(every: 0.1)
+            session.audioHijackApplication?.forceTerminate()
+
+            // Takes a bit of time for KVO termination notifications to fire so
+            // keep checking on a background queue.
+            DispatchQueue.global(qos: .userInitiated).async {
+                while session.isPolling == true { continue }
+                pollingEndedExpectation.fulfill()
+            }
+        }
+
+        wait(for: [pollingEndedExpectation], timeout: 5.0)
+    }
+
+    func testTerminatingSpotifyEndsPolling() {
+        let pollingEndedExpectation = expectation(description: "Waiting for Spotijack to stop polling")
+
+        SpotijackSessionManager.establishSession { sessionResult in
+            guard case .ok(let session) = sessionResult else {
+                XCTFail()
+                return
+            }
+
+            session.startPolling(every: 0.1)
+            session.spotifyApplication?.forceTerminate()
+
+            // Takes a bit of time for KVO termination notifications to fire so
+            // keep checking on a background queue.
+            DispatchQueue.global(qos: .userInitiated).async {
+                while session.isPolling == true { continue }
+                pollingEndedExpectation.fulfill()
+            }
+        }
+
+        wait(for: [pollingEndedExpectation], timeout: 5.0)
+    }
+}
