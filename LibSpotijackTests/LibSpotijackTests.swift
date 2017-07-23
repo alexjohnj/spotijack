@@ -386,3 +386,78 @@ extension LibSpotijackTests {
         wait(for: [pollingEndedExpectation], timeout: 5.0)
     }
 }
+
+//MARK: Spotijacking Tests
+extension LibSpotijackTests {
+    func testSpotijacking() {
+        let spotijackingExpectation = expectation(description: "Waiting to Spotijack things")
+
+        SpotijackSessionManager.establishSession { sessionResult in
+            guard case .ok(let session) = sessionResult else {
+                XCTFail()
+                return
+            }
+
+            let originalRecordingCount = session.audioHijackBridge.value?.audioRecordings!().count ?? 0
+
+            DispatchQueue.global(qos: .userInitiated).async {
+                DispatchQueue.main.sync {
+                    session.spotifyBridge.value?.playTrack!(LetTheFlamesBegin.uri, inContext: nil)
+                }
+
+                while session.currentTrack?.name != LetTheFlamesBegin.name { continue }
+
+                DispatchQueue.main.sync {
+                    do {
+                        let config = SpotijackSessionManager.RecordingConfiguration(muteSpotify: true, disableShuffling: true, disableRepeat: true, pollingInterval: 0.1)
+                        try session.startSpotijackSession(config: config)
+                    } catch (let error) {
+                        XCTFail(String(describing: error))
+                    }
+
+                    XCTAssertTrue(session.isSpotijacking)
+                    XCTAssertTrue(session.isMuted)
+                    XCTAssertFalse(session.spotifyBridge.value?.shuffling ?? true)
+                    XCTAssertFalse(session.spotifyBridge.value?.repeating ?? true)
+                }
+                DispatchQueue.global(qos: .userInitiated).asyncAfter(deadline: .now() + 5.0) {
+                    // Trigger a track change
+                    DispatchQueue.main.sync {
+                        session.spotifyBridge.value?.playTrack!(FakeHappy.uri, inContext: nil)
+                    }
+
+                    while session.currentTrack?.name != FakeHappy.name { continue }
+
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+                        session.stopSpotijackSession()
+                        XCTAssertFalse(session.isSpotijacking)
+                        XCTAssertFalse(session.isRecording)
+
+                        let newRecordingCount = session.audioHijackBridge.value?.audioRecordings!().count ?? 0
+                        XCTAssertEqual(originalRecordingCount, newRecordingCount - 2)
+
+                        spotijackingExpectation.fulfill()
+                    }
+                }
+            }
+        }
+        wait(for: [spotijackingExpectation], timeout: 30.0)
+    }
+
+    func testStartNewRecordingUpdatesRecordingMetadata() {
+        //TODO
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

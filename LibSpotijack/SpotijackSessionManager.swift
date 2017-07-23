@@ -147,7 +147,14 @@ public class SpotijackSessionManager: NSObject {
             if _currentTrack != oldValue {
                 notiCenter.post(TrackDidChange(sender: self, newTrack: _currentTrack))
             }
-            //TODO: Handle starting a new recording here if currently Spotijacking
+
+            // Start a new recording if Spotijack is controlling the current
+            // recording session.
+            if _currentTrack != oldValue,
+                isSpotijacking == true
+            {
+                startNewRecording()
+            }
         }
     }
 
@@ -176,6 +183,9 @@ public class SpotijackSessionManager: NSObject {
     /// Returns `true` if SpotijackSessionManager is polling Spotify and AHP.
     public var isPolling: Bool { return _applicationPollingTimer?.isValid ?? false }
     private var _errorObserver: NotificationObserver? = nil
+
+    /// Returns `true` if SpotijackSessionManager is actively controlling recording.
+    public private(set) var isSpotijacking: Bool = false
 
     //MARK: Lifecycle
     private override init() {
@@ -361,9 +371,73 @@ public class SpotijackSessionManager: NSObject {
         _isMuted = isMuted
     }
 
+    //MARK: Spotijacking
+    /// Start a Spotijack recording session. Calling this method when a recording
+    /// session is already in progress has no effect. Polling will be restarted
+    /// at the interval specified in `config`.
+    public func startSpotijackSession(config: RecordingConfiguration) throws {
+        guard isSpotijacking == false else {
+            return
+        }
+
+        // Set up recording configuration
+        do {
+            if config.disableRepeat {
+                try spotifyBridge.dematerialize().setRepeating!(false)
+            }
+
+            if config.disableShuffling {
+                try spotifyBridge.dematerialize().setShuffling!(false)
+            }
+
+            if config.muteSpotify {
+                try spotijackSessionBridge.dematerialize().setSpeakerMuted!(true)
+            }
+        } catch (let error) {
+            throw error
+        }
+
+        if isPolling { stopPolling() }
+        startPolling(every: config.pollingInterval)
+        isSpotijacking = true
+        startNewRecording()
+    }
+
+    /// Stops a Spotijack recording session. Calling this method when no recording
+    /// session is in progress has no effect. This method does not end polling.
+    public func stopSpotijackSession() {
+        guard isSpotijacking == true else {
+            return
+        }
+
+        isRecording = false
+        isSpotijacking = false
+    }
+
+    /// Starts a new recording in AHP and resets Spotify's play position.
+    /// If there is no new track, ends the current Spotijack session.
+    private func startNewRecording() {
+        switch (spotifyBridge, spotijackSessionBridge, currentTrack) {
+        case (.ok(let spotify), .ok(let spotijackSession), .some(let currentTrack)):
+            isRecording = false
+            spotify.pause!()
+            spotify.setPlayerPosition!(0.0)
+            spotijackSession.setMetadata(from: currentTrack)
+            spotijackSession.startRecording!()
+            spotify.play!()
+        case (.ok, .ok, .none):
+            stopSpotijackSession()
+        case (.fail(let error), _, _):
+            notiCenter.post(DidEncounterError(sender: self, error: error))
+        case (_, .fail(let error), _):
+            notiCenter.post(DidEncounterError(sender: self, error: error))
+        }
+    }
+
     // Called when a `DidEncounterError` notification is posted. Ends polling and
-    // any Spotijack controlled recording sessions that were running.
+   // any Spotijack controlled recording sessions that were running.
     private func didEncounterError(_ error: Error) {
+        stopSpotijackSession()
         stopPolling()
     }
 }
@@ -378,7 +452,7 @@ public extension SpotijackSessionManager {
         /// The Spotify bundle could not be found or the application failed to
         /// start for some exceptional reason.
         case cantStartApplication(name: String)
-        
+
         /// Could not get an SBApplication reference to the application. Maybe
         /// it no longer supports AppleScript?
         case noScriptingInterface(appName: String)
@@ -389,5 +463,26 @@ public extension SpotijackSessionManager {
 
         /// Could not find a Spotijack session in AHP
         case spotijackSessionNotFound
+    }
+}
+
+//MARK: RecordingConfiguration
+public extension SpotijackSessionManager {
+    public struct RecordingConfiguration {
+        /// Should the Spotijack session be muted when starting Spotijacking?
+        public let muteSpotify: Bool
+        /// Should shuffling be disabled in Spotify when starting Spotijacking?
+        public let disableShuffling: Bool
+        /// Should repeat be disabled in Spotify when starting Spotijacking?
+        public let disableRepeat: Bool
+        /// Frequency we should poll Spotify and AHP when Spotijacking.
+        public let pollingInterval: TimeInterval
+
+        public init(muteSpotify: Bool = false, disableShuffling: Bool = false, disableRepeat: Bool = false, pollingInterval: TimeInterval = 0.1) {
+            self.muteSpotify = muteSpotify
+            self.disableShuffling = disableShuffling
+            self.disableRepeat = disableRepeat
+            self.pollingInterval = pollingInterval
+        }
     }
 }
