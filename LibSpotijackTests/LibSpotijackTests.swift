@@ -445,7 +445,45 @@ extension LibSpotijackTests {
     }
 
     func testStartNewRecordingUpdatesRecordingMetadata() {
-        //TODO
+        let metadataExpect = expectation(description: "Waiting to check AHP metadata")
+        SpotijackSessionManager.establishSession { sessionResult in
+            guard case .ok(let session) = sessionResult else {
+                XCTFail()
+                return
+            }
+
+            DispatchQueue.global(qos: .userInitiated).async {
+                DispatchQueue.main.sync {
+                    session.spotifyBridge.value?.playTrack!(LetTheFlamesBegin.uri, inContext: nil)
+                }
+
+                while session.currentTrack?.name != LetTheFlamesBegin.name { continue }
+
+                DispatchQueue.main.sync {
+                    do {
+                        let config = SpotijackSessionManager.RecordingConfiguration(muteSpotify: true, disableShuffling: true, disableRepeat: true, pollingInterval: 0.1)
+                        try session.startSpotijackSession(config: config)
+                    } catch (let error) {
+                        XCTFail(String(describing: error))
+                        return
+                    }
+
+                    guard case .ok(let spotijackRecordingSession) = session.spotijackSessionBridge else {
+                        XCTFail()
+                        return
+                    }
+
+                    XCTAssertEqual(spotijackRecordingSession.titleTag, LetTheFlamesBegin.name)
+                    XCTAssertEqual(spotijackRecordingSession.albumTag, LetTheFlamesBegin.album)
+                    XCTAssertEqual(spotijackRecordingSession.artistTag, LetTheFlamesBegin.artist)
+
+                    session.stopSpotijackSession()
+                    metadataExpect.fulfill()
+                }
+            }
+        }
+
+        wait(for: [metadataExpect], timeout: 5.0)
     }
 }
 
