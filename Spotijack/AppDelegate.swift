@@ -10,8 +10,10 @@ import Cocoa
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
+    private lazy var mainWindowController: MainWindowController = MainWindowController(windowNibName: "MainWindow")
+
     func applicationDidFinishLaunching(_ notification: Notification) {
-        print("Hello, world")
+        mainWindowController.showWindow(self)
     }
 
     @IBAction private func openPreferencesWindow(_ sender: NSMenuItem) {
