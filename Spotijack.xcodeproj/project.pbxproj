@@ -15,13 +15,10 @@
 		FA678C7A1F164847009D6AF8 /* SpotijackSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA678C791F164837009D6AF8 /* SpotijackSessionManager.swift */; };
 		FA8393761B16539A006736C8 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA8393751B16539A006736C8 /* Media.xcassets */; };
 		FA86C4B91F03FA25001ACBBA /* LibSpotijack.h in Headers */ = {isa = PBXBuildFile; fileRef = FA86C4B71F03FA25001ACBBA /* LibSpotijack.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FA93A2741B0914D500A61F6E /* SPJSessionCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = FA93A2731B0914D500A61F6E /* SPJSessionCreator.m */; };
 		FA93A2761B09150500A61F6E /* SessionProperties.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA93A2751B09150500A61F6E /* SessionProperties.plist */; };
-		FA9503621A421B76009D7149 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FA9503611A421B76009D7149 /* AppDelegate.m */; };
 		FA9503641A421B76009D7149 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FA9503631A421B76009D7149 /* main.m */; };
 		FA9503661A421B76009D7149 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA9503651A421B76009D7149 /* Images.xcassets */; };
 		FA9503691A421B76009D7149 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA9503671A421B76009D7149 /* MainMenu.xib */; };
-		FA9503871A421D6B009D7149 /* SPJMainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA9503851A421D6B009D7149 /* SPJMainWindowController.m */; };
 		FABADAF01F025D1C001751AE /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FABADAEF1F025D1C001751AE /* CocoaLumberjack.framework */; };
 		FABADAF11F025D1C001751AE /* CocoaLumberjack.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FABADAEF1F025D1C001751AE /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		FABADAF41F025D36001751AE /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FABADAF31F025D36001751AE /* Sparkle.framework */; };
@@ -31,7 +28,6 @@
 		FAC9A9F21F0403C400A19299 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAC9A9F11F0403C400A19299 /* Result.framework */; };
 		FACA55471F24D17D007E7F46 /* AudioHijackSession+SetMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACA55461F24D17D007E7F46 /* AudioHijackSession+SetMetadata.swift */; };
 		FACBE5C81F23D66C00030B87 /* StaticSpotifyTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACBE5C71F23D66C00030B87 /* StaticSpotifyTrack.swift */; };
-		FAD1392B1A44A082006351F0 /* SPJPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = FAD1392A1A44A082006351F0 /* SPJPreferencesWindowController.m */; };
 		FAD45AB91F2140920012EF3F /* TestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD45AB81F2140920012EF3F /* TestData.swift */; };
 		FADD9EC21F03FB2800EAC2BC /* AudioHijack.h in Headers */ = {isa = PBXBuildFile; fileRef = FADD9EB81F03FB2800EAC2BC /* AudioHijack.h */; };
 		FADD9EC31F03FB2800EAC2BC /* AudioHijack.sdef in Resources */ = {isa = PBXBuildFile; fileRef = FADD9EB91F03FB2800EAC2BC /* AudioHijack.sdef */; };
@@ -42,12 +38,10 @@
 		FADD9EC81F03FB2800EAC2BC /* Spotify.sdef in Resources */ = {isa = PBXBuildFile; fileRef = FADD9EBF1F03FB2800EAC2BC /* Spotify.sdef */; };
 		FADD9EC91F03FB2800EAC2BC /* Spotify.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADD9EC01F03FB2800EAC2BC /* Spotify.swift */; };
 		FADD9ECA1F03FB2800EAC2BC /* SpotifyScripting.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADD9EC11F03FB2800EAC2BC /* SpotifyScripting.swift */; };
-		FAE1C14A1B07D67D007FF95C /* SPJConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = FAE1C1491B07D67D007FF95C /* SPJConstants.m */; };
 		FAE1C14D1B07DC64007FF95C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = FAE1C14F1B07DC64007FF95C /* Localizable.strings */; };
 		FAE1C1501B07DF5F007FF95C /* SPJMainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAE1C1521B07DF5F007FF95C /* SPJMainWindow.xib */; };
 		FAE1C1531B07DF63007FF95C /* SPJPreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAE1C1551B07DF63007FF95C /* SPJPreferencesWindow.xib */; };
 		FAF81BEA1A421FB5008F3360 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAF81BE91A421FB5008F3360 /* ScriptingBridge.framework */; };
-		FAF81BED1A422351008F3360 /* SPJSessionController.m in Sources */ = {isa = PBXBuildFile; fileRef = FAF81BEC1A422351008F3360 /* SPJSessionController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -191,6 +185,7 @@
 				FA93A2731B0914D500A61F6E /* SPJSessionCreator.m */,
 			);
 			name = "Error Recovery";
+			path = ..;
 			sourceTree = "<group>";
 		};
 		FA9503521A421B76009D7149 = {
@@ -217,15 +212,7 @@
 		FA95035D1A421B76009D7149 /* Spotijack */ = {
 			isa = PBXGroup;
 			children = (
-				FA93A2701B090C6100A61F6E /* Error Recovery */,
-				FAF81BEB1A422351008F3360 /* SPJSessionController.h */,
-				FAF81BEC1A422351008F3360 /* SPJSessionController.m */,
-				FA9503841A421D6B009D7149 /* SPJMainWindowController.h */,
-				FA9503851A421D6B009D7149 /* SPJMainWindowController.m */,
-				FA9503601A421B76009D7149 /* AppDelegate.h */,
-				FA9503611A421B76009D7149 /* AppDelegate.m */,
-				FAD139291A44A082006351F0 /* SPJPreferencesWindowController.h */,
-				FAD1392A1A44A082006351F0 /* SPJPreferencesWindowController.m */,
+				FAB41F0D1F25FE8E00448440 /* Objc-Disabled */,
 				FAF81BE81A421ED9008F3360 /* XIBs */,
 				FA9503651A421B76009D7149 /* Images.xcassets */,
 				FA95035E1A421B76009D7149 /* Supporting Files */,
@@ -239,8 +226,6 @@
 				FA8393751B16539A006736C8 /* Media.xcassets */,
 				FA0296191B0BC28500BFCA84 /* ConfigureSpotijackSession.applescript */,
 				FA93A2751B09150500A61F6E /* SessionProperties.plist */,
-				FAE1C1481B07D67D007FF95C /* SPJConstants.h */,
-				FAE1C1491B07D67D007FF95C /* SPJConstants.m */,
 				FA95035F1A421B76009D7149 /* Info.plist */,
 				FA9503631A421B76009D7149 /* main.m */,
 				FAE1C1471B07D06A007FF95C /* PrefixHeader.pch */,
@@ -248,6 +233,24 @@
 				FA3CF4E71B3C5AB700E8EF60 /* Credits.rtf */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		FAB41F0D1F25FE8E00448440 /* Objc-Disabled */ = {
+			isa = PBXGroup;
+			children = (
+				FAE1C1481B07D67D007FF95C /* SPJConstants.h */,
+				FAE1C1491B07D67D007FF95C /* SPJConstants.m */,
+				FA93A2701B090C6100A61F6E /* Error Recovery */,
+				FAF81BEB1A422351008F3360 /* SPJSessionController.h */,
+				FAF81BEC1A422351008F3360 /* SPJSessionController.m */,
+				FA9503841A421D6B009D7149 /* SPJMainWindowController.h */,
+				FA9503851A421D6B009D7149 /* SPJMainWindowController.m */,
+				FA9503601A421B76009D7149 /* AppDelegate.h */,
+				FA9503611A421B76009D7149 /* AppDelegate.m */,
+				FAD139291A44A082006351F0 /* SPJPreferencesWindowController.h */,
+				FAD1392A1A44A082006351F0 /* SPJPreferencesWindowController.m */,
+			);
+			path = "Objc-Disabled";
 			sourceTree = "<group>";
 		};
 		FAC3007D1F17E04A00E47CB4 /* LibSpotijackTests */ = {
@@ -503,12 +506,6 @@
 			files = (
 				FA02961A1B0BC28500BFCA84 /* ConfigureSpotijackSession.applescript in Sources */,
 				FA9503641A421B76009D7149 /* main.m in Sources */,
-				FA9503621A421B76009D7149 /* AppDelegate.m in Sources */,
-				FA93A2741B0914D500A61F6E /* SPJSessionCreator.m in Sources */,
-				FAF81BED1A422351008F3360 /* SPJSessionController.m in Sources */,
-				FAE1C14A1B07D67D007FF95C /* SPJConstants.m in Sources */,
-				FAD1392B1A44A082006351F0 /* SPJPreferencesWindowController.m in Sources */,
-				FA9503871A421D6B009D7149 /* SPJMainWindowController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
