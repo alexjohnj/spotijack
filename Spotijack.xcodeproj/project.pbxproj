@@ -19,8 +19,6 @@
 		FA9503641A421B76009D7149 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FA9503631A421B76009D7149 /* main.m */; };
 		FA9503661A421B76009D7149 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA9503651A421B76009D7149 /* Images.xcassets */; };
 		FA9503691A421B76009D7149 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA9503671A421B76009D7149 /* MainMenu.xib */; };
-		FABADAF01F025D1C001751AE /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FABADAEF1F025D1C001751AE /* CocoaLumberjack.framework */; };
-		FABADAF11F025D1C001751AE /* CocoaLumberjack.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FABADAEF1F025D1C001751AE /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		FABADAF41F025D36001751AE /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FABADAF31F025D36001751AE /* Sparkle.framework */; };
 		FABADAF51F025D36001751AE /* Sparkle.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FABADAF31F025D36001751AE /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		FAC3007F1F17E04A00E47CB4 /* LibSpotijackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC3007E1F17E04A00E47CB4 /* LibSpotijackTests.swift */; };
@@ -61,7 +59,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				FABADAF11F025D1C001751AE /* CocoaLumberjack.framework in Embed Frameworks */,
 				FABADAF51F025D36001751AE /* Sparkle.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -91,7 +88,6 @@
 		FA9503681A421B76009D7149 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		FA9503841A421D6B009D7149 /* SPJMainWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPJMainWindowController.h; sourceTree = "<group>"; };
 		FA9503851A421D6B009D7149 /* SPJMainWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPJMainWindowController.m; sourceTree = "<group>"; };
-		FABADAEF1F025D1C001751AE /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjack.framework; path = Carthage/Build/Mac/CocoaLumberjack.framework; sourceTree = "<group>"; };
 		FABADAF31F025D36001751AE /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = Carthage/Build/Mac/Sparkle.framework; sourceTree = "<group>"; };
 		FAC3007C1F17E04A00E47CB4 /* LibSpotijackTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LibSpotijackTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAC3007E1F17E04A00E47CB4 /* LibSpotijackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibSpotijackTests.swift; sourceTree = "<group>"; };
@@ -136,7 +132,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FABADAF01F025D1C001751AE /* CocoaLumberjack.framework in Frameworks */,
 				FABADAF41F025D36001751AE /* Sparkle.framework in Frameworks */,
 				FAF81BEA1A421FB5008F3360 /* ScriptingBridge.framework in Frameworks */,
 			);
@@ -160,7 +155,6 @@
 				FAC9A9F11F0403C400A19299 /* Result.framework */,
 				FABADAF31F025D36001751AE /* Sparkle.framework */,
 				FAF81BE91A421FB5008F3360 /* ScriptingBridge.framework */,
-				FABADAEF1F025D1C001751AE /* CocoaLumberjack.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
