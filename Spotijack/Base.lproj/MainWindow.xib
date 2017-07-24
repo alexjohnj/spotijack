@@ -8,6 +8,10 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="MainWindowController" customModule="Spotijack" customModuleProvider="target">
             <connections>
+                <outlet property="artistField" destination="2zZ-cK-X9C" id="IDn-Tv-lm0"/>
+                <outlet property="muteButton" destination="L0G-Ma-Vh5" id="Ihy-gH-Ubh"/>
+                <outlet property="recordButton" destination="AKD-kg-1UY" id="ccZ-hm-blr"/>
+                <outlet property="statusField" destination="SVJ-Xv-L1m" id="xIo-ac-N8n"/>
                 <outlet property="window" destination="uSh-TC-Nzq" id="lMK-yp-7zr"/>
             </connections>
         </customObject>
@@ -51,6 +55,9 @@
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
                             <font key="font" metaFont="systemBold" size="12"/>
                         </buttonCell>
+                        <connections>
+                            <action selector="recordButtonClicked:" target="-2" id="XqR-4D-0MN"/>
+                        </connections>
                     </button>
                     <button toolTip="Mute Spotify without affecting recordings" horizontalHuggingPriority="1000" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="L0G-Ma-Vh5">
                         <rect key="frame" x="261" y="7" width="24" height="19"/>
@@ -63,6 +70,9 @@
                             <string key="keyEquivalent">e</string>
                             <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                         </buttonCell>
+                        <connections>
+                            <action selector="muteButtonClicked:" target="-2" id="b5c-CP-W7r"/>
+                        </connections>
                     </button>
                 </subviews>
                 <constraints>
@@ -83,7 +93,7 @@
             <connections>
                 <outlet property="delegate" destination="-2" id="ea6-We-iEi"/>
             </connections>
-            <point key="canvasLocation" x="-1224" y="11"/>
+            <point key="canvasLocation" x="-1907" y="54"/>
         </window>
     </objects>
     <resources>

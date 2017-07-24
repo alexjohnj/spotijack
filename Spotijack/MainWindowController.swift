@@ -9,10 +9,23 @@
 import Cocoa
 
 class MainWindowController: NSWindowController {
+    //MARK: Interface Builder Outlets
+    @IBOutlet weak var statusField: NSTextField!
+    @IBOutlet weak var artistField: NSTextField!
+    @IBOutlet weak var recordButton: NSButton!
+    @IBOutlet weak var muteButton: NSButton!
 
+    //MARK: Window Lifecycle
     override func windowDidLoad() {
         super.windowDidLoad()
     
         print("Hello world from MainWindowController")
+    }
+
+    //MARK: Interface Actions
+    @IBAction func recordButtonClicked(_ sender: NSButton) {
+    }
+
+    @IBAction func muteButtonClicked(_ sender: NSButton) {
     }
 }
