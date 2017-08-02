@@ -12,15 +12,15 @@ import Result
 
 public final class SpotijackSessionManager: NSObject {
     //MARK: Singleton Setup
-    private static let shared = SpotijackSessionManager()
+    public static let shared = SpotijackSessionManager()
     private override init() { }
 
-    public static let notiCenter: NotificationCenter = NotificationCenter.default
+    public let notiCenter: NotificationCenter = NotificationCenter.default
 
     //MARK: Current Session
-    private static var _ahpTerminationObserver: NSKeyValueObservation? = nil
-    private static var _spotifyTerminationObserver: NSKeyValueObservation? = nil
-    private static var spotijackSession: SpotijackSession? = nil {
+    private var _ahpTerminationObserver: NSKeyValueObservation? = nil
+    private var _spotifyTerminationObserver: NSKeyValueObservation? = nil
+    private var spotijackSession: SpotijackSession? = nil {
         willSet {
             _ahpTerminationObserver = nil
             _spotifyTerminationObserver = nil
@@ -45,20 +45,17 @@ public final class SpotijackSessionManager: NSObject {
     }
 
     //MARK: State Properties
-    public static var isMuted: Bool {
+    public var isMuted: Bool {
         return spotijackSession?.isMuted ?? false
     }
 
-    public static var isRecording: Bool {
+    public var isRecording: Bool {
         return spotijackSession?.isRecording ?? false
     }
 
-    public static var isSpotijacking: Bool {
+    public var isSpotijacking: Bool {
         return spotijackSession?.isSpotijacking ?? false
     }
-
-    //MARK: KVO
-    private var context = 0
 }
 
 //MARK: Session Initialisation & Access
@@ -81,10 +78,11 @@ extension SpotijackSessionManager {
     ///         Spotify has been launched. This still mightn't be enough time for
     ///         Spotify to activate the scripting interface in which case what happens
     ///         is pretty much unknown.
-    public static func establishSession(_ then: @escaping (Result<SpotijackSession>) -> ()) {
+    public func establishSession(_ then: @escaping (Result<SpotijackSession>) -> ()) {
         guard spotijackSession == nil else {
+            let session = spotijackSession!
             DispatchQueue.main.async {
-                then(.ok(spotijackSession!))
+                then(.ok(session))
             }
             return
         }
@@ -107,7 +105,7 @@ extension SpotijackSessionManager {
         case (.ok(let spotifyApplication), .ok(let spotifyBridge), .ok(let audioHijackApplication), .ok(let audioHijackBridge)):
             let spotijackSession = SpotijackSession(spotify: (spotifyApplication, spotifyBridge),
                                                     audioHijack: (audioHijackApplication, audioHijackBridge),
-                                                    manager: shared)
+                                                    manager: self)
             self.spotijackSession = spotijackSession
 
             // Wait a little bit for Spotify's scripting interface to come
@@ -130,7 +128,7 @@ extension SpotijackSessionManager {
         static let audioHijack: BundleInfo = ("Audio Hijack Pro", "com.rogueamoeba.AudioHijackPro2")
     }
 
-    private static func startApplication(fromBundle bundle: BundleInfo,
+    private func startApplication(fromBundle bundle: BundleInfo,
                                          options: NSWorkspace.LaunchOptions = [.withoutActivation, .andHide]) -> Result<NSRunningApplication> {
         let appLaunched = NSWorkspace.shared.launchApplication(withBundleIdentifier: bundle.identifier,
                                                                options: options,
@@ -150,7 +148,7 @@ extension SpotijackSessionManager {
         }
     }
 
-    private static func establishScriptingBridge(forBundle bundle: BundleInfo) -> Result<SBApplication> {
+    private func establishScriptingBridge(forBundle bundle: BundleInfo) -> Result<SBApplication> {
         let bridge = SBApplication(bundleIdentifier: bundle.identifier)
 
         if let bridge = bridge {
