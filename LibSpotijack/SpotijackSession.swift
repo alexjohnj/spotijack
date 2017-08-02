@@ -45,7 +45,7 @@ public final class SpotijackSession {
     private var _isMuted: Bool = false {
         didSet {
             if _isMuted != oldValue {
-                notiCenter.post(MuteStateDidChange(sender: self, newMuteState: _isMuted))
+                manager?.muteStateDidChange(newMuteState: _isMuted)
             }
         }
     }
@@ -61,7 +61,7 @@ public final class SpotijackSession {
             case .ok(let status):
                 return status
             case .fail(let error):
-                notiCenter.post(DidEncounterError(sender: self, error: error))
+                manager?.sessionDidEncounterError(error)
                 return false
             }
         }
@@ -75,7 +75,7 @@ public final class SpotijackSession {
             case .ok:
                 _isMuted = newValue
             case .fail(let error):
-                notiCenter.post(DidEncounterError(sender: self, error: error))
+                manager?.sessionDidEncounterError(error)
             }
         }
     }
@@ -83,7 +83,7 @@ public final class SpotijackSession {
     private var _isRecording = false {
         didSet {
             if _isRecording != oldValue {
-                notiCenter.post(RecordingStateDidChange(sender: self, isRecording: _isRecording))
+                manager?.recordingStateDidChange(isRecording: _isRecording)
             }
         }
     }
@@ -95,7 +95,7 @@ public final class SpotijackSession {
             case .ok(let status):
                 return status
             case .fail(let error):
-                notiCenter.post(DidEncounterError(sender: self, error: error))
+                manager?.sessionDidEncounterError(error)
                 return false
             }
         }
@@ -109,7 +109,7 @@ public final class SpotijackSession {
             case .ok:
                 _isRecording = newValue
             case .fail(let error):
-                notiCenter.post(DidEncounterError(sender: self, error: error))
+                manager?.sessionDidEncounterError(error)
             }
         }
     }
@@ -117,7 +117,7 @@ public final class SpotijackSession {
     private var _currentTrack: StaticSpotifyTrack? = nil {
         didSet {
             if _currentTrack != oldValue {
-                notiCenter.post(TrackDidChange(sender: self, newTrack: _currentTrack))
+                manager?.trackDidChange(newTrack: _currentTrack)
             }
 
             // Start a new recording if Spotijack is controlling the current
@@ -146,7 +146,7 @@ public final class SpotijackSession {
         case .ok(let value):
             return value
         case .fail(let error):
-            notiCenter.post(DidEncounterError(sender: self, error: error))
+            manager?.sessionDidEncounterError(error)
             return nil
         }
     }
@@ -303,9 +303,9 @@ public final class SpotijackSession {
         case (.ok, .ok, .none):
             stopSpotijackSession()
         case (.fail(let error), _, _):
-            notiCenter.post(DidEncounterError(sender: self, error: error))
+            manager?.sessionDidEncounterError(error)
         case (_, .fail(let error), _):
-            notiCenter.post(DidEncounterError(sender: self, error: error))
+            manager?.sessionDidEncounterError(error)
         }
     }
 

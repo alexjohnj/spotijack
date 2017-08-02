@@ -146,6 +146,18 @@ extension SpotijackSessionManager {
     func trackDidChange(newTrack: StaticSpotifyTrack?) {
         notiCenter.post(TrackDidChange(sender: self, newTrack: newTrack))
     }
+
+    func muteStateDidChange(newMuteState: Bool) {
+        notiCenter.post(MuteStateDidChange(sender: self, newMuteState: newMuteState))
+    }
+
+    func recordingStateDidChange(isRecording: Bool) {
+        notiCenter.post(RecordingStateDidChange(sender: self, isRecording: isRecording))
+    }
+
+    func sessionDidEncounterError(_ error: Error) {
+        notiCenter.post(DidEncounterError(sender: self, error: error))
+    }
 }
 
 
