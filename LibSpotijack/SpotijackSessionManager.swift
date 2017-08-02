@@ -6,229 +6,58 @@
 //  Copyright © 2017 Alex Jackson. All rights reserved.
 //
 
-import Cocoa
-import ScriptingBridge
+import Foundation
 import Result
-import TypedNotification
 
-public class SpotijackSessionManager: NSObject {
-    //MARK: Properties - General
+public final class SpotijackSessionManager: NSObject {
+    //MARK: Singleton Setup
     private static let shared = SpotijackSessionManager()
-    internal let notiCenter = NotificationCenter.default
+    private override init() { }
+
+    //MARK: Current Session
+    private static var spotijackSession: SpotijackSession? = nil {
+        willSet {
+            // TODO Set up KVO notifications for applications
+        }
+    }
+
+    //MARK: State Properties
+    public static var isMuted: Bool {
+        return spotijackSession?.isMuted ?? false
+    }
+
+    public static var isRecording: Bool {
+        return spotijackSession?.isRecording ?? false
+    }
+
+    public static var isSpotijacking: Bool {
+        return spotijackSession?.isSpotijacking ?? false
+    }
+
+    //MARK: KVO
     private var context = 0
 
-    //MARK: Properties - Application Bridges
-    // Access level is internal for testing purposes.
-    internal var spotifyBridge: Result<SpotifyApplication> = .fail(SpotijackSessionError.applicationNotLaunched(name: Bundles.spotify.name))
-    internal var spotifyApplication: NSRunningApplication? = nil {
-        willSet {
-            spotifyApplication?.removeObserver(self, forKeyPath: #keyPath(NSRunningApplication.isTerminated))
-        }
+    //MARK: Access Control
+    /// Attempts to start Audio Hijack Pro, Spotify and the Spotijack session.
+    /// The behaviour of SpotijackSessionManager is undefined if this function
+    /// is not called at least once.
 
-        didSet {
-            if let spotifyApplication = spotifyApplication {
-                spotifyBridge = establishScriptingBridge(forBundle: Bundles.spotify).map({ $0 as SpotifyApplication })
-                spotifyApplication.addObserver(self, forKeyPath: #keyPath(NSRunningApplication.isTerminated), options: [.new], context: &context)
-            } else {
-                spotifyBridge = .fail(SpotijackSessionError.applicationNotLaunched(name: Bundles.spotify.name))
-            }
-        }
-    }
-
-    internal var audioHijackBridge: Result<AudioHijackApplication> = .fail(SpotijackSessionError.applicationNotLaunched(name: Bundles.audioHijack.name))
-    internal var audioHijackApplication: NSRunningApplication? = nil {
-        willSet {
-            audioHijackApplication?.removeObserver(self, forKeyPath: #keyPath(NSRunningApplication.isTerminated))
-        }
-
-        didSet {
-            if let audioHijackApplication = audioHijackApplication {
-                audioHijackBridge = establishScriptingBridge(forBundle: Bundles.audioHijack).map({ $0 as AudioHijackApplication })
-                audioHijackApplication.addObserver(self, forKeyPath: #keyPath(NSRunningApplication.isTerminated), options: [.new], context: &context)
-            }
-            else {
-                audioHijackBridge = .fail(SpotijackSessionError.applicationNotLaunched(name: Bundles.audioHijack.name))
-            }
-        }
-    }
-
-    /// A scripting bridge interface to the Spotijack session in Audio Hijack Pro.
-    /// Accessing this property will make Audio Hijack Pro start hijacking Spotify.
-    internal var spotijackSessionBridge: Result<AudioHijackSession> {
-        return audioHijackBridge.flatMap { ah in
-            let sessions = ah.sessions!() as! [AudioHijackSession] // Should never fail
-
-            if let session = sessions.first(where: { $0.name == "Spotijack" }) {
-                session.startHijackingRelaunch!(.yes)
-                return .ok(session)
-            } else {
-                return .fail(SpotijackSessionError.spotijackSessionNotFound)
-            }
-        }
-    }
-
-    //MARK: Properties - State
-    // Internal mute state used to track changes. Does not affect the actual mute
-    // state in AHP.
-    private var _isMuted: Bool = false {
-        didSet {
-            if _isMuted != oldValue {
-                notiCenter.post(MuteStateDidChange(sender: self, newMuteState: _isMuted))
-            }
-        }
-    }
-
-    /// Queries Audio Hijack Pro to determine if the Spotijack session is muted.
-    /// Returns false and posts a `DidEncounterError` notification if Audio
-    /// Hijack Pro can not be queried.
-    public var isMuted: Bool {
-        // Setting this property updates the internal mute state and AHP.
-        // Accessing it does not change the internal mute state.
-        get {
-            switch spotijackSessionBridge.map({ $0.speakerMuted! }) {
-            case .ok(let status):
-                return status
-            case .fail(let error):
-                notiCenter.post(DidEncounterError(sender: self, error: error))
-                return false
-            }
-        }
-
-        set {
-            let result = spotijackSessionBridge.map { session in
-                session.setSpeakerMuted!(newValue)
-            }
-
-            switch result {
-            case .ok:
-                _isMuted = newValue
-            case .fail(let error):
-                notiCenter.post(DidEncounterError(sender: self, error: error))
-            }
-        }
-    }
-
-    private var _isRecording = false {
-        didSet {
-            if _isRecording != oldValue {
-                notiCenter.post(RecordingStateDidChange(sender: self, isRecording: _isRecording))
-            }
-        }
-    }
-    /// Queries AHP to determine if the Spotijack session is recording. Returns
-    /// false and posts a `DidEncounterError` message if AHP can not be queried.
-    public var isRecording: Bool {
-        get {
-            switch spotijackSessionBridge.map({ $0.recording! }) {
-            case .ok(let status):
-                return status
-            case .fail(let error):
-                notiCenter.post(DidEncounterError(sender: self, error: error))
-                return false
-            }
-        }
-
-        set {
-            let result = spotijackSessionBridge.map { session in
-                newValue ? session.startRecording!() : session.stopRecording!()
-            }
-
-            switch result {
-            case .ok:
-                _isRecording = newValue
-            case .fail(let error):
-                notiCenter.post(DidEncounterError(sender: self, error: error))
-            }
-        }
-    }
-
-    private var _currentTrack: StaticSpotifyTrack? = nil {
-        didSet {
-            if _currentTrack != oldValue {
-                notiCenter.post(TrackDidChange(sender: self, newTrack: _currentTrack))
-            }
-
-            // Start a new recording if Spotijack is controlling the current
-            // recording session.
-            if _currentTrack != oldValue,
-                isSpotijacking == true
-            {
-                startNewRecording()
-            }
-        }
-    }
-
-    /// Returns the currently playing track in Spotify. Can return `nil` if no
-    /// track is playing or if Spotify can not be accessed. For the latter, a
-    /// `DidEncounterError` notification is also posted.
-    public var currentTrack: StaticSpotifyTrack? {
-        let track = spotifyBridge.map { (spotify) -> StaticSpotifyTrack? in
-            if let currentTrack = spotify.currentTrack {
-                return StaticSpotifyTrack(from: currentTrack)
-            } else {
-                return nil
-            }
-        }
-
-        switch track {
-        case .ok(let value):
-            return value
-        case .fail(let error):
-            notiCenter.post(DidEncounterError(sender: self, error: error))
-            return nil
-        }
-    }
-
-    private var _applicationPollingTimer: Timer? = nil
-    /// Returns `true` if SpotijackSessionManager is polling Spotify and AHP.
-    public var isPolling: Bool { return _applicationPollingTimer?.isValid ?? false }
-    private var _errorObserver: NotificationObserver? = nil
-
-    /// Returns `true` if SpotijackSessionManager is actively controlling recording.
-    public private(set) var isSpotijacking: Bool = false
-
-    //MARK: Lifecycle
-    private override init() {
-        super.init()
-        _errorObserver = notiCenter.addObserver(forType: DidEncounterError.self, object: self, queue: nil) { [weak self] (noti) in
-            self?.didEncounterError(noti.error)
-        }
-    }
-
-    deinit {
-        // Trigger KVO observer removal for NSRunningApplication instances
-        spotifyApplication = nil
-        audioHijackApplication = nil
-    }
-
-    //MARK: KVO Methods
-    override public func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        guard context == &self.context,
-        let keyPath = keyPath,
-        let object = object,
-        let change = change
-        else {
-            return
-        }
-
-        // Handle termination of an application
-        if keyPath == #keyPath(NSRunningApplication.isTerminated),
-            let object = object as? NSRunningApplication,
-            let isTerminated = change[.newKey] as? Bool,
-            isTerminated == true
-        {
-            if let spotifyApplication = spotifyApplication,
-                object == spotifyApplication {
-                self.spotifyApplication = nil
-                return
-            }
-
-            if let audioHijackApplication = audioHijackApplication,
-                object == audioHijackApplication {
-                self.audioHijackApplication = nil
-                return
-            }
-        }
+    /// Establishes a Spotijack session, launching Audio Hijack Pro and Spotify
+    /// if they aren't already launched.
+    ///
+    /// - parameter completionHandler: A function accepting a
+    ///             `Result<SpotijackSessionManager>` to execute. Execution will
+    ///              be delayed until the applications have been launched. The
+    ///              completion handler will be called on the main queue.
+    ///
+    /// - note: Spotify's scripting interface doesn't activate until after the
+    ///         application is launched. If Spotify needs to be launched, the
+    ///         completion handler won't be activated until 0.7 seconds after
+    ///         Spotify has been launched. This still mightn't be enough time for
+    ///         Spotify to activate the scripting interface in which case what happens
+    ///         is pretty much unknown.
+    public static func establishSession(_ then: (Result<SpotijackSession>) -> ()) {
+        // TODO
     }
 
     //MARK: Application Intialisation
@@ -268,24 +97,6 @@ public class SpotijackSessionManager: NSObject {
         }
     }
 
-    /// Attempts to start Audio Hijack Pro, Spotify and the Spotijack session.
-    /// The behaviour of SpotijackSessionManager is undefined if this function
-    /// is not called at least once.
-
-    /// Establishes a Spotijack session, launching Audio Hijack Pro and Spotify
-    /// if they aren't already launched.
-    ///
-    /// - parameter completionHandler: A function accepting a
-    ///             `Result<SpotijackSessionManager>` to execute. Execution will
-    ///              be delayed until the applications have been launched. The
-    ///              completion handler will be called on the main queue.
-    ///
-    /// - note: Spotify's scripting interface doesn't activate until after the
-    ///         application is launched. If Spotify needs to be launched, the
-    ///         completion handler won't be activated until 0.7 seconds after
-    ///         Spotify has been launched. This still mightn't be enough time for
-    ///         Spotify to activate the scripting interface in which case what happens
-    ///         is pretty much unknown.
     public static func establishSession(then completionHandler: @escaping ((Result<SpotijackSessionManager>) -> ())) {
         // Call the completion handler if everything's already running.
         let sessionManager = SpotijackSessionManager.shared
@@ -320,169 +131,6 @@ public class SpotijackSessionManager: NSObject {
             }
 
             return
-        }
-    }
-
-    //MARK: Application Polling
-    /// Starts polling Spotify and AHP for changes. Polling is stopped when
-    /// `stopPolling()` is called or if `SpotijackSessionManager` encounters an
-    /// error.
-    ///
-    /// Calling this method when `SpotijackSessionManager` is already polling will
-    /// have no effect.
-    public func startPolling(every interval: TimeInterval) {
-        guard isPolling == false else {
-            return
-        }
-
-        _applicationPollingTimer = Timer.scheduledTimer(timeInterval: interval, target: self,
-                                                        selector: #selector(applicationPollingTimerFired(timer:)),
-                                                        userInfo: nil,
-                                                        repeats: true)
-        _applicationPollingTimer?.fire()
-    }
-
-    /// Stops polling Spotify and AHP for changes.
-    ///
-    /// Calling this method when `SpotijackSessionManager` isn't already polling
-    /// will have no effect.
-    public func stopPolling() {
-        guard isPolling == true else {
-            return
-        }
-
-        _applicationPollingTimer?.invalidate()
-        _applicationPollingTimer = nil
-    }
-
-    @objc private func applicationPollingTimerFired(timer: Timer) {
-        pollSpotify()
-        pollAudioHijackPro()
-    }
-
-    // Synchronise the internal Spotify state
-    private func pollSpotify() {
-        _currentTrack = currentTrack
-    }
-
-    // Synchronise the internal AHP state
-    private func pollAudioHijackPro() {
-        _isRecording = isRecording
-        _isMuted = isMuted
-    }
-
-    //MARK: Spotijacking
-    /// Start a Spotijack recording session. Calling this method when a recording
-    /// session is already in progress has no effect. Polling will be restarted
-    /// at the interval specified in `config`.
-    public func startSpotijackSession(config: RecordingConfiguration) throws {
-        guard isSpotijacking == false else {
-            return
-        }
-
-        // Set up recording configuration
-        do {
-            if config.disableRepeat {
-                try spotifyBridge.dematerialize().setRepeating!(false)
-            }
-
-            if config.disableShuffling {
-                try spotifyBridge.dematerialize().setShuffling!(false)
-            }
-
-            if config.muteSpotify {
-                try spotijackSessionBridge.dematerialize().setSpeakerMuted!(true)
-            }
-        } catch (let error) {
-            throw error
-        }
-
-        if isPolling { stopPolling() }
-        startPolling(every: config.pollingInterval)
-        isSpotijacking = true
-        startNewRecording()
-    }
-
-    /// Stops a Spotijack recording session. Calling this method when no recording
-    /// session is in progress has no effect. This method does not end polling.
-    public func stopSpotijackSession() {
-        guard isSpotijacking == true else {
-            return
-        }
-
-        isRecording = false
-        isSpotijacking = false
-    }
-
-    /// Starts a new recording in AHP and resets Spotify's play position.
-    /// If there is no new track, ends the current Spotijack session.
-    private func startNewRecording() {
-        switch (spotifyBridge, spotijackSessionBridge, currentTrack) {
-        case (.ok(let spotify), .ok(let spotijackSession), .some(let currentTrack)):
-            isRecording = false
-            spotify.pause!()
-            spotify.setPlayerPosition!(0.0)
-            spotijackSession.setMetadata(from: currentTrack)
-            spotijackSession.startRecording!()
-            spotify.play!()
-        case (.ok, .ok, .none):
-            stopSpotijackSession()
-        case (.fail(let error), _, _):
-            notiCenter.post(DidEncounterError(sender: self, error: error))
-        case (_, .fail(let error), _):
-            notiCenter.post(DidEncounterError(sender: self, error: error))
-        }
-    }
-
-    // Called when a `DidEncounterError` notification is posted. Ends polling and
-   // any Spotijack controlled recording sessions that were running.
-    private func didEncounterError(_ error: Error) {
-        stopSpotijackSession()
-        stopPolling()
-    }
-}
-
-//MARK: Errors
-public extension SpotijackSessionManager {
-    public enum SpotijackSessionError: Error {
-        /// The application it not launched or a launch attempt has not been
-        /// made yet.
-        case applicationNotLaunched(name: String)
-
-        /// The Spotify bundle could not be found or the application failed to
-        /// start for some exceptional reason.
-        case cantStartApplication(name: String)
-
-        /// Could not get an SBApplication reference to the application. Maybe
-        /// it no longer supports AppleScript?
-        case noScriptingInterface(appName: String)
-
-        /// Could not find a running instance of the application after trying
-        /// to start the application.
-        case noRunningInstanceFound(appName: String)
-
-        /// Could not find a Spotijack session in AHP
-        case spotijackSessionNotFound
-    }
-}
-
-//MARK: RecordingConfiguration
-public extension SpotijackSessionManager {
-    public struct RecordingConfiguration {
-        /// Should the Spotijack session be muted when starting Spotijacking?
-        public let muteSpotify: Bool
-        /// Should shuffling be disabled in Spotify when starting Spotijacking?
-        public let disableShuffling: Bool
-        /// Should repeat be disabled in Spotify when starting Spotijacking?
-        public let disableRepeat: Bool
-        /// Frequency we should poll Spotify and AHP when Spotijacking.
-        public let pollingInterval: TimeInterval
-
-        public init(muteSpotify: Bool = false, disableShuffling: Bool = false, disableRepeat: Bool = false, pollingInterval: TimeInterval = 0.1) {
-            self.muteSpotify = muteSpotify
-            self.disableShuffling = disableShuffling
-            self.disableRepeat = disableRepeat
-            self.pollingInterval = pollingInterval
         }
     }
 }
