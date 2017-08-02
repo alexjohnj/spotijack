@@ -10,6 +10,8 @@ import Cocoa
 import ScriptingBridge
 import Result
 
+typealias SBRunningApplicationPair<T: SBApplicationProtocol> = (app: NSRunningApplication, bridge: T)
+
 public final class SpotijackSession {
     //MARK: Properties - Application Bridges
     // Access level is internal for testing purposes.
@@ -154,11 +156,11 @@ public final class SpotijackSession {
     public private(set) var isSpotijacking: Bool = false
 
     //MARK: Lifecycle
-    internal init(spotifyApplication: NSRunningApplication, spotifyBridge: SpotifyApplication, audioHijackApplication: NSRunningApplication, audioHijackBridge: AudioHijackApplication) {
-        self.spotifyApplication = spotifyApplication
-        self.spotifyBridge = spotifyBridge
-        self.audioHijackApplication = audioHijackApplication
-        self.audioHijackBridge = audioHijackBridge
+    internal init(spotify: SBRunningApplicationPair<SpotifyApplication>, audioHijack: SBRunningApplicationPair<AudioHijackApplication>) {
+        self.spotifyApplication = spotify.app
+        self.spotifyBridge = spotify.bridge
+        self.audioHijackApplication = audioHijack.app
+        self.audioHijackBridge = audioHijack.bridge
     }
 
     deinit {
