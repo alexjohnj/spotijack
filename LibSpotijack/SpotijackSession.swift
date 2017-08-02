@@ -13,6 +13,9 @@ import Result
 typealias SBRunningApplicationPair<T: SBApplicationProtocol> = (app: NSRunningApplication, bridge: T)
 
 public final class SpotijackSession {
+    //MARK: Properties - General
+    private weak var manager: SpotijackSessionManager?
+    
     //MARK: Properties - Application Bridges
     // Access level is internal for testing purposes.
     internal var spotifyBridge: SpotifyApplication
@@ -156,49 +159,45 @@ public final class SpotijackSession {
     public private(set) var isSpotijacking: Bool = false
 
     //MARK: Lifecycle
-    internal init(spotify: SBRunningApplicationPair<SpotifyApplication>, audioHijack: SBRunningApplicationPair<AudioHijackApplication>) {
+    internal init(spotify: SBRunningApplicationPair<SpotifyApplication>, audioHijack: SBRunningApplicationPair<AudioHijackApplication>, manager: SpotijackSessionManager) {
         self.spotifyApplication = spotify.app
         self.spotifyBridge = spotify.bridge
         self.audioHijackApplication = audioHijack.app
         self.audioHijackBridge = audioHijack.bridge
+
+        self.manager = manager
     }
 
-    deinit {
-        // Trigger KVO observer removal for NSRunningApplication instances
-        spotifyApplication = nil
-        audioHijackApplication = nil
-    }
-
-    //MARK: KVO Methods
-    override public func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        guard context == &self.context,
-            let keyPath = keyPath,
-            let object = object,
-            let change = change
-            else {
-                return
-        }
-
-        // Handle termination of an application
-        if keyPath == #keyPath(NSRunningApplication.isTerminated),
-            let object = object as? NSRunningApplication,
-            let isTerminated = change[.newKey] as? Bool,
-            isTerminated == true
-        {
-            if let spotifyApplication = spotifyApplication,
-                object == spotifyApplication {
-                self.spotifyApplication = nil
-                return
-            }
-
-            if let audioHijackApplication = audioHijackApplication,
-                object == audioHijackApplication {
-                self.audioHijackApplication = nil
-                return
-            }
-        }
-    }
-
+//    //MARK: KVO Methods
+//    override public func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+//        guard context == &self.context,
+//            let keyPath = keyPath,
+//            let object = object,
+//            let change = change
+//            else {
+//                return
+//        }
+//
+//        // Handle termination of an application
+//        if keyPath == #keyPath(NSRunningApplication.isTerminated),
+//            let object = object as? NSRunningApplication,
+//            let isTerminated = change[.newKey] as? Bool,
+//            isTerminated == true
+//        {
+//            if let spotifyApplication = spotifyApplication,
+//                object == spotifyApplication {
+//                self.spotifyApplication = nil
+//                return
+//            }
+//
+//            if let audioHijackApplication = audioHijackApplication,
+//                object == audioHijackApplication {
+//                self.audioHijackApplication = nil
+//                return
+//            }
+//        }
+//    }
+//
     //MARK: Application Polling
     /// Starts polling Spotify and AHP for changes. Polling is stopped when
     /// `stopPolling()` is called or if `SpotijackSessionManager` encounters an

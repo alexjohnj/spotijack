@@ -15,6 +15,8 @@ public final class SpotijackSessionManager: NSObject {
     private static let shared = SpotijackSessionManager()
     private override init() { }
 
+    private let notiCenter: NotificationCenter = NotificationCenter.default
+
     //MARK: Current Session
     private static var spotijackSession: SpotijackSession? = nil {
         willSet {
@@ -84,7 +86,8 @@ extension SpotijackSessionManager {
             then(.fail(error))
         case (.ok(let spotifyApplication), .ok(let spotifyBridge), .ok(let audioHijackApplication), .ok(let audioHijackBridge)):
             let spotijackSession = SpotijackSession(spotify: (spotifyApplication, spotifyBridge),
-                                                    audioHijack: (audioHijackApplication, audioHijackBridge))
+                                                    audioHijack: (audioHijackApplication, audioHijackBridge),
+                                                    manager: shared)
             self.spotijackSession = spotijackSession
 
             // Wait a little bit for Spotify's scripting interface to come
@@ -137,4 +140,19 @@ extension SpotijackSessionManager {
         }
     }
 }
+
+//MARK: Session Back-Communication
+extension SpotijackSessionManager {
+    func trackDidChange(newTrack: StaticSpotifyTrack?) {
+        notiCenter.post(TrackDidChange(sender: self, newTrack: newTrack))
+    }
+}
+
+
+
+
+
+
+
+
 
