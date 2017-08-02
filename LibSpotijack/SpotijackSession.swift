@@ -27,15 +27,13 @@ public final class SpotijackSession {
     /// A scripting bridge interface to the Spotijack session in Audio Hijack Pro.
     /// Accessing this property will make Audio Hijack Pro start hijacking Spotify.
     internal var spotijackSessionBridge: Result<AudioHijackSession> {
-        return audioHijackBridge.flatMap { ah in
-            let sessions = ah.sessions!() as! [AudioHijackSession] // Should never fail
+        let sessions = audioHijackBridge.sessions!() as! [AudioHijackSession] // Should never fail
 
-            if let session = sessions.first(where: { $0.name == "Spotijack" }) {
-                session.startHijackingRelaunch!(.yes)
-                return .ok(session)
-            } else {
-                return .fail(SpotijackSessionError.spotijackSessionNotFound)
-            }
+        if let session = sessions.first(where: { $0.name == "Spotijack" }) {
+            session.startHijackingRelaunch!(.yes)
+            return .ok(session)
+        } else {
+            return .fail(SpotijackSessionError.spotijackSessionNotFound)
         }
     }
 
@@ -134,19 +132,9 @@ public final class SpotijackSession {
     /// track is playing or if Spotify can not be accessed. For the latter, a
     /// `DidEncounterError` notification is also posted.
     public var currentTrack: StaticSpotifyTrack? {
-        let track = spotifyBridge.map { (spotify) -> StaticSpotifyTrack? in
-            if let currentTrack = spotify.currentTrack {
-                return StaticSpotifyTrack(from: currentTrack)
-            } else {
-                return nil
-            }
-        }
-
-        switch track {
-        case .ok(let value):
-            return value
-        case .fail(let error):
-            manager?.sessionDidEncounterError(error)
+        if let track = spotifyBridge.currentTrack {
+            return StaticSpotifyTrack(from: track)
+        } else {
             return nil
         }
     }
@@ -255,14 +243,14 @@ public final class SpotijackSession {
             return
         }
 
-        // Set up recording configuration
         do {
+            // Set up recording configuration
             if config.disableRepeat {
-                try spotifyBridge.dematerialize().setRepeating!(false)
+                spotifyBridge.setRepeating!(false)
             }
 
             if config.disableShuffling {
-                try spotifyBridge.dematerialize().setShuffling!(false)
+                spotifyBridge.setShuffling!(false)
             }
 
             if config.muteSpotify {
@@ -292,21 +280,30 @@ public final class SpotijackSession {
     /// Starts a new recording in AHP and resets Spotify's play position.
     /// If there is no new track, ends the current Spotijack session.
     private func startNewRecording() {
-        switch (spotifyBridge, spotijackSessionBridge, currentTrack) {
-        case (.ok(let spotify), .ok(let spotijackSession), .some(let currentTrack)):
-            isRecording = false
-            spotify.pause!()
-            spotify.setPlayerPosition!(0.0)
-            spotijackSession.setMetadata(from: currentTrack)
-            spotijackSession.startRecording!()
-            spotify.play!()
-        case (.ok, .ok, .none):
-            stopSpotijackSession()
-        case (.fail(let error), _, _):
+        // Check we can still communicate with the recording session
+        let spotijackSessionBridge: AudioHijackSession
+
+        switch self.spotijackSessionBridge {
+        case .ok(let value):
+            spotijackSessionBridge = value
+        case .fail(let error):
             manager?.sessionDidEncounterError(error)
-        case (_, .fail(let error), _):
-            manager?.sessionDidEncounterError(error)
+            return
         }
+
+        // End the session if there are no more tracks
+        guard let currentTrack = currentTrack else {
+            stopSpotijackSession()
+            return
+        }
+
+        // Start a new recording
+        isRecording = false
+        spotifyBridge.pause!()
+        spotifyBridge.setPlayerPosition!(0.0)
+        spotijackSessionBridge.setMetadata(from: currentTrack)
+        spotijackSessionBridge.startRecording!()
+        spotifyBridge.play!()
     }
 
     // Called when a `DidEncounterError` notification is posted. Ends polling and
@@ -318,7 +315,7 @@ public final class SpotijackSession {
 }
 
 //MARK: RecordingConfiguration
-public extension SpotijackSessionManager {
+public extension SpotijackSession {
     public struct RecordingConfiguration {
         /// Should the Spotijack session be muted when starting Spotijacking?
         public let muteSpotify: Bool
