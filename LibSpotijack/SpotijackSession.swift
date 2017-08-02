@@ -237,12 +237,12 @@ public final class SpotijackSession {
     }
 
     // Synchronise the internal Spotify state
-    private func pollSpotify() {
+    internal func pollSpotify() {
         _currentTrack = currentTrack
     }
 
     // Synchronise the internal AHP state
-    private func pollAudioHijackPro() {
+    internal func pollAudioHijackPro() {
         _isRecording = isRecording
         _isMuted = isMuted
     }

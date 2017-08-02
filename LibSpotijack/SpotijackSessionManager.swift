@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import ScriptingBridge
 import Result
 
 public final class SpotijackSessionManager: NSObject {
@@ -36,8 +37,10 @@ public final class SpotijackSessionManager: NSObject {
 
     //MARK: KVO
     private var context = 0
+}
 
-    //MARK: Access Control
+//MARK: Session Initialisation & Access
+extension SpotijackSessionManager {
     /// Attempts to start Audio Hijack Pro, Spotify and the Spotijack session.
     /// The behaviour of SpotijackSessionManager is undefined if this function
     /// is not called at least once.
@@ -56,11 +59,48 @@ public final class SpotijackSessionManager: NSObject {
     ///         Spotify has been launched. This still mightn't be enough time for
     ///         Spotify to activate the scripting interface in which case what happens
     ///         is pretty much unknown.
-    public static func establishSession(_ then: (Result<SpotijackSession>) -> ()) {
-        // TODO
+    public static func establishSession(_ then: @escaping (Result<SpotijackSession>) -> ()) {
+        guard spotijackSession == nil else {
+            DispatchQueue.main.async {
+                then(.ok(spotijackSession!))
+            }
+            return
+        }
+
+        let spotifyApplication = startApplication(fromBundle: Bundles.spotify)
+        let spotifyBridge = establishScriptingBridge(forBundle: Bundles.spotify)
+
+        let audioHijackApplication = startApplication(fromBundle: Bundles.audioHijack)
+        let audioHijackBridge = establishScriptingBridge(forBundle: Bundles.audioHijack)
+
+        switch (spotifyApplication, spotifyBridge, audioHijackApplication, audioHijackBridge) {
+        case (.fail(let error), _, _, _):
+            then(.fail(error))
+        case (_, .fail(let error), _, _):
+            then(.fail(error))
+        case (_, _, .fail(let error), _):
+            then(.fail(error))
+        case (_, _, _, .fail(let error)):
+            then(.fail(error))
+        case (.ok(let spotifyApplication), .ok(let spotifyBridge), .ok(let audioHijackApplication), .ok(let audioHijackBridge)):
+            let spotijackSession = SpotijackSession(spotify: (spotifyApplication, spotifyBridge),
+                                                    audioHijack: (audioHijackApplication, audioHijackBridge))
+            self.spotijackSession = spotijackSession
+
+            // Wait a little bit for Spotify's scripting interface to come
+            // online after launching. I know, this is Yucky, but Spotify marks
+            // itself as having finished launching before scripting works
+            // so observing NSRunningApplication's isFinishedLaunching property
+            // is no use.
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.7) {
+                self.spotijackSession?.pollSpotify()
+                self.spotijackSession?.pollAudioHijackPro()
+
+                then(.ok(spotijackSession))
+            }
+        }
     }
 
-    //MARK: Application Intialisation
     private typealias BundleInfo = (name: String, identifier: String)
     private struct Bundles {
         static let spotify: BundleInfo = ("Spotify", "com.spotify.client")
@@ -87,7 +127,7 @@ public final class SpotijackSessionManager: NSObject {
         }
     }
 
-    private func establishScriptingBridge(forBundle bundle: BundleInfo) -> Result<SBApplication> {
+    private static func establishScriptingBridge(forBundle bundle: BundleInfo) -> Result<SBApplication> {
         let bridge = SBApplication(bundleIdentifier: bundle.identifier)
 
         if let bridge = bridge {
@@ -96,41 +136,5 @@ public final class SpotijackSessionManager: NSObject {
             return .fail(SpotijackSessionError.noScriptingInterface(appName: bundle.name))
         }
     }
-
-    public static func establishSession(then completionHandler: @escaping ((Result<SpotijackSessionManager>) -> ())) {
-        // Call the completion handler if everything's already running.
-        let sessionManager = SpotijackSessionManager.shared
-        guard sessionManager.spotifyApplication == nil || sessionManager.audioHijackApplication == nil else {
-            DispatchQueue.main.async {
-                completionHandler(.ok(.shared))
-            }
-            return
-        }
-
-        switch (startApplication(fromBundle: Bundles.spotify), startApplication(fromBundle: Bundles.audioHijack)) {
-        case (.fail(let error), _):
-            completionHandler(.fail(error))
-            return
-        case (_, .fail(let error)):
-            completionHandler(.fail(error))
-            return
-        case (.ok(let spotifyApp), .ok(let audioHijackApp)):
-            sessionManager.spotifyApplication = spotifyApp
-            sessionManager.audioHijackApplication = audioHijackApp
-            // Wait a little bit for Spotify's scripting interface to come
-            // online after launching. I know, this is Yucky, but Spotify marks
-            // itself as having finished launching before scripting works
-            // so observing NSRunningApplication's isFinishedLaunching property
-            // is no use.
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.7) {
-                // Update internal state
-                sessionManager.pollSpotify()
-                sessionManager.pollAudioHijackPro()
-
-                completionHandler(.ok(sessionManager))
-            }
-
-            return
-        }
-    }
 }
+
