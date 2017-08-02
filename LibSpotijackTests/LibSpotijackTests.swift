@@ -20,7 +20,7 @@ class LibSpotijackTests: XCTestCase {
 
         killAllApplications()
         let launchExpect = expectation(description: "Waiting to establish session.")
-        SpotijackSessionManager.establishSession { sessionResult in
+        SpotijackSessionManager.shared.establishSession { sessionResult in
             guard case .ok = sessionResult else {
                 XCTFail()
                 return
@@ -76,19 +76,17 @@ extension LibSpotijackTests {
     /// Test muting the Spotijack session works and does not trigger an error.
     func testMuteSpotijackSession() {
         let muteExpect = expectation(description: "Waiting to determine mute state")
-        var muteErrorObserver: NotificationObserver? = nil
+        let muteErrorObserver = SpotijackSessionManager.shared.notiCenter.addObserver(
+            forType: DidEncounterError.self,
+            object: SpotijackSessionManager.shared,
+            queue: nil, using: { _ in XCTFail("Muting Spotijack session triggered an error.") }
+        )
 
-        SpotijackSessionManager.establishSession { sessionResult in
+        SpotijackSessionManager.shared.establishSession { sessionResult in
             guard case .ok(let session) = sessionResult else {
                 XCTFail()
                 return
             }
-
-            muteErrorObserver = session.notiCenter.addObserver(
-                forType: SpotijackSessionManager.DidEncounterError.self,
-                object: session,
-                queue: nil,
-                using: ({ (_) in XCTFail("Muting Spotijack session triggered an error.")}))
 
             let newMuteState = !session.isMuted
             session.isMuted = newMuteState
@@ -107,20 +105,21 @@ extension LibSpotijackTests {
         let muteNotificationExpect = expectation(description: "Waiting for a MuteStateDidChange notification")
         var muteNotificationObserver: NotificationObserver? = nil
 
-        SpotijackSessionManager.establishSession { sessionResult in
+        SpotijackSessionManager.shared.establishSession { sessionResult in
             guard case .ok(let session) = sessionResult else {
                 XCTFail()
                 return
             }
 
-            muteNotificationObserver = session.notiCenter.addObserver(
-                forType: SpotijackSessionManager.MuteStateDidChange.self,
+            muteNotificationObserver = SpotijackSessionManager.shared.notiCenter.addObserver(
+                forType: MuteStateDidChange.self,
                 object: nil,
                 queue: nil,
                 using: ({ noti in
                     XCTAssertEqual(noti.newMuteState, session.isMuted)
                     muteNotificationExpect.fulfill()
                 }))
+
             session.isMuted = !session.isMuted
         }
 
@@ -130,7 +129,7 @@ extension LibSpotijackTests {
     func testMuteSpotijackSessionStartsHijacking() {
         let hijackExpect = expectation(description: "Waiting for Spotijack session to start hijacking")
 
-        SpotijackSessionManager.establishSession { sessionResult in
+        SpotijackSessionManager.shared.establishSession { sessionResult in
             guard case .ok(let session) = sessionResult else {
                 XCTFail()
                 return
@@ -153,15 +152,15 @@ extension LibSpotijackTests {
         let recordingChangeExpect = expectation(description: "Waiting for recording state to change.")
         var recordingErrorObserver: NotificationObserver? = nil
 
-        SpotijackSessionManager.establishSession { sessionResult in
+        SpotijackSessionManager.shared.establishSession { sessionResult in
             guard case .ok(let session) = sessionResult else {
                 XCTFail()
                 return
             }
 
-            recordingErrorObserver = session.notiCenter.addObserver(
-                forType: SpotijackSessionManager.DidEncounterError.self,
-                object: session,
+            recordingErrorObserver = SpotijackSessionManager.shared.notiCenter.addObserver(
+                forType: DidEncounterError.self,
+                object: SpotijackSessionManager.shared,
                 queue: nil,
                 using: { noti in
                     XCTFail("Error when changing recording state \(noti.error)")
@@ -186,7 +185,7 @@ extension LibSpotijackTests {
     func testChangeSpotijackRecordingStatesStartsHijacking() {
         let hijackExpect = expectation(description: "Waiting for Spotijack session to start hijacking")
 
-        SpotijackSessionManager.establishSession { sessionResult in
+        SpotijackSessionManager.shared.establishSession { sessionResult in
             guard case .ok(let session) = sessionResult else {
                 XCTFail()
                 return
@@ -207,7 +206,7 @@ extension LibSpotijackTests {
         let notificationExpect = expectation(description: "Waiting for recording status did change notification")
         var notificationObserver: NotificationObserver? = nil
 
-        SpotijackSessionManager.establishSession { sessionResult in
+        SpotijackSessionManager.shared.establishSession { sessionResult in
             guard case .ok(let session) = sessionResult else {
                 XCTFail()
                 return
@@ -215,9 +214,9 @@ extension LibSpotijackTests {
 
             let newRecordingState = !session.isRecording
 
-            notificationObserver = session.notiCenter.addObserver(
-                forType: SpotijackSessionManager.RecordingStateDidChange.self,
-                object: session,
+            notificationObserver = SpotijackSessionManager.shared.notiCenter.addObserver(
+                forType: RecordingStateDidChange.self,
+                object: SpotijackSessionManager.shared,
                 queue: nil,
                 using: { (noti) in
                     XCTAssertEqual(newRecordingState, noti.isRecording)
@@ -237,15 +236,15 @@ extension LibSpotijackTests {
         let currentTrackExpect = expectation(description: "Waiting to get current track")
         var errorNotificationObserver: NotificationObserver? = nil
 
-        SpotijackSessionManager.establishSession { sessionResult in
+        SpotijackSessionManager.shared.establishSession { sessionResult in
             guard case .ok(let session) = sessionResult else {
                 XCTFail()
                 return
             }
 
-            errorNotificationObserver = session.notiCenter.addObserver(
-                forType: SpotijackSessionManager.DidEncounterError.self,
-                object: session,
+            errorNotificationObserver = SpotijackSessionManager.shared.notiCenter.addObserver(
+                forType: DidEncounterError.self,
+                object: SpotijackSessionManager.shared,
                 queue: nil,
                 using: { noti in
                     XCTFail(String(describing: noti.error))
@@ -260,12 +259,12 @@ extension LibSpotijackTests {
             DispatchQueue.global(qos: .userInitiated).async {
                 // Reset to a known track first
                 DispatchQueue.main.sync {
-                    session.spotifyBridge.value?.playTrack!(FakeHappy.uri, inContext: nil)
+                    session.spotifyBridge.playTrack!(FakeHappy.uri, inContext: nil)
                 }
                 while session.currentTrack?.name != FakeHappy.name { continue }
 
                 DispatchQueue.main.sync {
-                    session.spotifyBridge.value?.playTrack!(LetTheFlamesBegin.uri, inContext: nil)
+                    session.spotifyBridge.playTrack!(LetTheFlamesBegin.uri, inContext: nil)
                 }
                 while session.currentTrack?.name != LetTheFlamesBegin.name { continue }
 
@@ -285,15 +284,15 @@ extension LibSpotijackTests {
         let changeTrackExpect = expectation(description: "Waiting for track change notification")
         var trackChangeObserver: NotificationObserver? = nil
 
-        SpotijackSessionManager.establishSession { sessionResult in
+        SpotijackSessionManager.shared.establishSession { sessionResult in
             guard case .ok(let session) = sessionResult else {
                 XCTFail()
                 return
             }
 
-            trackChangeObserver = session.notiCenter.addObserver(
-                forType: SpotijackSessionManager.TrackDidChange.self,
-                object: session,
+            trackChangeObserver = SpotijackSessionManager.shared.notiCenter.addObserver(
+                forType: TrackDidChange.self,
+                object: SpotijackSessionManager.shared,
                 queue: nil,
                 using: { noti in
                     changeTrackExpect.fulfill()
@@ -301,7 +300,7 @@ extension LibSpotijackTests {
 
             DispatchQueue.global(qos: .userInitiated).async {
                 DispatchQueue.main.sync {
-                    session.spotifyBridge.value?.playTrack!(LetTheFlamesBegin.uri, inContext: nil)
+                    session.spotifyBridge.playTrack!(LetTheFlamesBegin.uri, inContext: nil)
                 }
 
                 while session.currentTrack?.name != LetTheFlamesBegin.name { continue }
@@ -309,7 +308,7 @@ extension LibSpotijackTests {
                 session.startPolling(every: 0.1)
 
                 DispatchQueue.main.sync {
-                    session.spotifyBridge.value?.playTrack!(FakeHappy.uri, inContext: nil)
+                    session.spotifyBridge.playTrack!(FakeHappy.uri, inContext: nil)
                 }
             }
         }
@@ -322,7 +321,7 @@ extension LibSpotijackTests {
 extension LibSpotijackTests {
     func testPollingStatusWorks() {
         let statusExpectation = expectation(description: "Waiting to get polling status.")
-        SpotijackSessionManager.establishSession { sessionResult in
+        SpotijackSessionManager.shared.establishSession { sessionResult in
             guard case .ok(let session) = sessionResult else {
                 XCTFail()
                 return
@@ -343,14 +342,14 @@ extension LibSpotijackTests {
     func testTerminatingAHPEndsPolling() {
         let pollingEndedExpectation = expectation(description: "Waiting for Spotijack to stop polling")
 
-        SpotijackSessionManager.establishSession { sessionResult in
+        SpotijackSessionManager.shared.establishSession { sessionResult in
             guard case .ok(let session) = sessionResult else {
                 XCTFail()
                 return
             }
 
             session.startPolling(every: 0.1)
-            session.audioHijackApplication?.forceTerminate()
+            session.audioHijackApplication.forceTerminate()
 
             // Takes a bit of time for KVO termination notifications to fire so
             // keep checking on a background queue.
@@ -366,14 +365,14 @@ extension LibSpotijackTests {
     func testTerminatingSpotifyEndsPolling() {
         let pollingEndedExpectation = expectation(description: "Waiting for Spotijack to stop polling")
 
-        SpotijackSessionManager.establishSession { sessionResult in
+        SpotijackSessionManager.shared.establishSession { sessionResult in
             guard case .ok(let session) = sessionResult else {
                 XCTFail()
                 return
             }
 
             session.startPolling(every: 0.1)
-            session.spotifyApplication?.forceTerminate()
+            session.spotifyApplication.forceTerminate()
 
             // Takes a bit of time for KVO termination notifications to fire so
             // keep checking on a background queue.
@@ -392,24 +391,24 @@ extension LibSpotijackTests {
     func testSpotijacking() {
         let spotijackingExpectation = expectation(description: "Waiting to Spotijack things")
 
-        SpotijackSessionManager.establishSession { sessionResult in
+        SpotijackSessionManager.shared.establishSession { sessionResult in
             guard case .ok(let session) = sessionResult else {
                 XCTFail()
                 return
             }
 
-            let originalRecordingCount = session.audioHijackBridge.value?.audioRecordings!().count ?? 0
+            let originalRecordingCount = session.audioHijackBridge.audioRecordings!().count
 
             DispatchQueue.global(qos: .userInitiated).async {
                 DispatchQueue.main.sync {
-                    session.spotifyBridge.value?.playTrack!(LetTheFlamesBegin.uri, inContext: nil)
+                    session.spotifyBridge.playTrack!(LetTheFlamesBegin.uri, inContext: nil)
                 }
 
                 while session.currentTrack?.name != LetTheFlamesBegin.name { continue }
 
                 DispatchQueue.main.sync {
                     do {
-                        let config = SpotijackSessionManager.RecordingConfiguration(muteSpotify: true, disableShuffling: true, disableRepeat: true, pollingInterval: 0.1)
+                        let config = SpotijackSession.RecordingConfiguration(muteSpotify: true, disableShuffling: true, disableRepeat: true, pollingInterval: 0.1)
                         try session.startSpotijackSession(config: config)
                     } catch (let error) {
                         XCTFail(String(describing: error))
@@ -417,13 +416,13 @@ extension LibSpotijackTests {
 
                     XCTAssertTrue(session.isSpotijacking)
                     XCTAssertTrue(session.isMuted)
-                    XCTAssertFalse(session.spotifyBridge.value?.shuffling ?? true)
-                    XCTAssertFalse(session.spotifyBridge.value?.repeating ?? true)
+                    XCTAssertFalse(session.spotifyBridge.shuffling!)
+                    XCTAssertFalse(session.spotifyBridge.repeating!)
                 }
                 DispatchQueue.global(qos: .userInitiated).asyncAfter(deadline: .now() + 5.0) {
                     // Trigger a track change
                     DispatchQueue.main.sync {
-                        session.spotifyBridge.value?.playTrack!(FakeHappy.uri, inContext: nil)
+                        session.spotifyBridge.playTrack!(FakeHappy.uri, inContext: nil)
                     }
 
                     while session.currentTrack?.name != FakeHappy.name { continue }
@@ -433,7 +432,7 @@ extension LibSpotijackTests {
                         XCTAssertFalse(session.isSpotijacking)
                         XCTAssertFalse(session.isRecording)
 
-                        let newRecordingCount = session.audioHijackBridge.value?.audioRecordings!().count ?? 0
+                        let newRecordingCount = session.audioHijackBridge.audioRecordings!().count
                         XCTAssertEqual(originalRecordingCount, newRecordingCount - 2)
 
                         spotijackingExpectation.fulfill()
@@ -446,7 +445,7 @@ extension LibSpotijackTests {
 
     func testStartNewRecordingUpdatesRecordingMetadata() {
         let metadataExpect = expectation(description: "Waiting to check AHP metadata")
-        SpotijackSessionManager.establishSession { sessionResult in
+        SpotijackSessionManager.shared.establishSession { sessionResult in
             guard case .ok(let session) = sessionResult else {
                 XCTFail()
                 return
@@ -454,14 +453,14 @@ extension LibSpotijackTests {
 
             DispatchQueue.global(qos: .userInitiated).async {
                 DispatchQueue.main.sync {
-                    session.spotifyBridge.value?.playTrack!(LetTheFlamesBegin.uri, inContext: nil)
+                    session.spotifyBridge.playTrack!(LetTheFlamesBegin.uri, inContext: nil)
                 }
 
                 while session.currentTrack?.name != LetTheFlamesBegin.name { continue }
 
                 DispatchQueue.main.sync {
                     do {
-                        let config = SpotijackSessionManager.RecordingConfiguration(muteSpotify: true, disableShuffling: true, disableRepeat: true, pollingInterval: 0.1)
+                        let config = SpotijackSession.RecordingConfiguration(muteSpotify: true, disableShuffling: true, disableRepeat: true, pollingInterval: 0.1)
                         try session.startSpotijackSession(config: config)
                     } catch (let error) {
                         XCTFail(String(describing: error))
