@@ -15,7 +15,7 @@ public final class SpotijackSessionManager: NSObject {
     private static let shared = SpotijackSessionManager()
     private override init() { }
 
-    private let notiCenter: NotificationCenter = NotificationCenter.default
+    public static let notiCenter: NotificationCenter = NotificationCenter.default
 
     //MARK: Current Session
     private static var _ahpTerminationObserver: NSKeyValueObservation? = nil
