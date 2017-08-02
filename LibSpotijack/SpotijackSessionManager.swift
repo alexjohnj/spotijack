@@ -18,9 +18,29 @@ public final class SpotijackSessionManager: NSObject {
     private let notiCenter: NotificationCenter = NotificationCenter.default
 
     //MARK: Current Session
+    private static var _ahpTerminationObserver: NSKeyValueObservation? = nil
+    private static var _spotifyTerminationObserver: NSKeyValueObservation? = nil
     private static var spotijackSession: SpotijackSession? = nil {
         willSet {
-            // TODO Set up KVO notifications for applications
+            _ahpTerminationObserver = nil
+            _spotifyTerminationObserver = nil
+        } didSet {
+            guard let spotijackSession = spotijackSession else {
+                return
+            }
+
+            // Set up KVO of application termination.
+            _ahpTerminationObserver = spotijackSession.audioHijackApplication.observe(\.isTerminated) { (_, change) in
+                if change.newValue == true {
+                    self.spotijackSession = nil
+                }
+            }
+
+            _spotifyTerminationObserver = spotijackSession.spotifyApplication.observe(\.isTerminated) { (_, change) in
+                if change.newValue == true {
+                    self.spotijackSession = nil
+                }
+            }
         }
     }
 
@@ -159,12 +179,3 @@ extension SpotijackSessionManager {
         notiCenter.post(DidEncounterError(sender: self, error: error))
     }
 }
-
-
-
-
-
-
-
-
-
