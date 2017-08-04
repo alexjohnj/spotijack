@@ -18,65 +18,36 @@ class LibSpotijackTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        killAllApplications()
+        // Launch applications if needed
         let launchExpect = expectation(description: "Waiting to establish session.")
         SpotijackSessionManager.shared.establishSession { sessionResult in
-            guard case .ok = sessionResult else {
+            guard case .ok(let session) = sessionResult else {
                 XCTFail()
                 return
             }
+            // Reset application state
+            // AHP
+            guard case .ok(let ahpSession) = session.spotijackSessionBridge else {
+                XCTFail()
+                return
+            }
+            ahpSession.stopRecording!()
+            ahpSession.stopHijacking!()
+            ahpSession.setSpeakerMuted!(false)
+
+            // Spotify
+            session.spotifyBridge.pause!()
+            session.spotifyBridge.setPlayerPosition!(0.0)
+            session.spotifyBridge.setRepeating!(false)
+            session.spotifyBridge.setShuffling!(false)
+
             launchExpect.fulfill()
         }
 
         wait(for: [launchExpect], timeout: 5.0)
-    }
 
-    override func tearDown() {
-        super.tearDown()
-
-        killAllApplications()
-    }
-
-    func killAllApplications() {
-        let spotifyKillExpect = expectation(description: "Waiting for Spotify to terminate.")
-        let audioHijackKillExpect = expectation(description: "Waiting for AHP to terminate.")
-        var spotifyObserver: NSObjectProtocol? = nil
-        var audioHijackObserver: NSObjectProtocol? = nil
-
-        if let spotify = NSRunningApplication.runningApplications(withBundleIdentifier: spotifyBundle).first {
-            spotifyObserver = NSWorkspace.shared.notificationCenter.addObserver(forName: NSWorkspace.didTerminateApplicationNotification, object: nil, queue: nil) { noti in
-                guard let app = noti.userInfo?[NSWorkspace.applicationUserInfoKey] as? NSRunningApplication else {
-                    return
-                }
-
-                if app.bundleIdentifier == spotifyBundle {
-                    spotifyKillExpect.fulfill()
-                    NSWorkspace.shared.notificationCenter.removeObserver(spotifyObserver)
-                }
-            }
-
-            spotify.forceTerminate()
-        } else {
-            spotifyKillExpect.fulfill()
-        }
-
-        if let audioHijack = NSRunningApplication.runningApplications(withBundleIdentifier: audioHijackBundle).first {
-            audioHijackObserver = NSWorkspace.shared.notificationCenter.addObserver(forName: NSWorkspace.didTerminateApplicationNotification, object: nil, queue: nil) { noti in
-                guard let app = noti.userInfo?[NSWorkspace.applicationUserInfoKey] as? NSRunningApplication else {
-                    return
-                }
-
-                if app.bundleIdentifier == audioHijackBundle {
-                    audioHijackKillExpect.fulfill()
-                    NSWorkspace.shared.notificationCenter.removeObserver(audioHijackObserver)
-                }
-            }
-            audioHijack.forceTerminate()
-        } else {
-            audioHijackKillExpect.fulfill()
-        }
-
-        wait(for: [audioHijackKillExpect, spotifyKillExpect], timeout: 10.0)
+        // Reset SessionManager
+        SpotijackSessionManager.shared.spotijackSession = nil
     }
 }
 
