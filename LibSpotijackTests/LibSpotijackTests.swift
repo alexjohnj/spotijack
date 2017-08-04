@@ -25,7 +25,8 @@ class LibSpotijackTests: XCTestCase {
                 XCTFail()
                 return
             }
-            // Reset application state
+            // Reset application state. Deliberately avoiding using
+            // SpotijackSession API here.
             // AHP
             guard case .ok(let ahpSession) = session.spotijackSessionBridge else {
                 XCTFail()
@@ -48,6 +49,21 @@ class LibSpotijackTests: XCTestCase {
 
         // Reset SessionManager
         SpotijackSessionManager.shared.spotijackSession = nil
+    }
+
+    override func tearDown() {
+        SpotijackSessionManager.shared.establishSession { sessionResult in
+            guard case .ok(let session) = sessionResult else {
+                XCTFail()
+                return
+            }
+
+            session.isRecording = false
+            session.isMuted = false
+
+            session.spotijackSessionBridge.value?.stopHijacking!()
+            session.spotifyBridge.pause!()
+        }
     }
 }
 
