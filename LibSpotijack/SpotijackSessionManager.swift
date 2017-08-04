@@ -9,40 +9,17 @@
 import Foundation
 import ScriptingBridge
 import Result
+import TypedNotification
 
-public final class SpotijackSessionManager: NSObject {
+public final class SpotijackSessionManager {
     //MARK: Singleton Setup
     public static let shared = SpotijackSessionManager()
-    private override init() { }
+    private init() { }
 
     public let notiCenter: NotificationCenter = NotificationCenter.default
 
     //MARK: Current Session
-    private var _ahpTerminationObserver: NSKeyValueObservation? = nil
-    private var _spotifyTerminationObserver: NSKeyValueObservation? = nil
-    private var spotijackSession: SpotijackSession? = nil {
-        willSet {
-            _ahpTerminationObserver = nil
-            _spotifyTerminationObserver = nil
-        } didSet {
-            guard let spotijackSession = spotijackSession else {
-                return
-            }
-
-            // Set up KVO of application termination.
-            _ahpTerminationObserver = spotijackSession.audioHijackApplication.observe(\.isTerminated) { (_, change) in
-                if change.newValue == true {
-                    self.spotijackSession = nil
-                }
-            }
-
-            _spotifyTerminationObserver = spotijackSession.spotifyApplication.observe(\.isTerminated) { (_, change) in
-                if change.newValue == true {
-                    self.spotijackSession = nil
-                }
-            }
-        }
-    }
+    internal var spotijackSession: SpotijackSession? // Internal for testing
 
     //MARK: State Properties
     public var isMuted: Bool {
@@ -87,37 +64,23 @@ extension SpotijackSessionManager {
             return
         }
 
-        let spotifyApplication = startApplication(fromBundle: Bundles.spotify)
         let spotifyBridge = establishScriptingBridge(forBundle: Bundles.spotify)
-
-        let audioHijackApplication = startApplication(fromBundle: Bundles.audioHijack)
         let audioHijackBridge = establishScriptingBridge(forBundle: Bundles.audioHijack)
 
-        switch (spotifyApplication, spotifyBridge, audioHijackApplication, audioHijackBridge) {
-        case (.fail(let error), _, _, _):
+        switch (spotifyBridge, audioHijackBridge) {
+        case (.fail(let error), _):
             then(.fail(error))
-        case (_, .fail(let error), _, _):
+        case (_, .fail(let error)):
             then(.fail(error))
-        case (_, _, .fail(let error), _):
-            then(.fail(error))
-        case (_, _, _, .fail(let error)):
-            then(.fail(error))
-        case (.ok(let spotifyApplication), .ok(let spotifyBridge), .ok(let audioHijackApplication), .ok(let audioHijackBridge)):
-            let spotijackSession = SpotijackSession(spotify: (spotifyApplication, spotifyBridge),
-                                                    audioHijack: (audioHijackApplication, audioHijackBridge),
-                                                    manager: self)
-            self.spotijackSession = spotijackSession
+        case (.ok(let spotifyBridge), .ok(let audioHijackBridge)):
+            let session = SpotijackSession(spotifyBridge: spotifyBridge, audioHijackBridge: audioHijackBridge, manager: self)
+            self.spotijackSession = session
 
-            // Wait a little bit for Spotify's scripting interface to come
-            // online after launching. I know, this is Yucky, but Spotify marks
-            // itself as having finished launching before scripting works
-            // so observing NSRunningApplication's isFinishedLaunching property
-            // is no use.
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.7) {
                 self.spotijackSession?.pollSpotify()
                 self.spotijackSession?.pollAudioHijackPro()
 
-                then(.ok(spotijackSession))
+                then(.ok(session))
             }
         }
     }
@@ -128,27 +91,19 @@ extension SpotijackSessionManager {
         static let audioHijack: BundleInfo = ("Audio Hijack Pro", "com.rogueamoeba.AudioHijackPro2")
     }
 
-    private func startApplication(fromBundle bundle: BundleInfo,
-                                         options: NSWorkspace.LaunchOptions = [.withoutActivation, .andHide]) -> Result<NSRunningApplication> {
-        let appLaunched = NSWorkspace.shared.launchApplication(withBundleIdentifier: bundle.identifier,
-                                                               options: options,
-                                                               additionalEventParamDescriptor: nil,
-                                                               launchIdentifier: nil)
-
-        guard appLaunched == true else {
-            return .fail(SpotijackSessionError.cantStartApplication(name: bundle.name))
-        }
-
-        let applicationHandle = NSRunningApplication.runningApplications(withBundleIdentifier: bundle.identifier).first
-
-        if let applicationHandle = applicationHandle {
-            return .ok(applicationHandle)
-        } else {
-            return .fail(SpotijackSessionError.noRunningInstanceFound(appName: bundle.name))
-        }
+    private func launchApplication(fromBundle bundle: BundleInfo) -> Bool {
+        return NSWorkspace.shared.launchApplication(
+            withBundleIdentifier: bundle.identifier,
+            options: [.withoutActivation, .andHide],
+            additionalEventParamDescriptor: nil,
+            launchIdentifier: nil)
     }
 
     private func establishScriptingBridge(forBundle bundle: BundleInfo) -> Result<SBApplication> {
+        guard launchApplication(fromBundle: bundle) == true else {
+            return .fail(SpotijackSessionError.cantStartApplication(name: bundle.name))
+        }
+        
         let bridge = SBApplication(bundleIdentifier: bundle.identifier)
 
         if let bridge = bridge {

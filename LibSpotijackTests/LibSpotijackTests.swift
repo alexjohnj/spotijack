@@ -40,13 +40,18 @@ class LibSpotijackTests: XCTestCase {
     func killAllApplications() {
         let spotifyKillExpect = expectation(description: "Waiting for Spotify to terminate.")
         let audioHijackKillExpect = expectation(description: "Waiting for AHP to terminate.")
-        var spotifyObserver: NSKeyValueObservation? = nil
-        var audioHijackObserver: NSKeyValueObservation? = nil
+        var spotifyObserver: NSObjectProtocol? = nil
+        var audioHijackObserver: NSObjectProtocol? = nil
 
         if let spotify = NSRunningApplication.runningApplications(withBundleIdentifier: spotifyBundle).first {
-            spotifyObserver = spotify.observe(\.isTerminated) { (observer, _) in
-                if observer.isTerminated == true {
+            spotifyObserver = NSWorkspace.shared.notificationCenter.addObserver(forName: NSWorkspace.didTerminateApplicationNotification, object: nil, queue: nil) { noti in
+                guard let app = noti.userInfo?[NSWorkspace.applicationUserInfoKey] as? NSRunningApplication else {
+                    return
+                }
+
+                if app.bundleIdentifier == spotifyBundle {
                     spotifyKillExpect.fulfill()
+                    NSWorkspace.shared.notificationCenter.removeObserver(spotifyObserver)
                 }
             }
 
@@ -56,12 +61,16 @@ class LibSpotijackTests: XCTestCase {
         }
 
         if let audioHijack = NSRunningApplication.runningApplications(withBundleIdentifier: audioHijackBundle).first {
-            audioHijackObserver = audioHijack.observe(\.isTerminated) { (observer, _) in
-                if observer.isTerminated == true {
+            audioHijackObserver = NSWorkspace.shared.notificationCenter.addObserver(forName: NSWorkspace.didTerminateApplicationNotification, object: nil, queue: nil) { noti in
+                guard let app = noti.userInfo?[NSWorkspace.applicationUserInfoKey] as? NSRunningApplication else {
+                    return
+                }
+
+                if app.bundleIdentifier == audioHijackBundle {
                     audioHijackKillExpect.fulfill()
+                    NSWorkspace.shared.notificationCenter.removeObserver(audioHijackObserver)
                 }
             }
-
             audioHijack.forceTerminate()
         } else {
             audioHijackKillExpect.fulfill()
@@ -337,52 +346,6 @@ extension LibSpotijackTests {
         }
 
         wait(for: [statusExpectation], timeout: 5.0)
-    }
-
-    func testTerminatingAHPEndsPolling() {
-        let pollingEndedExpectation = expectation(description: "Waiting for Spotijack to stop polling")
-
-        SpotijackSessionManager.shared.establishSession { sessionResult in
-            guard case .ok(let session) = sessionResult else {
-                XCTFail()
-                return
-            }
-
-            session.startPolling(every: 0.1)
-            session.audioHijackApplication.forceTerminate()
-
-            // Takes a bit of time for KVO termination notifications to fire so
-            // keep checking on a background queue.
-            DispatchQueue.global(qos: .userInitiated).async {
-                while session.isPolling == true { continue }
-                pollingEndedExpectation.fulfill()
-            }
-        }
-
-        wait(for: [pollingEndedExpectation], timeout: 5.0)
-    }
-
-    func testTerminatingSpotifyEndsPolling() {
-        let pollingEndedExpectation = expectation(description: "Waiting for Spotijack to stop polling")
-
-        SpotijackSessionManager.shared.establishSession { sessionResult in
-            guard case .ok(let session) = sessionResult else {
-                XCTFail()
-                return
-            }
-
-            session.startPolling(every: 0.1)
-            session.spotifyApplication.forceTerminate()
-
-            // Takes a bit of time for KVO termination notifications to fire so
-            // keep checking on a background queue.
-            DispatchQueue.global(qos: .userInitiated).async {
-                while session.isPolling == true { continue }
-                pollingEndedExpectation.fulfill()
-            }
-        }
-
-        wait(for: [pollingEndedExpectation], timeout: 5.0)
     }
 }
 
