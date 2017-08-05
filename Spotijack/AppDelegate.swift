@@ -7,14 +7,15 @@
 //
 
 import Cocoa
+import LibSpotijack
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
-    private lazy var mainWindowController: MainWindowController = MainWindowController(windowNibName: "MainWindow")
+    private lazy var mainWindowController: MainWindowController = MainWindowController(windowNibName: NSNib.Name("MainWindow"))
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         // Display the main window
-        let _ = applicationShouldHandleReopen(NSApplication.shared(), hasVisibleWindows: false)
+        let _ = applicationShouldHandleReopen(NSApplication.shared, hasVisibleWindows: false)
     }
 
     func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
