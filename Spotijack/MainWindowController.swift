@@ -65,6 +65,14 @@ extension MainWindowController {
     }
 
     @IBAction func muteButtonClicked(_ sender: NSButton) {
+        SpotijackSessionManager.shared.establishSession { [weak self] sessionResult in
+            switch sessionResult {
+            case .fail(let error):
+                self?.presentError(error)
+            case .ok(let session):
+                session.isMuted = !session.isMuted
+            }
+        }
     }
 }
 
