@@ -40,6 +40,23 @@ extension MainWindowController {
     }
 }
 
+//MARK: Helper Functions
+extension MainWindowController {
+    /// Presents a sheet built from the description and recovery suggestion
+    /// of `error`.
+    ///
+    /// - parameter error: The error to present.
+    /// - parameter block: A block to execute after the error is dismissed.
+    private func presentError(_ error: Error, block: ((NSApplication.ModalResponse) -> Void)?) {
+        guard let window = window else {
+            return
+        }
+
+        let alert = NSAlert(error: error)
+        alert.beginSheetModal(for: window, completionHandler: block)
+    }
+}
+
 //MARK: Notification Handling
 extension MainWindowController {
     private func muteStateDidChange(noti: MuteStateDidChange) {
