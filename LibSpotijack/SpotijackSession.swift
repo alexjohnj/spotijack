@@ -264,8 +264,20 @@ public final class SpotijackSession {
         spotifyBridge.pause!()
         spotifyBridge.setPlayerPosition!(0.0)
         spotijackSessionBridge.setMetadata(from: currentTrack)
-        spotijackSessionBridge.startRecording!()
-        spotifyBridge.play!()
+
+        // Wait a very short period before starting the recording to account
+        // for Spotify's slow response to AppleScript events. Hopefully, this
+        // will reduce the chance of the starts/ends of songs overlapping.
+        //
+        // I'm sure there's a load of multithreading bugs possible doing this
+        // but ¯\_(ツ)_/¯
+        //
+        // The choice of 0.10 seconds is based on my observations of how much
+        // songs tend to overlap.
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.10) { [weak self] in
+            spotijackSessionBridge.startRecording!()
+            self?.spotifyBridge.play!()
+        }
     }
 
     // Called when a `DidEncounterError` notification is posted. Ends polling and
