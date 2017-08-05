@@ -45,6 +45,23 @@ class MainWindowController: NSWindowController {
 //MARK: UI Actions
 extension MainWindowController {
     @IBAction func recordButtonClicked(_ sender: NSButton) {
+        SpotijackSessionManager.shared.establishSession { [weak self] sessionResult in
+            switch sessionResult {
+            case .fail(let error):
+                self?.presentError(error)
+            case .ok(let session):
+                if session.isSpotijacking {
+                    session.stopSpotijackSession()
+                } else {
+                    do {
+                        let config = SpotijackSession.RecordingConfiguration() // TODO: Use user's preferences
+                        try session.startSpotijackSession(config: config)
+                    } catch (let error) {
+                        self?.presentError(error)
+                    }
+                }
+            }
+        }
     }
 
     @IBAction func muteButtonClicked(_ sender: NSButton) {
