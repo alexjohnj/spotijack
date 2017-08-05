@@ -120,15 +120,19 @@ extension MainWindowController {
 //MARK: Notification Handling
 extension MainWindowController {
     private func muteStateDidChange(noti: MuteStateDidChange) {
+        updateMuteButton(isMuted: noti.newMuteState)
     }
 
     private func recordingStateDidChange(noti: RecordingStateDidChange) {
+        updateRecordButton(isRecording: noti.isRecording)
     }
 
     private func trackDidChange(noti: TrackDidChange) {
+        updateTrackStatusFields(track: noti.newTrack)
     }
 
     private func didEncounterError(noti: DidEncounterError) {
+        presentError(noti.error)
     }
 
     /// Registers the window controller for notifications posted by
