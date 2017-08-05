@@ -28,6 +28,17 @@ class MainWindowController: NSWindowController {
         super.windowDidLoad()
 
         registerForSpotijackNotifications()
+
+        // Start polling and update the UI
+        SpotijackSessionManager.shared.establishSession { [weak self] sessionResult in
+            switch sessionResult {
+            case .ok(let session):
+                session.startPolling(every: 0.1) //TODO: Use configurable polling interval
+                self?.refreshUI()
+            case .fail(let error):
+                self?.presentError(error)
+            }
+        }
     }
 }
 
@@ -39,6 +50,55 @@ extension MainWindowController {
     @IBAction func muteButtonClicked(_ sender: NSButton) {
     }
 }
+
+//MARK: UI Updates
+extension MainWindowController {
+    /// Refreshes the user interface updating the recording button state, now
+    /// playing state and mute button state.
+    private func refreshUI() {
+        SpotijackSessionManager.shared.establishSession { [weak self] sessionResult in
+            switch sessionResult {
+            case .ok(let session):
+                self?.updateTrackStatusFields(track: session.currentTrack)
+                self?.updateRecordButton(isRecording: session.isRecording)
+                self?.updateMuteButton(isMuted: session.isMuted)
+            case .fail(let error):
+                self?.presentError(error)
+            }
+        }
+    }
+
+    private func updateTrackStatusFields(track: StaticSpotifyTrack?) {
+        if let track = track {
+            statusField.stringValue = track.name
+            artistField.stringValue = track.artist
+        } else {
+            statusField.stringValue = NSLocalizedString("Ready to Record", comment: "")
+            artistField.stringValue = ""
+        }
+    }
+
+    private func updateRecordButton(isRecording: Bool) {
+        if isRecording {
+            recordButton.title = NSLocalizedString("Recording", comment: "")
+            recordButton.state = .on
+        } else {
+            recordButton.title = NSLocalizedString("Record", comment: "")
+            recordButton.state = .off
+        }
+    }
+
+    private func updateMuteButton(isMuted: Bool) {
+        if isMuted {
+            muteButton.state = .on
+            muteButton.image = #imageLiteral(resourceName: "Muted")
+        } else {
+            muteButton.state = .off
+            muteButton.image = #imageLiteral(resourceName: "Unmuted")
+        }
+    }
+}
+
 
 //MARK: Helper Functions
 extension MainWindowController {
