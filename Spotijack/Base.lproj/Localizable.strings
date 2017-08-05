@@ -13,8 +13,8 @@
 "Recording" = "Recording";
 
 // Recording in progress quit alert
-"Recording in Progress" = "Recording in Progress";
-"Are you sure you want to quit?" = "Are you sure you want to quit?";
+"SESSION_QUIT_MESSAGE" = "Are You Sure You Want to Quit?";
+"SESSION_QUIT_INFORMATIVE" = "A recording is currently in progress. Quitting will terminate the recording.";
 
 // No track playing alert
 "No track playing" = "No Track Playing";
