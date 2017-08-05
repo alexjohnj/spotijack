@@ -1,11 +1,12 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="8121.20" systemVersion="14D136" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="13156.6" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <development version="6300" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="8121.20"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13156.6"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="SPJPreferencesWindowController">
+        <customObject id="-2" userLabel="File's Owner" customClass="PreferencesWindowController" customModule="Spotijack" customModuleProvider="target">
             <connections>
                 <outlet property="window" destination="QvC-M9-y7g" id="oS8-1y-mcj"/>
             </connections>
@@ -16,7 +17,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="240" width="348" height="222"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1057"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="3440" height="1418"/>
             <view key="contentView" horizontalHuggingPriority="1000" id="EiT-Mj-1SZ">
                 <rect key="frame" x="0.0" y="0.0" width="348" height="222"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -29,7 +30,7 @@
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <button translatesAutoresizingMaskIntoConstraints="NO" id="0LC-4s-NHJ">
+                    <button misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0LC-4s-NHJ">
                         <rect key="frame" x="85" y="184" width="173" height="18"/>
                         <buttonCell key="cell" type="check" title="Disable repeat in Spotify" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="Hc0-76-KjH">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -49,7 +50,7 @@
                             <binding destination="5gL-iE-OaE" name="value" keyPath="values.disableShuffle" id="hEu-rq-PPD"/>
                         </connections>
                     </button>
-                    <button horizontalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="aM0-C3-Na5">
+                    <button horizontalHuggingPriority="1000" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aM0-C3-Na5">
                         <rect key="frame" x="85" y="144" width="200" height="18"/>
                         <buttonCell key="cell" type="check" title="Mute Spotify when recording" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="CxM-nT-VUr">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -59,7 +60,7 @@
                             <binding destination="5gL-iE-OaE" name="value" keyPath="values.muteSpotifyWhenRecording" id="WMb-bU-erX"/>
                         </connections>
                     </button>
-                    <button translatesAutoresizingMaskIntoConstraints="NO" id="atc-Ls-izj">
+                    <button misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="atc-Ls-izj">
                         <rect key="frame" x="85" y="124" width="208" height="18"/>
                         <buttonCell key="cell" type="check" title="Notify when recording finishes" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="Lnp-IU-VHC">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -69,11 +70,8 @@
                             <binding destination="5gL-iE-OaE" name="value" keyPath="values.notifyWhenRecordingFinishes" id="lip-nF-uMM"/>
                         </connections>
                     </button>
-                    <box verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="JHe-83-im5">
+                    <box verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="JHe-83-im5">
                         <rect key="frame" x="20" y="103" width="308" height="5"/>
-                        <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
-                        <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <font key="titleFont" metaFont="system"/>
                     </box>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="jFV-GF-2nd">
                         <rect key="frame" x="18" y="68" width="63" height="17"/>
@@ -93,7 +91,7 @@
                             <binding destination="arv-EU-iOU" name="value" keyPath="automaticallyChecksForUpdates" id="VdS-aG-WaA"/>
                         </connections>
                     </button>
-                    <button translatesAutoresizingMaskIntoConstraints="NO" id="BeV-Kw-ipi">
+                    <button misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BeV-Kw-ipi">
                         <rect key="frame" x="85" y="47" width="199" height="18"/>
                         <buttonCell key="cell" type="check" title="Automatically install updates" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="uhs-vF-2FR">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -103,7 +101,7 @@
                             <binding destination="arv-EU-iOU" name="value" keyPath="automaticallyDownloadsUpdates" id="Nov-CC-PdM"/>
                         </connections>
                     </button>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="oFb-A2-7fp">
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oFb-A2-7fp">
                         <rect key="frame" x="85" y="23" width="118" height="17"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Check for updates" id="SfW-Wa-Kjf">
                             <font key="font" metaFont="system"/>
@@ -111,7 +109,7 @@
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <popUpButton verticalHuggingPriority="750" horizontalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="Vey-Bo-lYC">
+                    <popUpButton verticalHuggingPriority="750" horizontalCompressionResistancePriority="751" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vey-Bo-lYC">
                         <rect key="frame" x="207" y="17" width="84" height="26"/>
                         <popUpButtonCell key="cell" type="push" title="Daily" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" tag="86400" imageScaling="proportionallyDown" inset="2" selectedItem="bye-cn-WNf" id="5JW-Ia-kUD">
                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>

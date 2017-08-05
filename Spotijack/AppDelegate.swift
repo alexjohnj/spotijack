@@ -12,6 +12,7 @@ import LibSpotijack
 @NSApplicationMain
 class AppDelegate: NSObject {
     private lazy var mainWindowController: MainWindowController = MainWindowController(windowNibName: NSNib.Name("MainWindow"))
+    private lazy var prefencesWindowController: PreferencesWindowController = PreferencesWindowController()
 }
 
 //MARK: NSApplicationDelegate Methods
@@ -64,7 +65,7 @@ extension AppDelegate: NSApplicationDelegate {
 //MARK: UI Actions
 extension AppDelegate {
     @IBAction private func openPreferencesWindow(_ sender: NSMenuItem) {
-        fatalError("Not Implemented")
+        prefencesWindowController.showWindow(self)
     }
 }
 

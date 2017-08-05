@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		FA02961A1B0BC28500BFCA84 /* ConfigureSpotijackSession.applescript in Sources */ = {isa = PBXBuildFile; fileRef = FA0296191B0BC28500BFCA84 /* ConfigureSpotijackSession.applescript */; };
 		FA02961B1B0BC2B200BFCA84 /* ConfigureSpotijackSession.applescript in Resources */ = {isa = PBXBuildFile; fileRef = FA0296191B0BC28500BFCA84 /* ConfigureSpotijackSession.applescript */; };
+		FA1992D41F35EF71000881D9 /* PreferencesWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1992D31F35EF71000881D9 /* PreferencesWindowController.swift */; };
 		FA3CF4E81B3C5AB700E8EF60 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = FA3CF4E71B3C5AB700E8EF60 /* Credits.rtf */; };
 		FA678C761F1643A0009D6AF8 /* TypedNotification.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA678C751F1643A0009D6AF8 /* TypedNotification.framework */; };
 		FA678C781F164402009D6AF8 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA678C771F164402009D6AF8 /* Notifications.swift */; };
@@ -48,7 +49,7 @@
 		FADD9ECA1F03FB2800EAC2BC /* SpotifyScripting.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADD9EC11F03FB2800EAC2BC /* SpotifyScripting.swift */; };
 		FAE1C14D1B07DC64007FF95C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = FAE1C14F1B07DC64007FF95C /* Localizable.strings */; };
 		FAE1C1501B07DF5F007FF95C /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAE1C1521B07DF5F007FF95C /* MainWindow.xib */; };
-		FAE1C1531B07DF63007FF95C /* SPJPreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAE1C1551B07DF63007FF95C /* SPJPreferencesWindow.xib */; };
+		FAE1C1531B07DF63007FF95C /* PreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAE1C1551B07DF63007FF95C /* PreferencesWindow.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,6 +88,7 @@
 
 /* Begin PBXFileReference section */
 		FA0296191B0BC28500BFCA84 /* ConfigureSpotijackSession.applescript */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.applescript; path = ConfigureSpotijackSession.applescript; sourceTree = "<group>"; };
+		FA1992D31F35EF71000881D9 /* PreferencesWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesWindowController.swift; sourceTree = "<group>"; };
 		FA3CF4E71B3C5AB700E8EF60 /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		FA678C751F1643A0009D6AF8 /* TypedNotification.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TypedNotification.framework; path = Carthage/Build/Mac/TypedNotification.framework; sourceTree = "<group>"; };
 		FA678C771F164402009D6AF8 /* Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
@@ -117,8 +119,6 @@
 		FAC9A9F11F0403C400A19299 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/Mac/Result.framework; sourceTree = "<group>"; };
 		FACA55461F24D17D007E7F46 /* AudioHijackSession+SetMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AudioHijackSession+SetMetadata.swift"; sourceTree = "<group>"; };
 		FACBE5C71F23D66C00030B87 /* StaticSpotifyTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticSpotifyTrack.swift; sourceTree = "<group>"; };
-		FAD139291A44A082006351F0 /* SPJPreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPJPreferencesWindowController.h; sourceTree = "<group>"; };
-		FAD1392A1A44A082006351F0 /* SPJPreferencesWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPJPreferencesWindowController.m; sourceTree = "<group>"; };
 		FAD45AB81F2140920012EF3F /* TestData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestData.swift; sourceTree = "<group>"; };
 		FADD9EB81F03FB2800EAC2BC /* AudioHijack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioHijack.h; sourceTree = "<group>"; };
 		FADD9EB91F03FB2800EAC2BC /* AudioHijack.sdef */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = AudioHijack.sdef; sourceTree = "<group>"; };
@@ -133,7 +133,7 @@
 		FAE1C1481B07D67D007FF95C /* SPJConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPJConstants.h; sourceTree = "<group>"; };
 		FAE1C1491B07D67D007FF95C /* SPJConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPJConstants.m; sourceTree = "<group>"; };
 		FAE1C1591B07DF7C007FF95C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainWindow.xib; sourceTree = "<group>"; };
-		FAE1C15A1B07DF80007FF95C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/SPJPreferencesWindow.xib; sourceTree = "<group>"; };
+		FAE1C15A1B07DF80007FF95C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/PreferencesWindow.xib; sourceTree = "<group>"; };
 		FAE1C15B1B07DFB7007FF95C /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		FAF81BE91A421FB5008F3360 /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
 		FAF81BEB1A422351008F3360 /* SPJSessionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPJSessionController.h; sourceTree = "<group>"; };
@@ -234,6 +234,7 @@
 			isa = PBXGroup;
 			children = (
 				FAB41F0F1F26002A00448440 /* AppDelegate.swift */,
+				FA1992D31F35EF71000881D9 /* PreferencesWindowController.swift */,
 				FAB41F191F26019A00448440 /* MainWindowController.swift */,
 				FAB41F0D1F25FE8E00448440 /* Objc-Disabled */,
 				FAF81BE81A421ED9008F3360 /* XIBs */,
@@ -269,8 +270,6 @@
 				FA9503851A421D6B009D7149 /* SPJMainWindowController.m */,
 				FA9503601A421B76009D7149 /* AppDelegate.h */,
 				FA9503611A421B76009D7149 /* AppDelegate.m */,
-				FAD139291A44A082006351F0 /* SPJPreferencesWindowController.h */,
-				FAD1392A1A44A082006351F0 /* SPJPreferencesWindowController.m */,
 			);
 			path = "Objc-Disabled";
 			sourceTree = "<group>";
@@ -329,7 +328,7 @@
 		FAF81BE81A421ED9008F3360 /* XIBs */ = {
 			isa = PBXGroup;
 			children = (
-				FAE1C1551B07DF63007FF95C /* SPJPreferencesWindow.xib */,
+				FAE1C1551B07DF63007FF95C /* PreferencesWindow.xib */,
 				FAE1C1521B07DF5F007FF95C /* MainWindow.xib */,
 				FA9503671A421B76009D7149 /* MainMenu.xib */,
 			);
@@ -473,7 +472,7 @@
 				FA3CF4E81B3C5AB700E8EF60 /* Credits.rtf in Resources */,
 				FAE1C14D1B07DC64007FF95C /* Localizable.strings in Resources */,
 				FA8393761B16539A006736C8 /* Media.xcassets in Resources */,
-				FAE1C1531B07DF63007FF95C /* SPJPreferencesWindow.xib in Resources */,
+				FAE1C1531B07DF63007FF95C /* PreferencesWindow.xib in Resources */,
 				FA9503661A421B76009D7149 /* Images.xcassets in Resources */,
 				FA9503691A421B76009D7149 /* MainMenu.xib in Resources */,
 				FA93A2761B09150500A61F6E /* SessionProperties.plist in Resources */,
@@ -532,6 +531,7 @@
 			files = (
 				FAB41F101F26002A00448440 /* AppDelegate.swift in Sources */,
 				FA02961A1B0BC28500BFCA84 /* ConfigureSpotijackSession.applescript in Sources */,
+				FA1992D41F35EF71000881D9 /* PreferencesWindowController.swift in Sources */,
 				FAB41F1A1F26019A00448440 /* MainWindowController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -585,12 +585,12 @@
 			name = MainWindow.xib;
 			sourceTree = "<group>";
 		};
-		FAE1C1551B07DF63007FF95C /* SPJPreferencesWindow.xib */ = {
+		FAE1C1551B07DF63007FF95C /* PreferencesWindow.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
 				FAE1C15A1B07DF80007FF95C /* Base */,
 			);
-			name = SPJPreferencesWindow.xib;
+			name = PreferencesWindow.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
