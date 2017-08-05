@@ -18,6 +18,8 @@ class AppDelegate: NSObject {
 //MARK: NSApplicationDelegate Methods
 extension AppDelegate: NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
+        Preferences.shared.registerDefaultValues()
+
         // Display the main window
         let _ = applicationShouldHandleReopen(NSApplication.shared, hasVisibleWindows: false)
     }
