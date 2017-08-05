@@ -54,8 +54,7 @@ extension MainWindowController {
                     session.stopSpotijackSession()
                 } else {
                     do {
-                        let config = SpotijackSession.RecordingConfiguration() // TODO: Use user's preferences
-                        try session.startSpotijackSession(config: config)
+                        try session.startSpotijackSession(config: Preferences.shared.recordingConfiguration)
                     } catch (let error) {
                         self?.presentError(error)
                     }

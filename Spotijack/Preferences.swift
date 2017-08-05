@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import LibSpotijack
 
 class Preferences {
     static let shared = Preferences()
@@ -74,6 +75,21 @@ class Preferences {
         self.defaults = defaults
 
         self.registerDefaultValues()
+    }
+}
+
+//MARK: LibSpotijack Integration
+extension Preferences {
+    /// Generates a `RecordingConfiguration` based on the user's preferences
+    internal var recordingConfiguration: SpotijackSession.RecordingConfiguration {
+        let config = SpotijackSession.RecordingConfiguration(
+            muteSpotify: shouldMuteSpotify,
+            disableShuffling: shouldDisableShuffling,
+            disableRepeat: shouldDisableRepeat,
+            pollingInterval: 0.1
+        ) //MARK: TODO: Add preference for polling interval
+
+        return config
     }
 }
 
