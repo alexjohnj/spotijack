@@ -18,6 +18,7 @@ class Preferences {
         static let shouldDisableRepeat = "disableRepeat"
         static let shouldMuteSpotify = "muteSpotifyWhenRecording"
         static let shouldNotifyWhenFinished = "notifyWhenRecordingFinishes"
+        static let recordingPollingInterval = "recordingPollingInterval"
     }
     
     var shouldDisableShuffling: Bool {
@@ -59,13 +60,24 @@ class Preferences {
             defaults.set(newValue, forKey: Keys.shouldNotifyWhenFinished)
         }
     }
+
+    var recordingPollingInterval: Double {
+        get {
+            return defaults.double(forKey: Keys.recordingPollingInterval)
+        }
+
+        set {
+            defaults.set(newValue, forKey: Keys.recordingPollingInterval)
+        }
+    }
     
     func registerDefaultValues() {
         let defaultValues: [String: Any] = [
             Keys.shouldDisableShuffling: true,
             Keys.shouldDisableRepeat: true,
             Keys.shouldMuteSpotify: false,
-            Keys.shouldNotifyWhenFinished: true
+            Keys.shouldNotifyWhenFinished: true,
+            Keys.recordingPollingInterval: 0.1,
         ]
         
         self.defaults.register(defaults: defaultValues)
@@ -86,8 +98,8 @@ extension Preferences {
             muteSpotify: shouldMuteSpotify,
             disableShuffling: shouldDisableShuffling,
             disableRepeat: shouldDisableRepeat,
-            pollingInterval: 0.1
-        ) //MARK: TODO: Add preference for polling interval
+            pollingInterval: recordingPollingInterval
+        )
 
         return config
     }
