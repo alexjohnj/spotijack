@@ -20,8 +20,8 @@ public final class SpotijackSession {
 
     /// A scripting bridge interface to the Spotijack session in Audio Hijack Pro.
     /// Accessing this property will make Audio Hijack Pro start hijacking Spotify.
-    internal var spotijackSessionBridge: Result<AudioHijackSession> {
-        let sessions = audioHijackBridge.sessions!() as! [AudioHijackSession] // Should never fail
+    internal var spotijackSessionBridge: Result<AudioHijackApplicationSession> {
+        let sessions = audioHijackBridge.sessions!() as! [AudioHijackApplicationSession] // Should never fail
 
         if let session = sessions.first(where: { $0.name == "Spotijack" }) {
             session.startHijackingRelaunch!(.yes)
