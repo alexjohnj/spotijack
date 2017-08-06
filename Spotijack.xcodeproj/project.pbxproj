@@ -183,16 +183,40 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		FA2F5B111F376856007132ED /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				FA678C791F164837009D6AF8 /* SpotijackSessionManager.swift */,
+				FAAF86DC1F31F79300833028 /* SpotijackSession.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		FA2F5B121F376866007132ED /* Helper Types */ = {
+			isa = PBXGroup;
+			children = (
+				FAAF86DE1F31FACF00833028 /* Errors.swift */,
+				FA678C771F164402009D6AF8 /* Notifications.swift */,
+				FACBE5C71F23D66C00030B87 /* StaticSpotifyTrack.swift */,
+			);
+			path = "Helper Types";
+			sourceTree = "<group>";
+		};
+		FA2F5B131F37686C007132ED /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				FACA55461F24D17D007E7F46 /* AudioHijackSession+SetMetadata.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		FA86C4B61F03FA25001ACBBA /* LibSpotijack */ = {
 			isa = PBXGroup;
 			children = (
 				FA2F5B0F1F376663007132ED /* Constants.swift */,
-				FA678C791F164837009D6AF8 /* SpotijackSessionManager.swift */,
-				FAAF86DC1F31F79300833028 /* SpotijackSession.swift */,
-				FAAF86DE1F31FACF00833028 /* Errors.swift */,
-				FA678C771F164402009D6AF8 /* Notifications.swift */,
-				FACBE5C71F23D66C00030B87 /* StaticSpotifyTrack.swift */,
-				FACA55461F24D17D007E7F46 /* AudioHijackSession+SetMetadata.swift */,
+				FA2F5B111F376856007132ED /* Core */,
+				FA2F5B121F376866007132ED /* Helper Types */,
+				FA2F5B131F37686C007132ED /* Extensions */,
 				FADD9EB61F03FB2800EAC2BC /* Scripting Bridge Compatibility */,
 				FADD9ECB1F03FBCB00EAC2BC /* Supporting Files */,
 			);
@@ -283,8 +307,8 @@
 		FADD9EB61F03FB2800EAC2BC /* Scripting Bridge Compatibility */ = {
 			isa = PBXGroup;
 			children = (
-				FADD9EB71F03FB2800EAC2BC /* Audio Hijack */,
 				FADD9EBC1F03FB2800EAC2BC /* ScriptingBridgeCompatProtocols.swift */,
+				FADD9EB71F03FB2800EAC2BC /* Audio Hijack */,
 				FADD9EBD1F03FB2800EAC2BC /* Spotify */,
 			);
 			path = "Scripting Bridge Compatibility";
