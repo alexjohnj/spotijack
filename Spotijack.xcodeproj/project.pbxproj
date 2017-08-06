@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		FA1992D41F35EF71000881D9 /* PreferencesWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1992D31F35EF71000881D9 /* PreferencesWindowController.swift */; };
+		FA2DEF861F37A70E006F44B5 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = FA2DEF881F37A70E006F44B5 /* Localizable.strings */; };
 		FA2F5B101F376663007132ED /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2F5B0F1F376663007132ED /* Constants.swift */; };
 		FA3CF4E81B3C5AB700E8EF60 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = FA3CF4E71B3C5AB700E8EF60 /* Credits.rtf */; };
 		FA503A221F378AD60009BDBD /* ConfigureSpotijackSession.applescript in Resources */ = {isa = PBXBuildFile; fileRef = FA503A211F378AB20009BDBD /* ConfigureSpotijackSession.applescript */; };
@@ -90,6 +91,7 @@
 
 /* Begin PBXFileReference section */
 		FA1992D31F35EF71000881D9 /* PreferencesWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesWindowController.swift; sourceTree = "<group>"; };
+		FA2DEF871F37A70E006F44B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		FA2F5B0F1F376663007132ED /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		FA3CF4E71B3C5AB700E8EF60 /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		FA503A211F378AB20009BDBD /* ConfigureSpotijackSession.applescript */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.applescript; name = ConfigureSpotijackSession.applescript; path = LibSpotijack/ConfigureSpotijackSession.applescript; sourceTree = SOURCE_ROOT; };
@@ -343,6 +345,7 @@
 				FA503A211F378AB20009BDBD /* ConfigureSpotijackSession.applescript */,
 				FA86C4B71F03FA25001ACBBA /* LibSpotijack.h */,
 				FA86C4B81F03FA25001ACBBA /* Info.plist */,
+				FA2DEF881F37A70E006F44B5 /* Localizable.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -482,6 +485,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA503A221F378AD60009BDBD /* ConfigureSpotijackSession.applescript in Resources */,
+				FA2DEF861F37A70E006F44B5 /* Localizable.strings in Resources */,
 				FADD9EC81F03FB2800EAC2BC /* Spotify.sdef in Resources */,
 				FADD9EC31F03FB2800EAC2BC /* AudioHijack.sdef in Resources */,
 			);
@@ -585,6 +589,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		FA2DEF881F37A70E006F44B5 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FA2DEF871F37A70E006F44B5 /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		FA9503671A421B76009D7149 /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
