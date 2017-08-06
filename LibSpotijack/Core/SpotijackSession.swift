@@ -21,10 +21,37 @@ public final class SpotijackSession {
     /// A scripting bridge interface to the Spotijack session in Audio Hijack Pro.
     /// Accessing this property will make Audio Hijack Pro start hijacking Spotify.
     internal var spotijackSessionBridge: Result<AudioHijackApplicationSession> {
+        switch getFirstSpotijackSession() {
+        case .ok(let session):
+            session.startHijackingRelaunch!(.yes)
+            return .ok(session)
+        case .fail(let error):
+            // Try and create a new session if one doesn't exist
+            switch error {
+            case SpotijackSessionError.spotijackSessionNotFound:
+                do {
+                    try SpotijackSessionCreator.createSpotijackSession()
+                    switch getFirstSpotijackSession() {
+                    case .ok(let session):
+                        session.startHijackingRelaunch!(.yes)
+                        return .ok(session)
+                    case .fail(let reacquireError):
+                        return .fail(reacquireError)
+                    }
+                } catch (let creationError) {
+                    return .fail(creationError)
+                }
+            default:
+                return .fail(error)
+            }
+        }
+    }
+
+    /// Gets the first session called "Spotijack" reported by Audio Hijack Pro.
+    private func getFirstSpotijackSession() -> Result<AudioHijackApplicationSession> {
         let sessions = audioHijackBridge.sessions!() as! [AudioHijackApplicationSession] // Should never fail
 
         if let session = sessions.first(where: { $0.name == "Spotijack" }) {
-            session.startHijackingRelaunch!(.yes)
             return .ok(session)
         } else {
             return .fail(SpotijackSessionError.spotijackSessionNotFound)

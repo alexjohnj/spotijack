@@ -25,6 +25,8 @@ public enum SpotijackSessionError: Error {
     /// to start the application.
     case noRunningInstanceFound(appName: String)
 
+    /// A session named Spotijack could not be created in AHP using AppleScript.
+    case couldNotCreateSpotijackSession(reason: String)
     /// Could not find a Spotijack session in AHP
     case spotijackSessionNotFound
 }
