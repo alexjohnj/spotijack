@@ -28,3 +28,12 @@ struct FakeHappy: TestTrack {
     static let artist: String = "Paramore"
     static let album: String = "After Laughter"
 }
+
+// The last track on the album.
+struct BabesNeverDieOutro: TestTrack {
+    static let uri: String = "spotify:track:3itTGCLe81VNhG9Jo2wHxP"
+    static let name: String = "Outro"
+    static let artist: String = "Honeyblood"
+    static let album: String = "Babes Never Die"
+}
+

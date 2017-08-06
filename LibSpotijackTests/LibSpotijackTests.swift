@@ -434,6 +434,44 @@ extension LibSpotijackTests {
 
         wait(for: [metadataExpect], timeout: 5.0)
     }
+
+    func testReachingEndOfPlaybackQueuePostsNotificationAndEndsSpotijacking() {
+        let notiExpect = expectation(description: "Waiting for a notification that the queue has ended.")
+        let notiObserver = SpotijackSessionManager.shared.notiCenter.addObserver(
+            forType: DidReachEndOfPlaybackQueue.self,
+            object: SpotijackSessionManager.shared,
+            queue: nil,
+            using: { _ in
+                XCTAssertFalse(SpotijackSessionManager.shared.isSpotijacking)
+                notiExpect.fulfill()
+        })
+
+        SpotijackSessionManager.shared.establishSession { sessionResult in
+            guard case .ok(let session) = sessionResult else {
+                return
+            }
+
+            DispatchQueue.global(qos: .userInitiated).async {
+                DispatchQueue.main.sync {
+                    try! session.startSpotijackSession(config: SpotijackSession.RecordingConfiguration())
+                    session.spotifyBridge.playTrack!(BabesNeverDieOutro.uri, inContext: "spotify:album:5t8fEQAEiAUpKzGPT1ygdy")
+                }
+
+                while session.currentTrack?.id != BabesNeverDieOutro.uri { continue }
+
+                DispatchQueue.main.sync {
+                    session.spotifyBridge.play!()
+                    DispatchQueue.global(qos: .userInitiated).asyncAfter(deadline: .now() + 1.0) {
+                        DispatchQueue.main.sync {
+                            session.spotifyBridge.setPlayerPosition!(70.0)
+                        }
+                    }
+                }
+            }
+        }
+
+        wait(for: [notiExpect], timeout: 20.0)
+    }
 }
 
 

@@ -131,4 +131,8 @@ extension SpotijackSessionManager {
     func sessionDidEncounterError(_ error: Error) {
         notiCenter.post(DidEncounterError(sender: self, error: error))
     }
+
+    func didReachEndOfPlaybackQueue() {
+        notiCenter.post(DidReachEndOfPlaybackQueue(sender: self))
+    }
 }

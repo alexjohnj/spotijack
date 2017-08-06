@@ -108,6 +108,21 @@ public final class SpotijackSession {
 
     private var _currentTrack: StaticSpotifyTrack? = nil {
         didSet {
+            // First see if we've reached the end of Spotify's playback queue.
+            // This isn't a definitive way of checking the queue but it should
+            // work most of the time.
+            if  _currentTrack != oldValue,
+                isSpotijacking == true,
+                case .paused = spotifyBridge.playerState!,
+                spotifyBridge.playerPosition == 0.0 {
+
+                stopSpotijackSession()
+                manager?.trackDidChange(newTrack: _currentTrack)
+                manager?.didReachEndOfPlaybackQueue()
+
+                return
+            }
+
             if _currentTrack != oldValue {
                 manager?.trackDidChange(newTrack: _currentTrack)
             }

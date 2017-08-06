@@ -40,3 +40,8 @@ public struct TrackDidChange: TypedNotification {
     public let newTrack: StaticSpotifyTrack?
 }
 
+/// Posted when there are no more tracks to play in Spotify and Spotijacking has
+/// been stopped.
+public struct DidReachEndOfPlaybackQueue: TypedNotification {
+    public let sender: SpotijackSessionManager
+}
