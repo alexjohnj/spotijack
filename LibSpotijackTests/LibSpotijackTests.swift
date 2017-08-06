@@ -11,9 +11,6 @@ import TypedNotification
 import Result
 @testable import LibSpotijack
 
-let spotifyBundle = "com.spotify.client"
-let audioHijackBundle = "com.rogueamoeba.AudioHijackPro2"
-
 class LibSpotijackTests: XCTestCase {
     override func setUp() {
         super.setUp()

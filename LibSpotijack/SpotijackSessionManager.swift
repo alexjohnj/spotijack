@@ -64,8 +64,8 @@ extension SpotijackSessionManager {
             return
         }
 
-        let spotifyBridge = establishScriptingBridge(forBundle: Bundles.spotify)
-        let audioHijackBridge = establishScriptingBridge(forBundle: Bundles.audioHijack)
+        let spotifyBridge = establishScriptingBridge(forBundle: Constants.spotifyBundle)
+        let audioHijackBridge = establishScriptingBridge(forBundle: Constants.audioHijackBundle)
 
         switch (spotifyBridge, audioHijackBridge) {
         case (.fail(let error), _):
@@ -85,13 +85,7 @@ extension SpotijackSessionManager {
         }
     }
 
-    private typealias BundleInfo = (name: String, identifier: String)
-    private struct Bundles {
-        static let spotify: BundleInfo = ("Spotify", "com.spotify.client")
-        static let audioHijack: BundleInfo = ("Audio Hijack Pro", "com.rogueamoeba.AudioHijackPro2")
-    }
-
-    private func launchApplication(fromBundle bundle: BundleInfo) -> Bool {
+    private func launchApplication(fromBundle bundle: Constants.BundleInfo) -> Bool {
         return NSWorkspace.shared.launchApplication(
             withBundleIdentifier: bundle.identifier,
             options: [.withoutActivation, .andHide],
@@ -99,7 +93,7 @@ extension SpotijackSessionManager {
             launchIdentifier: nil)
     }
 
-    private func establishScriptingBridge(forBundle bundle: BundleInfo) -> Result<SBApplication> {
+    private func establishScriptingBridge(forBundle bundle: Constants.BundleInfo) -> Result<SBApplication> {
         guard launchApplication(fromBundle: bundle) == true else {
             return .fail(SpotijackSessionError.cantStartApplication(name: bundle.name))
         }
