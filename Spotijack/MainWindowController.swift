@@ -22,6 +22,7 @@ class MainWindowController: NSWindowController {
     private var _didEncounterErrorObserver: NotificationObserver? = nil
     private var _recordingStateDidChangeObserver: NotificationObserver? = nil
     private var _trackDidChangeObserver: NotificationObserver? = nil
+    private var _didReachEndOfQueueObserver: NotificationObserver? = nil
 
     //MARK: Window Lifecycle
     override func windowDidLoad() {
@@ -159,6 +160,14 @@ extension MainWindowController {
         presentError(noti.error)
     }
 
+    private func didReachEndOfPlaybackQueue(noti: DidReachEndOfPlaybackQueue) {
+        let notification = NSUserNotification()
+        notification.title = NSLocalizedString("SESSION_END_NOTI", comment: "Title of notification saying the session has ended.")
+        notification.informativeText = NSLocalizedString("SESSION_END_NOTI_SUBT", comment: "Explanation of why session has ended.")
+
+        NSUserNotificationCenter.default.deliver(notification)
+    }
+
     /// Registers the window controller for notifications posted by
     /// SpotijackSessionManager
     private func registerForSpotijackNotifications() {
@@ -188,5 +197,11 @@ extension MainWindowController {
             object: sessionManager,
             queue: .main,
             using: { [weak self] noti in self?.recordingStateDidChange(noti: noti) })
+
+        _didReachEndOfQueueObserver = notificationCenter.addObserver(
+            forType: DidReachEndOfPlaybackQueue.self,
+            object: sessionManager,
+            queue: .main,
+            using: { [weak self] noti in self?.didReachEndOfPlaybackQueue(noti: noti) })
     }
 }
