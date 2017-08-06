@@ -134,6 +134,8 @@ public final class SpotijackSession {
     }
 
     private var _applicationPollingTimer: Timer? = nil
+    private var activityToken: NSObjectProtocol? = nil
+
     /// Returns `true` if SpotijackSessionManager is polling Spotify and AHP.
     public var isPolling: Bool { return _applicationPollingTimer?.isValid ?? false }
 
@@ -225,6 +227,8 @@ public final class SpotijackSession {
         if isPolling { stopPolling() }
         startPolling(every: config.pollingInterval)
         isSpotijacking = true
+        activityToken = ProcessInfo.processInfo.beginActivity(options: [.userInitiated, .idleSystemSleepDisabled],
+                                                              reason: "Spotijacking")
         startNewRecording()
     }
 
@@ -237,6 +241,10 @@ public final class SpotijackSession {
 
         isRecording = false
         isSpotijacking = false
+        if let activityToken = activityToken {
+            ProcessInfo.processInfo.endActivity(activityToken)
+            self.activityToken = nil
+        }
     }
 
     /// Starts a new recording in AHP and resets Spotify's play position.
