@@ -27,6 +27,65 @@ public enum SpotijackSessionError: Error {
 
     /// A session named Spotijack could not be created in AHP using AppleScript.
     case couldNotCreateSpotijackSession(reason: String)
+
     /// Could not find a Spotijack session in AHP
     case spotijackSessionNotFound
+}
+
+extension SpotijackSessionError: LocalizedError {
+    public var errorDescription: String? {
+        let bundle = Constants.libSpotijackBundle
+
+        switch self {
+        case .applicationNotLaunched(let appName):
+            return String(format: NSLocalizedString("ERROR_APP_NOT_LAUNCHED_DESC", bundle: bundle, comment: "{AppName} has not been launched"),
+                          appName)
+
+        case .cantStartApplication(let appName):
+            return String(format: NSLocalizedString("ERROR_CANT_START_APP_DESC", bundle: bundle, comment: "Can't start {AppName}"),
+                          appName)
+
+        case .noScriptingInterface(let appName):
+            return String(format: NSLocalizedString("ERROR_NO_SCRIPTING_INT_DESC", bundle: bundle, comment: "No scripting interface for {AppName}"),
+                          appName)
+
+        case .noRunningInstanceFound(let appName):
+            return String(format: NSLocalizedString("ERROR_NO_RUNNING_INSTANCE_DESC", bundle: bundle, comment: "No running instance of {AppName} found."),
+                          appName)
+
+        case .couldNotCreateSpotijackSession:
+            return NSLocalizedString("ERROR_CREATE_SPOTIJACK_DESC", bundle: bundle, comment: "Couldn't create Spotijack session.")
+
+        case .spotijackSessionNotFound:
+            return NSLocalizedString("ERROR_NO_SPOTIJACK_FOUND_DESC", bundle: bundle, comment: "No Spotijack session found.")
+        }
+    }
+
+    public var recoverySuggestion: String? {
+        let bundle = Constants.libSpotijackBundle
+
+        switch self {
+        case .applicationNotLaunched(let appName):
+            return String(format: NSLocalizedString("ERROR_APP_NOT_LAUNCHED_SUGG", bundle: bundle, comment: "Try manually starting {AppName}"),
+                          appName)
+
+        case .cantStartApplication(let appName):
+            return String(format: NSLocalizedString("ERROR_CANT_START_APP_SUGG", bundle: bundle, comment: "Check {AppName} is installed"),
+                          appName)
+
+        case .noScriptingInterface(let appName):
+            return String(format: NSLocalizedString("ERROR_NO_SCRIPTING_INT_SUGG", bundle: bundle, comment: "Check using a version of {AppName} that supports AppleScript"),
+                          appName)
+
+        case .noRunningInstanceFound:
+            return NSLocalizedString("ERROR_NO_RUNNING_INSTANCE_SUGG", bundle: bundle, comment: "table-flip")
+
+        case .couldNotCreateSpotijackSession(let reason):
+            return String(format: NSLocalizedString("ERROR_CREATE_SPOTIJACK_SUGG", bundle: bundle, comment: "This might be helpful {reason}"),
+                          reason)
+
+        case .spotijackSessionNotFound:
+            return NSLocalizedString("ERROR_NO_SPOTIJACK_FOUND_SUGG", bundle: bundle, comment: "Try manually creating a session.")
+        }
+    }
 }
