@@ -117,7 +117,11 @@ public final class SpotijackSession {
             if _currentTrack != oldValue,
                 isSpotijacking == true
             {
-                startNewRecording()
+                do {
+                    try startNewRecording()
+                } catch (let error) {
+                    manager?.sessionDidEncounterError(error)
+                }
             }
         }
     }
@@ -207,21 +211,17 @@ public final class SpotijackSession {
             return
         }
 
-        do {
-            // Set up recording configuration
-            if config.disableRepeat {
-                spotifyBridge.setRepeating!(false)
-            }
+        // Set up recording configuration
+        if config.disableRepeat {
+            spotifyBridge.setRepeating!(false)
+        }
 
-            if config.disableShuffling {
-                spotifyBridge.setShuffling!(false)
-            }
+        if config.disableShuffling {
+            spotifyBridge.setShuffling!(false)
+        }
 
-            if config.muteSpotify {
-                try spotijackSessionBridge.dematerialize().setSpeakerMuted!(true)
-            }
-        } catch (let error) {
-            throw error
+        if config.muteSpotify {
+            try spotijackSessionBridge.dematerialize().setSpeakerMuted!(true)
         }
 
         if isPolling { stopPolling() }
@@ -229,7 +229,7 @@ public final class SpotijackSession {
         isSpotijacking = true
         activityToken = ProcessInfo.processInfo.beginActivity(options: [.userInitiated, .idleSystemSleepDisabled],
                                                               reason: "Spotijacking")
-        startNewRecording()
+        try startNewRecording()
     }
 
     /// Stops a Spotijack recording session. Calling this method when no recording
@@ -248,18 +248,10 @@ public final class SpotijackSession {
     }
 
     /// Starts a new recording in AHP and resets Spotify's play position.
-    /// If there is no new track, ends the current Spotijack session.
-    private func startNewRecording() {
+    /// If there is no new track, ends the cu rrent Spotijack session.
+    private func startNewRecording() throws {
         // Check we can still communicate with the recording session
-        let spotijackSessionBridge: AudioHijackSession
-
-        switch self.spotijackSessionBridge {
-        case .ok(let value):
-            spotijackSessionBridge = value
-        case .fail(let error):
-            manager?.sessionDidEncounterError(error)
-            return
-        }
+        let spotijackSessionBridge = try self.spotijackSessionBridge.dematerialize()
 
         // End the session if there are no more tracks
         guard let currentTrack = currentTrack else {
