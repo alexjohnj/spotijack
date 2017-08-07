@@ -23,8 +23,7 @@ internal enum SpotijackSessionCreator {
         // No idea if this actually works. The docs say this method call should
         // return nil if there's a problem but the method signature says different.
         let _ = script.executeAndReturnError(&errorInfo)
-        guard errorInfo == nil else {
-            let failureReason = errorInfo?[NSAppleScript.errorMessage] as? String ?? "Failed to execute Spotijack session configuration script."
+        if let failureReason = errorInfo?[NSAppleScript.errorMessage] as? String {
             throw SpotijackSessionError.couldNotCreateSpotijackSession(reason: failureReason)
         }
     }
