@@ -23,7 +23,6 @@
 		FA9503661A421B76009D7149 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA9503651A421B76009D7149 /* Images.xcassets */; };
 		FA9503691A421B76009D7149 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA9503671A421B76009D7149 /* MainMenu.xib */; };
 		FAAF86DD1F31F79300833028 /* SpotijackSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAF86DC1F31F79300833028 /* SpotijackSession.swift */; };
-		FAAF86DF1F31FACF00833028 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAF86DE1F31FACF00833028 /* Errors.swift */; };
 		FAB41F0E1F25FFF800448440 /* LibSpotijack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA86C4B51F03FA25001ACBBA /* LibSpotijack.framework */; };
 		FAB41F101F26002A00448440 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB41F0F1F26002A00448440 /* AppDelegate.swift */; };
 		FAB41F111F2600A000448440 /* LibSpotijack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA86C4B51F03FA25001ACBBA /* LibSpotijack.framework */; };
@@ -41,6 +40,7 @@
 		FACA55471F24D17D007E7F46 /* AudioHijackSession+SetMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACA55461F24D17D007E7F46 /* AudioHijackSession+SetMetadata.swift */; };
 		FACBE5C81F23D66C00030B87 /* StaticSpotifyTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACBE5C71F23D66C00030B87 /* StaticSpotifyTrack.swift */; };
 		FAD45AB91F2140920012EF3F /* TestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD45AB81F2140920012EF3F /* TestData.swift */; };
+		FAD901A81F3869B8006AD800 /* SpotijackError.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD901A71F3869B8006AD800 /* SpotijackError.swift */; };
 		FADD9EC21F03FB2800EAC2BC /* AudioHijack.h in Headers */ = {isa = PBXBuildFile; fileRef = FADD9EB81F03FB2800EAC2BC /* AudioHijack.h */; };
 		FADD9EC31F03FB2800EAC2BC /* AudioHijack.sdef in Resources */ = {isa = PBXBuildFile; fileRef = FADD9EB91F03FB2800EAC2BC /* AudioHijack.sdef */; };
 		FADD9EC41F03FB2800EAC2BC /* AudioHijack.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADD9EBA1F03FB2800EAC2BC /* AudioHijack.swift */; };
@@ -112,7 +112,6 @@
 		FA9503651A421B76009D7149 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		FA9503681A421B76009D7149 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		FAAF86DC1F31F79300833028 /* SpotijackSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotijackSession.swift; sourceTree = "<group>"; };
-		FAAF86DE1F31FACF00833028 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		FAB41F0F1F26002A00448440 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FAB41F191F26019A00448440 /* MainWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindowController.swift; sourceTree = "<group>"; };
 		FABADAF31F025D36001751AE /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = Carthage/Build/Mac/Sparkle.framework; sourceTree = "<group>"; };
@@ -123,6 +122,7 @@
 		FACA55461F24D17D007E7F46 /* AudioHijackSession+SetMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AudioHijackSession+SetMetadata.swift"; sourceTree = "<group>"; };
 		FACBE5C71F23D66C00030B87 /* StaticSpotifyTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticSpotifyTrack.swift; sourceTree = "<group>"; };
 		FAD45AB81F2140920012EF3F /* TestData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestData.swift; sourceTree = "<group>"; };
+		FAD901A71F3869B8006AD800 /* SpotijackError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotijackError.swift; sourceTree = "<group>"; };
 		FADD9EB81F03FB2800EAC2BC /* AudioHijack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioHijack.h; sourceTree = "<group>"; };
 		FADD9EB91F03FB2800EAC2BC /* AudioHijack.sdef */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = AudioHijack.sdef; sourceTree = "<group>"; };
 		FADD9EBA1F03FB2800EAC2BC /* AudioHijack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioHijack.swift; sourceTree = "<group>"; };
@@ -198,7 +198,7 @@
 		FA2F5B121F376866007132ED /* Helper Types */ = {
 			isa = PBXGroup;
 			children = (
-				FAAF86DE1F31FACF00833028 /* Errors.swift */,
+				FAD901A71F3869B8006AD800 /* SpotijackError.swift */,
 				FA678C771F164402009D6AF8 /* Notifications.swift */,
 				FACBE5C71F23D66C00030B87 /* StaticSpotifyTrack.swift */,
 				FA503A231F378B660009BDBD /* SpotijackSessionCreator.swift */,
@@ -544,7 +544,7 @@
 				FADD9EC91F03FB2800EAC2BC /* Spotify.swift in Sources */,
 				FAAF86DD1F31F79300833028 /* SpotijackSession.swift in Sources */,
 				FADD9EC51F03FB2800EAC2BC /* AudioHijackScripting.swift in Sources */,
-				FAAF86DF1F31FACF00833028 /* Errors.swift in Sources */,
+				FAD901A81F3869B8006AD800 /* SpotijackError.swift in Sources */,
 				FA503A241F378B660009BDBD /* SpotijackSessionCreator.swift in Sources */,
 				FADD9EC41F03FB2800EAC2BC /* AudioHijack.swift in Sources */,
 				FACBE5C81F23D66C00030B87 /* StaticSpotifyTrack.swift in Sources */,

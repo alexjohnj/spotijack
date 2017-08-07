@@ -17,14 +17,14 @@ internal enum SpotijackSessionCreator {
 
         guard let script = NSAppleScript(contentsOf: creationScriptPath, error: &errorInfo) else {
             let failureReason = errorInfo?[NSAppleScript.errorMessage] as? String ?? "Failed to load Spotijack session configuration script."
-            throw SpotijackSessionError.couldNotCreateSpotijackSession(reason: failureReason)
+            throw SpotijackError.CouldNotCreateSpotijackSession(reason: failureReason)
         }
 
         // No idea if this actually works. The docs say this method call should
         // return nil if there's a problem but the method signature says different.
         let _ = script.executeAndReturnError(&errorInfo)
         if let failureReason = errorInfo?[NSAppleScript.errorMessage] as? String {
-            throw SpotijackSessionError.couldNotCreateSpotijackSession(reason: failureReason)
+            throw SpotijackError.CouldNotCreateSpotijackSession(reason: failureReason)
         }
     }
 }

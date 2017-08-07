@@ -28,7 +28,7 @@ public final class SpotijackSession {
         case .fail(let error):
             // Try and create a new session if one doesn't exist
             switch error {
-            case SpotijackSessionError.spotijackSessionNotFound:
+            case is SpotijackError.SpotijackSessionNotFound:
                 do {
                     try SpotijackSessionCreator.createSpotijackSession()
                     switch getFirstSpotijackSession() {
@@ -54,7 +54,7 @@ public final class SpotijackSession {
         if let session = sessions.first(where: { $0.name == "Spotijack" }) {
             return .ok(session)
         } else {
-            return .fail(SpotijackSessionError.spotijackSessionNotFound)
+            return .fail(SpotijackError.SpotijackSessionNotFound())
         }
     }
 

@@ -95,7 +95,7 @@ extension SpotijackSessionManager {
 
     private func establishScriptingBridge(forBundle bundle: Constants.BundleInfo) -> Result<SBApplication> {
         guard launchApplication(fromBundle: bundle) == true else {
-            return .fail(SpotijackSessionError.cantStartApplication(name: bundle.name))
+            return.fail(SpotijackError.CantStartApplication(appName: bundle.name))
         }
         
         let bridge = SBApplication(bundleIdentifier: bundle.identifier)
@@ -103,7 +103,7 @@ extension SpotijackSessionManager {
         if let bridge = bridge {
             return .ok(bridge)
         } else {
-            return .fail(SpotijackSessionError.noScriptingInterface(appName: bundle.name))
+            return .fail(SpotijackError.NoScriptingInterface(appName: bundle.name))
         }
     }
 }
