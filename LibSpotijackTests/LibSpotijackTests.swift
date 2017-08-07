@@ -471,6 +471,8 @@ extension LibSpotijackTests {
     }
 
     func testEndingSpotijackingResumesPollingAtPreviousFrequency() {
+        let exp = expectation(description: "Waiting for Spotijack block to execute")
+
         SpotijackSessionManager.shared.establishSession { sessionResult in
             guard case .ok(let session) = sessionResult else {
                 XCTFail()
@@ -490,7 +492,10 @@ extension LibSpotijackTests {
             session.stopSpotijackSession()
 
             XCTAssertEqual(session._applicationPollingTimer?.timeInterval, initialInterval)
+            exp.fulfill()
         }
+
+        wait(for: [exp], timeout: 5.0)
     }
 }
 
