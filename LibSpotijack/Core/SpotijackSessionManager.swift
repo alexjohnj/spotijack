@@ -123,6 +123,7 @@ extension SpotijackSessionManager {
     }
 
     func sessionDidEncounterError(_ error: Error) {
+        spotijackSession = nil
         notiCenter.post(DidEncounterError(sender: self, error: error))
     }
 
