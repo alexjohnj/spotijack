@@ -50,6 +50,7 @@
 		FADD9EC81F03FB2800EAC2BC /* Spotify.sdef in Resources */ = {isa = PBXBuildFile; fileRef = FADD9EBF1F03FB2800EAC2BC /* Spotify.sdef */; };
 		FADD9EC91F03FB2800EAC2BC /* Spotify.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADD9EC01F03FB2800EAC2BC /* Spotify.swift */; };
 		FADD9ECA1F03FB2800EAC2BC /* SpotifyScripting.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADD9EC11F03FB2800EAC2BC /* SpotifyScripting.swift */; };
+		FADF0C491F389EC80034152B /* SpotijackError+FatalError.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADF0C481F389EC80034152B /* SpotijackError+FatalError.swift */; };
 		FAE1C14D1B07DC64007FF95C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = FAE1C14F1B07DC64007FF95C /* Localizable.strings */; };
 		FAE1C1501B07DF5F007FF95C /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAE1C1521B07DF5F007FF95C /* MainWindow.xib */; };
 		FAE1C1531B07DF63007FF95C /* PreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAE1C1551B07DF63007FF95C /* PreferencesWindow.xib */; };
@@ -132,6 +133,7 @@
 		FADD9EBF1F03FB2800EAC2BC /* Spotify.sdef */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Spotify.sdef; sourceTree = "<group>"; };
 		FADD9EC01F03FB2800EAC2BC /* Spotify.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Spotify.swift; sourceTree = "<group>"; };
 		FADD9EC11F03FB2800EAC2BC /* SpotifyScripting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotifyScripting.swift; sourceTree = "<group>"; };
+		FADF0C481F389EC80034152B /* SpotijackError+FatalError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SpotijackError+FatalError.swift"; sourceTree = "<group>"; };
 		FAE1C1481B07D67D007FF95C /* SPJConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPJConstants.h; sourceTree = "<group>"; };
 		FAE1C1491B07D67D007FF95C /* SPJConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPJConstants.m; sourceTree = "<group>"; };
 		FAE1C1591B07DF7C007FF95C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainWindow.xib; sourceTree = "<group>"; };
@@ -265,6 +267,7 @@
 				FAB41F191F26019A00448440 /* MainWindowController.swift */,
 				FA1992D31F35EF71000881D9 /* PreferencesWindowController.swift */,
 				FA6B961F1F3609500011D0D8 /* Preferences.swift */,
+				FADF0C481F389EC80034152B /* SpotijackError+FatalError.swift */,
 				FAB41F0D1F25FE8E00448440 /* Objc-Disabled */,
 				FAF81BE81A421ED9008F3360 /* XIBs */,
 				FA9503651A421B76009D7149 /* Images.xcassets */,
@@ -561,6 +564,7 @@
 				FA6B96201F3609500011D0D8 /* Preferences.swift in Sources */,
 				FA1992D41F35EF71000881D9 /* PreferencesWindowController.swift in Sources */,
 				FAB41F1A1F26019A00448440 /* MainWindowController.swift in Sources */,
+				FADF0C491F389EC80034152B /* SpotijackError+FatalError.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
