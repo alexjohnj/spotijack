@@ -37,7 +37,7 @@ class MainWindowController: NSWindowController {
                 session.startPolling(every: 0.1)
                 self?.refreshUI()
             case .fail(let error):
-                self?.presentError(error)
+                self?.showError(error, block: nil)
             }
         }
     }
@@ -49,7 +49,7 @@ extension MainWindowController {
         SpotijackSessionManager.shared.establishSession { [weak self] sessionResult in
             switch sessionResult {
             case .fail(let error):
-                self?.presentError(error)
+                self?.showError(error, block: nil)
             case .ok(let session):
                 if session.isSpotijacking {
                     session.stopSpotijackSession()
@@ -57,7 +57,7 @@ extension MainWindowController {
                     do {
                         try session.startSpotijackSession(config: Preferences.shared.recordingConfiguration)
                     } catch (let error) {
-                        self?.presentError(error)
+                        self?.showError(error, block: nil)
                     }
                 }
             }
@@ -68,7 +68,7 @@ extension MainWindowController {
         SpotijackSessionManager.shared.establishSession { [weak self] sessionResult in
             switch sessionResult {
             case .fail(let error):
-                self?.presentError(error)
+                self?.showError(error, block: nil)
             case .ok(let session):
                 session.isMuted = !session.isMuted
             }
@@ -88,7 +88,7 @@ extension MainWindowController {
                 self?.updateRecordButton(isRecording: session.isRecording)
                 self?.updateMuteButton(isMuted: session.isMuted)
             case .fail(let error):
-                self?.presentError(error)
+                self?.showError(error, block: nil)
             }
         }
     }
@@ -132,7 +132,7 @@ extension MainWindowController {
     ///
     /// - parameter error: The error to present.
     /// - parameter block: A block to execute after the error is dismissed.
-    private func presentError(_ error: Error, block: ((NSApplication.ModalResponse) -> Void)?) {
+    private func showError(_ error: Error, block: ((NSApplication.ModalResponse) -> Void)?) {
         guard let window = window else {
             return
         }
@@ -157,7 +157,7 @@ extension MainWindowController {
     }
 
     private func didEncounterError(noti: DidEncounterError) {
-        presentError(noti.error)
+        self.showError(noti.error, block: nil)
     }
 
     private func didReachEndOfPlaybackQueue(noti: DidReachEndOfPlaybackQueue) {
