@@ -161,6 +161,10 @@ extension MainWindowController {
     }
 
     private func didReachEndOfPlaybackQueue(noti: DidReachEndOfPlaybackQueue) {
+        guard Preferences.shared.shouldNotifyWhenFinished else {
+            return
+        }
+
         let notification = NSUserNotification()
         notification.title = NSLocalizedString("SESSION_END_NOTI", comment: "Title of notification saying the session has ended.")
         notification.informativeText = NSLocalizedString("SESSION_END_NOTI_SUBT", comment: "Explanation of why session has ended.")
