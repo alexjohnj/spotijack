@@ -34,7 +34,7 @@ class MainWindowController: NSWindowController {
         SpotijackSessionManager.shared.establishSession { [weak self] sessionResult in
             switch sessionResult {
             case .ok(let session):
-                session.startPolling(every: 0.1) //TODO: Use configurable polling interval
+                session.startPolling(every: 0.1)
                 self?.refreshUI()
             case .fail(let error):
                 self?.presentError(error)
