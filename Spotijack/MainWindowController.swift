@@ -131,14 +131,29 @@ extension MainWindowController {
     /// of `error`.
     ///
     /// - parameter error: The error to present.
-    /// - parameter block: A block to execute after the error is dismissed.
+    /// - parameter block: A block to execute after the error is dismissed. If
+    ///     `error` conforms to `RecoverableError`, its recovery options will
+    ///      be attempted first before calling `block`. You should use a different
+    ///      method if you need to know the result of the error recovery.
     private func showError(_ error: Error, block: ((NSApplication.ModalResponse) -> Void)?) {
         guard let window = window else {
             return
         }
 
         let alert = NSAlert(error: error)
-        alert.beginSheetModal(for: window, completionHandler: block)
+
+        if error is FatalError {
+            alert.alertStyle = .critical
+        }
+
+        if let error = error as? RecoverableError {
+            alert.beginSheetModal(for: window, completionHandler: ({ response in
+                let _ = error.attemptRecovery(optionIndex: response.rawValue)
+                block?(response)
+            }))
+        } else {
+            alert.beginSheetModal(for: window, completionHandler: block)
+        }
     }
 }
 
