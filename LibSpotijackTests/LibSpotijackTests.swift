@@ -469,6 +469,29 @@ extension LibSpotijackTests {
 
         wait(for: [notiExpect], timeout: 20.0)
     }
+
+    func testEndingSpotijackingResumesPollingAtPreviousFrequency() {
+        SpotijackSessionManager.shared.establishSession { sessionResult in
+            guard case .ok(let session) = sessionResult else {
+                XCTFail()
+                return
+            }
+
+            let initialInterval: TimeInterval = 2.0
+            let spotijackingInterval: TimeInterval = 1.0
+
+            let config = SpotijackSession.RecordingConfiguration(muteSpotify: true,
+                                                                 disableShuffling: true,
+                                                                 disableRepeat: true,
+                                                                 pollingInterval: spotijackingInterval)
+
+            session.startPolling(every: initialInterval)
+            try! session.startSpotijackSession(config: config)
+            session.stopSpotijackSession()
+
+            XCTAssertEqual(session._applicationPollingTimer?.timeInterval, initialInterval)
+        }
+    }
 }
 
 

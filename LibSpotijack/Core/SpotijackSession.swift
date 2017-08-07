@@ -179,7 +179,7 @@ public final class SpotijackSession {
         }
     }
 
-    private var _applicationPollingTimer: Timer? = nil
+    internal var _applicationPollingTimer: Timer? = nil
     private var activityToken: NSObjectProtocol? = nil
 
     /// Returns `true` if SpotijackSessionManager is polling Spotify and AHP.
@@ -187,6 +187,9 @@ public final class SpotijackSession {
 
     /// Returns `true` if SpotijackSessionManager is actively controlling recording.
     public private(set) var isSpotijacking: Bool = false
+
+    /// Interval we were polling applications at _before_ starting Spotijacking.
+    private var _pastPollingInterval: TimeInterval? = nil
 
     //MARK: Lifecycle
     internal init(spotifyBridge: SpotifyApplication, audioHijackBridge: AudioHijackApplication, manager: SpotijackSessionManager) {
@@ -266,7 +269,11 @@ public final class SpotijackSession {
             try spotijackSessionBridge.dematerialize().setSpeakerMuted!(true)
         }
 
-        if isPolling { stopPolling() }
+        if isPolling {
+            _pastPollingInterval = _applicationPollingTimer?.timeInterval
+            stopPolling()
+        }
+        
         startPolling(every: config.pollingInterval)
         isSpotijacking = true
         activityToken = ProcessInfo.processInfo.beginActivity(options: [.userInitiated, .idleSystemSleepDisabled],
@@ -275,7 +282,8 @@ public final class SpotijackSession {
     }
 
     /// Stops a Spotijack recording session. Calling this method when no recording
-    /// session is in progress has no effect. This method does not end polling.
+    /// session is in progress has no effect. If we were polling when Spotijacking
+    /// started, we'll resume polling at that interval.
     public func stopSpotijackSession() {
         guard isSpotijacking == true else {
             return
@@ -286,6 +294,11 @@ public final class SpotijackSession {
         if let activityToken = activityToken {
             ProcessInfo.processInfo.endActivity(activityToken)
             self.activityToken = nil
+        }
+
+        if let pastPollingInterval = _pastPollingInterval {
+            stopPolling()
+            startPolling(every: pastPollingInterval)
         }
     }
 
