@@ -10,21 +10,21 @@ import Cocoa
 import LibSpotijack
 import TypedNotification
 
-class MainWindowController: NSWindowController {
-    //MARK: Interface Builder Outlets
-    @IBOutlet weak var statusField: NSTextField!
-    @IBOutlet weak var artistField: NSTextField!
-    @IBOutlet weak var recordButton: NSButton!
-    @IBOutlet weak var muteButton: NSButton!
+internal class MainWindowController: NSWindowController {
+    // MARK: Interface Builder Outlets
+    @IBOutlet private weak var statusField: NSTextField!
+    @IBOutlet private weak var artistField: NSTextField!
+    @IBOutlet private weak var recordButton: NSButton!
+    @IBOutlet private weak var muteButton: NSButton!
 
-    //MARK: Notification Observer Tokens
-    private var _muteStateDidChangeObserver: NotificationObserver? = nil
-    private var _didEncounterErrorObserver: NotificationObserver? = nil
-    private var _recordingStateDidChangeObserver: NotificationObserver? = nil
-    private var _trackDidChangeObserver: NotificationObserver? = nil
-    private var _didReachEndOfQueueObserver: NotificationObserver? = nil
+    // MARK: Notification Observer Tokens
+    private var _muteStateDidChangeObserver: NotificationObserver?
+    private var _didEncounterErrorObserver: NotificationObserver?
+    private var _recordingStateDidChangeObserver: NotificationObserver?
+    private var _trackDidChangeObserver: NotificationObserver?
+    private var _didReachEndOfQueueObserver: NotificationObserver?
 
-    //MARK: Window Lifecycle
+    // MARK: Window Lifecycle
     override func windowDidLoad() {
         super.windowDidLoad()
 
@@ -43,7 +43,7 @@ class MainWindowController: NSWindowController {
     }
 }
 
-//MARK: UI Actions
+// MARK: - UI Actions
 extension MainWindowController {
     @IBAction func recordButtonClicked(_ sender: NSButton) {
         SpotijackSessionManager.shared.establishSession { [weak self] sessionResult in
@@ -76,7 +76,7 @@ extension MainWindowController {
     }
 }
 
-//MARK: UI Updates
+// MARK: UI Updates
 extension MainWindowController {
     /// Refreshes the user interface updating the recording button state, now
     /// playing state and mute button state.
@@ -124,8 +124,7 @@ extension MainWindowController {
     }
 }
 
-
-//MARK: Helper Functions
+// MARK: - Helper Functions
 extension MainWindowController {
     /// Presents a sheet built from the description and recovery suggestion
     /// of `error`.
@@ -148,7 +147,7 @@ extension MainWindowController {
 
         if let error = error as? RecoverableError {
             alert.beginSheetModal(for: window, completionHandler: ({ response in
-                let _ = error.attemptRecovery(optionIndex: response.rawValue)
+                _ = error.attemptRecovery(optionIndex: response.rawValue)
                 block?(response)
             }))
         } else {
@@ -157,7 +156,7 @@ extension MainWindowController {
     }
 }
 
-//MARK: Notification Handling
+// MARK: - Notification Handling
 extension MainWindowController {
     private func muteStateDidChange(noti: MuteStateDidChange) {
         updateMuteButton(isMuted: noti.newMuteState)
@@ -181,8 +180,10 @@ extension MainWindowController {
         }
 
         let notification = NSUserNotification()
-        notification.title = NSLocalizedString("SESSION_END_NOTI", comment: "Title of notification saying the session has ended.")
-        notification.informativeText = NSLocalizedString("SESSION_END_NOTI_SUBT", comment: "Explanation of why session has ended.")
+        notification.title = NSLocalizedString("SESSION_END_NOTI",
+                                               comment: "Title of notification saying the session has ended.")
+        notification.informativeText = NSLocalizedString("SESSION_END_NOTI_SUBT",
+                                                         comment: "Explanation of why session has ended.")
 
         NSUserNotificationCenter.default.deliver(notification)
     }

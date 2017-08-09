@@ -43,7 +43,7 @@ public struct StaticSpotifyTrack {
 }
 
 extension StaticSpotifyTrack: Equatable {
-    public static func ==(lhs: StaticSpotifyTrack, rhs: StaticSpotifyTrack) -> Bool {
+    public static func == (lhs: StaticSpotifyTrack, rhs: StaticSpotifyTrack) -> Bool {
         return lhs.id == rhs.id
     }
 }

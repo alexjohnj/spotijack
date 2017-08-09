@@ -10,19 +10,21 @@ import Foundation
 
 internal enum SpotijackSessionCreator {
     static func createSpotijackSession() throws {
-        guard let creationScriptPath = Bundle(for: SpotijackSessionManager.self).url(forResource: "ConfigureSpotijackSession", withExtension: "applescript") else {
+        guard let creationScriptPath = Constants.libSpotijackBundle.url(forResource: "ConfigureSpotijackSession",
+                                                                        withExtension: "applescript") else {
             preconditionFailure("Spotijack session configuration script could not be loaded from the framework bundle.")
         }
         var errorInfo: NSDictionary? = [:]
 
         guard let script = NSAppleScript(contentsOf: creationScriptPath, error: &errorInfo) else {
-            let failureReason = errorInfo?[NSAppleScript.errorMessage] as? String ?? "Failed to load Spotijack session configuration script."
+            let failureReason = errorInfo?[NSAppleScript.errorMessage] as? String
+                ?? "Failed to load Spotijack session configuration script."
             throw SpotijackError.CouldNotCreateSpotijackSession(reason: failureReason)
         }
 
         // No idea if this actually works. The docs say this method call should
         // return nil if there's a problem but the method signature says different.
-        let _ = script.executeAndReturnError(&errorInfo)
+        _ = script.executeAndReturnError(&errorInfo)
         if let failureReason = errorInfo?[NSAppleScript.errorMessage] as? String {
             throw SpotijackError.CouldNotCreateSpotijackSession(reason: failureReason)
         }

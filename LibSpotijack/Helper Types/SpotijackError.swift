@@ -18,12 +18,14 @@ public enum SpotijackError {
         public let appName: String
 
         public var errorDescription: String? {
-            return String(format: NSLocalizedString("ERROR_APP_NOT_LAUNCHED_DESC", bundle: bundle, comment: "{AppName} has not been launched"),
+            return String(format: NSLocalizedString("ERROR_APP_NOT_LAUNCHED_DESC", bundle: bundle,
+                                                    comment: "{AppName} has not been launched"),
                           appName)
         }
 
         public var recoverySuggestion: String? {
-            return String(format: NSLocalizedString("ERROR_APP_NOT_LAUNCHED_SUGG", bundle: bundle, comment: "Try manually starting {AppName}"),
+            return String(format: NSLocalizedString("ERROR_APP_NOT_LAUNCHED_SUGG", bundle: bundle,
+                                                    comment: "Try manually starting {AppName}"),
                           appName)
         }
     }
@@ -34,12 +36,14 @@ public enum SpotijackError {
         public let appName: String
 
         public var errorDescription: String? {
-            return String(format: NSLocalizedString("ERROR_CANT_START_APP_DESC", bundle: bundle, comment: "Can't start {AppName}"),
+            return String(format: NSLocalizedString("ERROR_CANT_START_APP_DESC", bundle: bundle,
+                                                    comment: "Can't start {AppName}"),
                           appName)
         }
 
         public var recoverySuggestion: String? {
-            return String(format: NSLocalizedString("ERROR_CANT_START_APP_SUGG", bundle: bundle, comment: "Check {AppName} is installed"),
+            return String(format: NSLocalizedString("ERROR_CANT_START_APP_SUGG", bundle: bundle,
+                                                    comment: "Check {AppName} is installed"),
                           appName)
         }
     }
@@ -51,12 +55,15 @@ public enum SpotijackError {
         public let appName: String
 
         public var errorDescription: String? {
-            return String(format: NSLocalizedString("ERROR_NO_SCRIPTING_INT_DESC", bundle: bundle, comment: "No scripting interface for {AppName}"),
+            return String(format: NSLocalizedString("ERROR_NO_SCRIPTING_INT_DESC", bundle: bundle,
+                                                    comment: "No scripting interface for {AppName}"),
                           appName)
         }
 
         public var recoverySuggestion: String? {
-            return String(format: NSLocalizedString("ERROR_NO_SCRIPTING_INT_SUGG", bundle: bundle, comment: "Check using a version of {AppName} that supports AppleScript"),
+            return String(format: NSLocalizedString("ERROR_NO_SCRIPTING_INT_SUGG", bundle: bundle,
+                                                    comment: ("Check using a version of {AppName} that supports " +
+                                                        "AppleScript")),
                           appName)
         }
     }
@@ -68,7 +75,8 @@ public enum SpotijackError {
         public let appName: String
 
         public var errorDescription: String? {
-            return String(format: NSLocalizedString("ERROR_NO_RUNNING_INSTANCE_DESC", bundle: bundle, comment: "No running instance of {AppName} found."),
+            return String(format: NSLocalizedString("ERROR_NO_RUNNING_INSTANCE_DESC", bundle: bundle,
+                                                    comment: "No running instance of {AppName} found."),
                           appName)
         }
 
@@ -83,11 +91,13 @@ public enum SpotijackError {
         public let reason: String
 
         public var errorDescription: String? {
-            return NSLocalizedString("ERROR_CREATE_SPOTIJACK_DESC", bundle: bundle, comment: "Couldn't create Spotijack session.")
+            return NSLocalizedString("ERROR_CREATE_SPOTIJACK_DESC", bundle: bundle,
+                                     comment: "Couldn't create Spotijack session.")
         }
 
         public var recoverySuggestion: String? {
-            return String(format: NSLocalizedString("ERROR_CREATE_SPOTIJACK_SUGG", bundle: bundle, comment: "This might be helpful {reason}"),
+            return String(format: NSLocalizedString("ERROR_CREATE_SPOTIJACK_SUGG", bundle: bundle,
+                                                    comment: "This might be helpful {reason}"),
                           reason)
         }
     }
@@ -95,11 +105,13 @@ public enum SpotijackError {
     /// Could not find a Spotijack session in AHP
     public struct SpotijackSessionNotFound: LocalizedError {
         public var errorDescription: String? {
-            return NSLocalizedString("ERROR_NO_SPOTIJACK_FOUND_DESC", bundle: bundle, comment: "No Spotijack session found.")
+            return NSLocalizedString("ERROR_NO_SPOTIJACK_FOUND_DESC", bundle: bundle,
+                                     comment: "No Spotijack session found.")
         }
 
         public var recoverySuggestion: String? {
-            return NSLocalizedString("ERROR_NO_SPOTIJACK_FOUND_SUGG", bundle: bundle, comment: "Try manually creating a session.")
+            return NSLocalizedString("ERROR_NO_SPOTIJACK_FOUND_SUGG", bundle: bundle,
+                                     comment: "Try manually creating a session.")
         }
     }
 }

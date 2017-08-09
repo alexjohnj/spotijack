@@ -11,10 +11,10 @@ import ScriptingBridge
 import Result
 
 public final class SpotijackSession {
-    //MARK: Properties - General
+    // MARK: - Properties - General
     private weak var manager: SpotijackSessionManager?
-    
-    //MARK: Properties - Application Bridges
+
+    // MARK: - Properties - Application Bridges
     internal var spotifyBridge: SpotifyApplication
     internal var audioHijackBridge: AudioHijackApplication
 
@@ -49,6 +49,7 @@ public final class SpotijackSession {
 
     /// Gets the first session called "Spotijack" reported by Audio Hijack Pro.
     private func getFirstSpotijackSession() -> Result<AudioHijackApplicationSession> {
+        // swiftlint:disable:next force_cast
         let sessions = audioHijackBridge.sessions!() as! [AudioHijackApplicationSession] // Should never fail
 
         if let session = sessions.first(where: { $0.name == "Spotijack" }) {
@@ -58,7 +59,7 @@ public final class SpotijackSession {
         }
     }
 
-    //MARK: Properties - State
+    // MARK: - Properties - State
     // Internal mute state used to track changes. Does not affect the actual mute
     // state in AHP.
     private var _isMuted: Bool = false {
@@ -157,8 +158,7 @@ public final class SpotijackSession {
             // Start a new recording if Spotijack is controlling the current
             // recording session.
             if _currentTrack != oldValue,
-                isSpotijacking == true
-            {
+                isSpotijacking == true {
                 do {
                     try startNewRecording()
                 } catch (let error) {
@@ -179,8 +179,8 @@ public final class SpotijackSession {
         }
     }
 
-    internal var _applicationPollingTimer: Timer? = nil
-    private var activityToken: NSObjectProtocol? = nil
+    internal var _applicationPollingTimer: Timer?
+    private var activityToken: NSObjectProtocol?
 
     /// Returns `true` if SpotijackSessionManager is polling Spotify and AHP.
     public var isPolling: Bool { return _applicationPollingTimer?.isValid ?? false }
@@ -189,17 +189,18 @@ public final class SpotijackSession {
     public private(set) var isSpotijacking: Bool = false
 
     /// Interval we were polling applications at _before_ starting Spotijacking.
-    private var _pastPollingInterval: TimeInterval? = nil
+    private var _pastPollingInterval: TimeInterval?
 
-    //MARK: Lifecycle
-    internal init(spotifyBridge: SpotifyApplication, audioHijackBridge: AudioHijackApplication, manager: SpotijackSessionManager) {
+    // MARK: - Lifecycle
+    internal init(spotifyBridge: SpotifyApplication, audioHijackBridge: AudioHijackApplication,
+                  manager: SpotijackSessionManager) {
         self.spotifyBridge = spotifyBridge
         self.audioHijackBridge = audioHijackBridge
 
         self.manager = manager
     }
 
-    //MARK: Application Polling
+    // MARK: - Application Polling
     /// Starts polling Spotify and AHP for changes. Polling is stopped when
     /// `stopPolling()` is called or if `SpotijackSessionManager` encounters an
     /// error.
@@ -247,7 +248,7 @@ public final class SpotijackSession {
         _isMuted = isMuted
     }
 
-    //MARK: Spotijacking
+    // MARK: - Spotijacking
     /// Start a Spotijack recording session. Calling this method when a recording
     /// session is already in progress has no effect. Polling will be restarted
     /// at the interval specified in `config`.
@@ -273,7 +274,7 @@ public final class SpotijackSession {
             _pastPollingInterval = _applicationPollingTimer?.timeInterval
             stopPolling()
         }
-        
+
         startPolling(every: config.pollingInterval)
         isSpotijacking = true
         activityToken = ProcessInfo.processInfo.beginActivity(options: [.userInitiated, .idleSystemSleepDisabled],
@@ -343,7 +344,7 @@ public final class SpotijackSession {
     }
 }
 
-//MARK: RecordingConfiguration
+// MARK: - RecordingConfiguration
 public extension SpotijackSession {
     public struct RecordingConfiguration {
         /// Should the Spotijack session be muted when starting Spotijacking?
@@ -355,7 +356,8 @@ public extension SpotijackSession {
         /// Frequency we should poll Spotify and AHP when Spotijacking.
         public let pollingInterval: TimeInterval
 
-        public init(muteSpotify: Bool = false, disableShuffling: Bool = false, disableRepeat: Bool = false, pollingInterval: TimeInterval = 0.1) {
+        public init(muteSpotify: Bool = false, disableShuffling: Bool = false, disableRepeat: Bool = false,
+                    pollingInterval: TimeInterval = 0.1) {
             self.muteSpotify = muteSpotify
             self.disableShuffling = disableShuffling
             self.disableRepeat = disableRepeat
@@ -363,4 +365,3 @@ public extension SpotijackSession {
         }
     }
 }
-

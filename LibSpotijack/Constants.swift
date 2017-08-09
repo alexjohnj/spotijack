@@ -16,4 +16,3 @@ internal enum Constants {
 
     internal static let libSpotijackBundle = Bundle(identifier: "org.alexj.LibSpotijack")!
 }
-

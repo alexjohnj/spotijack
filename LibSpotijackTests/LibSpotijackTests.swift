@@ -11,7 +11,8 @@ import TypedNotification
 import Result
 @testable import LibSpotijack
 
-class LibSpotijackTests: XCTestCase {
+// swiftlint:disable file_length
+internal class LibSpotijackTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
@@ -61,10 +62,12 @@ class LibSpotijackTests: XCTestCase {
             session.spotijackSessionBridge.value?.stopHijacking!()
             session.spotifyBridge.pause!()
         }
+
+        super.tearDown()
     }
 }
 
-//MARK: Muting Tests
+// MARK: - Muting Tests
 extension LibSpotijackTests {
     /// Test muting the Spotijack session works and does not trigger an error.
     func testMuteSpotijackSession() {
@@ -139,7 +142,7 @@ extension LibSpotijackTests {
     }
 }
 
-//MARK: Recording Tests
+// MARK: - Recording Tests
 extension LibSpotijackTests {
     func testChangeSpotijackRecordingState() {
         let recordingChangeExpect = expectation(description: "Waiting for recording state to change.")
@@ -223,7 +226,7 @@ extension LibSpotijackTests {
     }
 }
 
-//MARK: Currently Playing Song Tests
+// MARK: - Currently Playing Song Tests
 extension LibSpotijackTests {
     func testGetCurrentTrackWorks() {
         let currentTrackExpect = expectation(description: "Waiting to get current track")
@@ -287,7 +290,7 @@ extension LibSpotijackTests {
                 forType: TrackDidChange.self,
                 object: SpotijackSessionManager.shared,
                 queue: nil,
-                using: { noti in
+                using: { _ in
                     changeTrackExpect.fulfill()
             })
 
@@ -310,7 +313,7 @@ extension LibSpotijackTests {
     }
 }
 
-//MARK: Polling Tests
+// - MARK: - Polling Tests
 extension LibSpotijackTests {
     func testPollingStatusWorks() {
         let statusExpectation = expectation(description: "Waiting to get polling status.")
@@ -333,7 +336,7 @@ extension LibSpotijackTests {
     }
 }
 
-//MARK: Spotijacking Tests
+// MARK: - Spotijacking Tests
 extension LibSpotijackTests {
     func testSpotijacking() {
         let spotijackingExpectation = expectation(description: "Waiting to Spotijack things")
@@ -355,7 +358,10 @@ extension LibSpotijackTests {
 
                 DispatchQueue.main.sync {
                     do {
-                        let config = SpotijackSession.RecordingConfiguration(muteSpotify: true, disableShuffling: true, disableRepeat: true, pollingInterval: 0.1)
+                        let config = SpotijackSession.RecordingConfiguration(muteSpotify: true,
+                                                                             disableShuffling: true,
+                                                                             disableRepeat: true,
+                                                                             pollingInterval: 0.1)
                         try session.startSpotijackSession(config: config)
                     } catch (let error) {
                         XCTFail(String(describing: error))
@@ -407,7 +413,10 @@ extension LibSpotijackTests {
 
                 DispatchQueue.main.sync {
                     do {
-                        let config = SpotijackSession.RecordingConfiguration(muteSpotify: true, disableShuffling: true, disableRepeat: true, pollingInterval: 0.1)
+                        let config = SpotijackSession.RecordingConfiguration(muteSpotify: true,
+                                                                             disableShuffling: true,
+                                                                             disableRepeat: true,
+                                                                             pollingInterval: 0.1)
                         try session.startSpotijackSession(config: config)
                     } catch (let error) {
                         XCTFail(String(describing: error))
@@ -450,8 +459,14 @@ extension LibSpotijackTests {
 
             DispatchQueue.global(qos: .userInitiated).async {
                 DispatchQueue.main.sync {
-                    try! session.startSpotijackSession(config: SpotijackSession.RecordingConfiguration())
-                    session.spotifyBridge.playTrack!(BabesNeverDieOutro.uri, inContext: "spotify:album:5t8fEQAEiAUpKzGPT1ygdy")
+                    do {
+                        let config = SpotijackSession.RecordingConfiguration()
+                        try session.startSpotijackSession(config: config)
+                        session.spotifyBridge.playTrack!(BabesNeverDieOutro.uri,
+                                                         inContext: "spotify:album:5t8fEQAEiAUpKzGPT1ygdy")
+                    } catch (let error) {
+                        XCTFail(error.localizedDescription)
+                    }
                 }
 
                 while session.currentTrack?.id != BabesNeverDieOutro.uri { continue }
@@ -488,7 +503,11 @@ extension LibSpotijackTests {
                                                                  pollingInterval: spotijackingInterval)
 
             session.startPolling(every: initialInterval)
-            try! session.startSpotijackSession(config: config)
+            do {
+                try session.startSpotijackSession(config: config)
+            } catch (let error) {
+                XCTFail(error.localizedDescription)
+            }
             session.stopSpotijackSession()
 
             XCTAssertEqual(session._applicationPollingTimer?.timeInterval, initialInterval)
@@ -498,16 +517,3 @@ extension LibSpotijackTests {
         wait(for: [exp], timeout: 5.0)
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

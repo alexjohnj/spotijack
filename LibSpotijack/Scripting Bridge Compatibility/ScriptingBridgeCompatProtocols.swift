@@ -18,4 +18,3 @@ import ScriptingBridge
     var delegate: SBApplicationDelegate! { get set }
     var running: Bool { @objc(isRunning) get }
 }
-

@@ -10,18 +10,18 @@ import Cocoa
 import LibSpotijack
 
 @NSApplicationMain
-class AppDelegate: NSObject {
-    private lazy var mainWindowController: MainWindowController = MainWindowController(windowNibName: NSNib.Name("MainWindow"))
-    private lazy var prefencesWindowController: PreferencesWindowController = PreferencesWindowController()
+internal class AppDelegate: NSObject {
+    private lazy var mainWindowController = MainWindowController(windowNibName: NSNib.Name("MainWindow"))
+    private lazy var prefencesWindowController = PreferencesWindowController()
 }
 
-//MARK: NSApplicationDelegate Methods
+// MARK: NSApplicationDelegate Methods
 extension AppDelegate: NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         Preferences.shared.registerDefaultValues()
 
         // Display the main window
-        let _ = applicationShouldHandleReopen(NSApplication.shared, hasVisibleWindows: false)
+        _ = applicationShouldHandleReopen(NSApplication.shared, hasVisibleWindows: false)
     }
 
     func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
@@ -64,14 +64,14 @@ extension AppDelegate: NSApplicationDelegate {
     }
 }
 
-//MARK: UI Actions
+// MARK: - UI Actions
 extension AppDelegate {
     @IBAction private func openPreferencesWindow(_ sender: NSMenuItem) {
         prefencesWindowController.showWindow(self)
     }
 }
 
-//MARK: Helper Functions
+// MARK: - Helper Functions
 extension AppDelegate {
     /// Presents an alert sheet asking the user to verify they want to quit.
     /// The alert response invokes `NSApp.reply(toApplicationShouldTerminate:)`
@@ -79,8 +79,10 @@ extension AppDelegate {
     /// - parameter window: The window to attach the alert to.
     private func presentTerminationWarning(window: NSWindow) {
         let alert = NSAlert()
-        alert.informativeText = NSLocalizedString("SESSION_QUIT_MESSAGE", comment: "Asking if you want to quit")
-        alert.messageText = NSLocalizedString("SESSION_QUIT_INFORMATIVE", comment: "Saying that a recording is in progress.")
+        alert.informativeText = NSLocalizedString("SESSION_QUIT_MESSAGE",
+                                                  comment: "Asking if you want to quit")
+        alert.messageText = NSLocalizedString("SESSION_QUIT_INFORMATIVE",
+                                              comment: "Saying that a recording is in progress.")
         alert.addButton(withTitle: NSLocalizedString("Cancel", comment: ""))
         alert.addButton(withTitle: NSLocalizedString("OK", comment: ""))
 

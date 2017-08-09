@@ -12,16 +12,16 @@ import Result
 import TypedNotification
 
 public final class SpotijackSessionManager {
-    //MARK: Singleton Setup
+    // MARK: - Singleton Things
     public static let shared = SpotijackSessionManager()
     private init() { }
 
     public let notiCenter: NotificationCenter = NotificationCenter.default
 
-    //MARK: Current Session
+    // MARK: - Spotijack Session
     internal var spotijackSession: SpotijackSession? // Internal for testing
 
-    //MARK: State Properties
+    // MARK: Session State
     public var isMuted: Bool {
         return spotijackSession?.isMuted ?? false
     }
@@ -35,7 +35,7 @@ public final class SpotijackSessionManager {
     }
 }
 
-//MARK: Session Initialisation & Access
+// MARK: Session Initialisation & Access
 extension SpotijackSessionManager {
     /// Attempts to start Audio Hijack Pro, Spotify and the Spotijack session.
     /// The behaviour of SpotijackSessionManager is undefined if this function
@@ -55,7 +55,7 @@ extension SpotijackSessionManager {
     ///         Spotify has been launched. This still mightn't be enough time for
     ///         Spotify to activate the scripting interface in which case what happens
     ///         is pretty much unknown.
-    public func establishSession(_ then: @escaping (Result<SpotijackSession>) -> ()) {
+    public func establishSession(_ then: @escaping (Result<SpotijackSession>) -> Void) {
         guard spotijackSession == nil else {
             let session = spotijackSession!
             DispatchQueue.main.async {
@@ -73,7 +73,8 @@ extension SpotijackSessionManager {
         case (_, .fail(let error)):
             then(.fail(error))
         case (.ok(let spotifyBridge), .ok(let audioHijackBridge)):
-            let session = SpotijackSession(spotifyBridge: spotifyBridge, audioHijackBridge: audioHijackBridge, manager: self)
+            let session = SpotijackSession(spotifyBridge: spotifyBridge,
+                                           audioHijackBridge: audioHijackBridge, manager: self)
             self.spotijackSession = session
 
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.7) {
@@ -97,7 +98,7 @@ extension SpotijackSessionManager {
         guard launchApplication(fromBundle: bundle) == true else {
             return.fail(SpotijackError.CantStartApplication(appName: bundle.name))
         }
-        
+
         let bridge = SBApplication(bundleIdentifier: bundle.identifier)
 
         if let bridge = bridge {
@@ -108,7 +109,7 @@ extension SpotijackSessionManager {
     }
 }
 
-//MARK: Session Back-Communication
+// MARK: - Session-Manager Communication
 extension SpotijackSessionManager {
     func trackDidChange(newTrack: StaticSpotifyTrack?) {
         notiCenter.post(TrackDidChange(sender: self, newTrack: newTrack))
