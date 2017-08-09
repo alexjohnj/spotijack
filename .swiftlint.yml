@@ -2,3 +2,21 @@ excluded:
   - Carthage
   - Legacy
   - LibSpotijack/Scripting Bridge Compatibility
+
+opt_in_rules:
+  - closure_end_indentation
+  - closure_spacing
+  - explicit_top_level_acl
+  - fatal_error_message
+  - operator_usage_whitespace
+  - overridden_super_call
+  - private_outlet
+
+line_length: 120
+
+identifier_name:
+  excluded:
+    - id
+
+  allowed_symbols: ["_"]
+  validates_start_with_lowercase: false
