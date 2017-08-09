@@ -1,0 +1,4 @@
+excluded:
+  - Carthage
+  - Legacy
+  - LibSpotijack/Scripting Bridge Compatibility
