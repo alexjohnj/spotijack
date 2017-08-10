@@ -12,8 +12,6 @@ import LibSpotijack
 
 // swiftlint:disable:next type_name
 internal class MockSpotijackAudioHijackApplicationSession: NSObject {
-    var _isActivated = false
-
     private var _hijacked = false
     private var _recording = false
     private var _speakerMuted = false
