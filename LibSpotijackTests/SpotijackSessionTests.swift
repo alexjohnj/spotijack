@@ -25,9 +25,8 @@ internal class SpotijackSessionTests: XCTestCase {
     // MARK: - Mute Tests
     func testGetSessionMuteState() {
         let expectedMuteState = true
-
         let (session, _, ahp) = SpotijackSession.makeStandardApplications()
-        ahp._sessions.first(where: { $0._name == "Spotijack" })?._speakerMuted = expectedMuteState
+        ahp._sessions.first(where: { $0._name == "Spotijack" })?.setSpeakerMuted(expectedMuteState)
 
         XCTAssertEqual(session.isMuted, expectedMuteState)
     }
@@ -69,4 +68,41 @@ internal class SpotijackSessionTests: XCTestCase {
 
         XCTAssertEqual(spotijackAHPSession._hijacked, expectedHijackingState)
     }
+
+    // MARK: - Recording Tests
+    func testGetRecordingState() {
+        let expectedRecordingState = true
+        let (session, _, ahp) = SpotijackSession.makeStandardApplications()
+        let spotijackAHPSession = ahp._sessions.first(where: { $0._name == "Spotijack" })!
+        spotijackAHPSession.startRecording()
+
+        XCTAssertEqual(session.isRecording, expectedRecordingState)
+    }
+
+    func testSetRecordingState() {
+        let expectedRecordingState = true
+        let (session, _, ahp) = SpotijackSession.makeStandardApplications()
+        let spotijackAHPSession = ahp._sessions.first(where: { $0._name == "Spotijack" })!
+
+        session.isRecording = expectedRecordingState
+        XCTAssertEqual(spotijackAHPSession._recording, expectedRecordingState)
+    }
+
+    func testChangeRecordingStateNotifiesDelegate() {
+        let expectedRecordingState = true
+        var receivedRecordingState: Bool?
+
+        let delegate = MockSpotijackSessionDelegate()
+        delegate.onSessionDidChangeRecordingState = { (_, isRecording) in
+            receivedRecordingState = isRecording
+        }
+
+        let (session, _, _) = SpotijackSession.makeStandardApplications()
+        session.delegate = delegate
+        session.isRecording = true
+
+        XCTAssertNotNil(receivedRecordingState)
+        XCTAssertEqual(receivedRecordingState, expectedRecordingState)
+    }
+
 }
