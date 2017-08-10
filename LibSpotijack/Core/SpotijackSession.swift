@@ -49,8 +49,7 @@ public final class SpotijackSession {
 
     /// Gets the first session called "Spotijack" reported by Audio Hijack Pro.
     private func getFirstSpotijackSession() -> Result<AudioHijackApplicationSession> {
-        // swiftlint:disable:next force_cast
-        let sessions = audioHijackBridge.sessions!() as! [AudioHijackApplicationSession] // Should never fail
+        let sessions = audioHijackBridge.sessions!()
 
         if let session = sessions.first(where: { $0.name == "Spotijack" }) {
             return .ok(session)

@@ -97,7 +97,7 @@ import ScriptingBridge
     @objc optional func browserWindows() -> SBElementArray
     @objc optional func audioInputs() -> SBElementArray
     @objc optional func audioOutputs() -> SBElementArray
-    @objc optional func sessions() -> SBElementArray
+    @objc optional func sessions() -> [AudioHijackApplicationSession]
     @objc optional func audioRecordings() -> SBElementArray
 }
 extension SBApplication: AudioHijackApplication {}
