@@ -56,4 +56,17 @@ internal class SpotijackSessionTests: XCTestCase {
 
         XCTAssertEqual(expectedMuteState, receivedMuteState)
     }
+
+    // MARK: - AHP Session Access
+    func testAccessingAHPSessionStartsHijacking() {
+        let expectedHijackingState = true
+        let (session, _, ahp) = SpotijackSession.makeStandardApplications()
+        let spotijackAHPSession = ahp._sessions.first(where: { $0._name == "Spotijack" })!
+
+        spotijackAHPSession.stopHijacking()
+
+        _ = session.spotijackSessionBridge
+
+        XCTAssertEqual(spotijackAHPSession._hijacked, expectedHijackingState)
+    }
 }
