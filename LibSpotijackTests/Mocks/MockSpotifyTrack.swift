@@ -20,12 +20,15 @@ internal class MockSpotifyTrack: NSObject {
     }
 }
 
-// MARK: - SpotifyTrack Protocol Conformance
-extension MockSpotifyTrack: SpotifyTrack {
+// MARK: - SBObjectProtocol Conformance
+extension MockSpotifyTrack: SBObjectProtocol {
     func get() -> Any! {
         fatalError("Not implemented")
     }
+}
 
+// MARK: - SpotifyTrack Protocol Conformance
+extension MockSpotifyTrack: SpotifyTrack {
     // MARK: Implemented
     var artist: String { return _backingTrack.artist }
     var album: String { return _backingTrack.album }
