@@ -134,7 +134,6 @@
 		FAB41F191F26019A00448440 /* MainWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindowController.swift; sourceTree = "<group>"; };
 		FABADAF31F025D36001751AE /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = Carthage/Build/Mac/Sparkle.framework; sourceTree = "<group>"; };
 		FAC3007C1F17E04A00E47CB4 /* LibSpotijackTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LibSpotijackTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		FAC3007E1F17E04A00E47CB4 /* LibSpotijackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibSpotijackTests.swift; sourceTree = "<group>"; };
 		FAC300801F17E04A00E47CB4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FAC9A9F11F0403C400A19299 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/Mac/Result.framework; sourceTree = "<group>"; };
 		FACA55461F24D17D007E7F46 /* AudioHijackSession+SetMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AudioHijackSession+SetMetadata.swift"; sourceTree = "<group>"; };
@@ -342,7 +341,6 @@
 		FAC3007D1F17E04A00E47CB4 /* LibSpotijackTests */ = {
 			isa = PBXGroup;
 			children = (
-				FAC3007E1F17E04A00E47CB4 /* LibSpotijackTests.swift */,
 				FAD45AB81F2140920012EF3F /* TestData.swift */,
 				FA687FA71F3CEBC400B63453 /* SpotijackSession+MakeStandardApplications.swift */,
 				FA687FA61F3CEB2C00B63453 /* SpotijackSession Tests */,
