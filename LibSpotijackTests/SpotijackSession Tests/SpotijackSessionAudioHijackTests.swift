@@ -9,18 +9,6 @@
 import XCTest
 @testable import LibSpotijack
 
-extension SpotijackSession {
-    /// Makes standard mock Spotify and AHP applications and configures a new SpotijackSession to use them.
-    // swiftlint:disable:next large_tuple
-    static func makeStandardApplications() -> (SpotijackSession, MockSpotifyApplication, MockAudioHijackApplication) {
-        let spotify = MockSpotifyApplication.makeStandardApplication()
-        let ahp = MockAudioHijackApplication.makeStandardApplication()
-        let session = SpotijackSession(spotifyBridge: spotify, audioHijackBridge: ahp)
-
-        return (session, spotify, ahp)
-    }
-}
-
 /// Tests how SpotijackSession controls Audio Hijack Pro's state
 internal class SpotijackSessionAudioHijackTests: XCTestCase {
     // MARK: - Mute Tests
