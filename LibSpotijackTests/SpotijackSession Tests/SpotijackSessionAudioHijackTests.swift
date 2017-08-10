@@ -21,7 +21,8 @@ extension SpotijackSession {
     }
 }
 
-internal class SpotijackSessionTests: XCTestCase {
+/// Tests how SpotijackSession controls Audio Hijack Pro's state
+internal class SpotijackSessionAudioHijackTests: XCTestCase {
     // MARK: - Mute Tests
     func testGetSessionMuteState() {
         let expectedMuteState = true
