@@ -12,10 +12,10 @@ import LibSpotijack
 
 internal class MockAudioHijackApplication: NSObject {
     var _activated: Bool = false
-    var _sessions: SBElementArray
+    var _sessions: [MockSpotijackAudioHijackApplicationSession]
 
     init(sessions: [MockSpotijackAudioHijackApplicationSession]) {
-        _sessions = SBElementArray(array: sessions)
+        _sessions = sessions
     }
 }
 
@@ -45,7 +45,7 @@ extension MockAudioHijackApplication: SBApplicationProtocol {
 
 // MARK: - AudioHijackApplicationConformance
 extension MockAudioHijackApplication: AudioHijackApplication {
-    func sessions() -> SBElementArray {
+    func sessions() -> [AudioHijackApplicationSession] {
         return _sessions
     }
 }
