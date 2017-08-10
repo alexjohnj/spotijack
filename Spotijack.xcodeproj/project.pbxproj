@@ -17,6 +17,7 @@
 		FA678C781F164402009D6AF8 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA678C771F164402009D6AF8 /* Notifications.swift */; };
 		FA678C7A1F164847009D6AF8 /* SpotijackSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA678C791F164837009D6AF8 /* SpotijackSessionManager.swift */; };
 		FA687F941F3C966000B63453 /* SpotijackSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA687F931F3C966000B63453 /* SpotijackSessionDelegate.swift */; };
+		FA687F961F3C9D5100B63453 /* MockSpotifyTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA687F951F3C9D5100B63453 /* MockSpotifyTrack.swift */; };
 		FA6B96201F3609500011D0D8 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6B961F1F3609500011D0D8 /* Preferences.swift */; };
 		FA8393761B16539A006736C8 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA8393751B16539A006736C8 /* Media.xcassets */; };
 		FA86C4B91F03FA25001ACBBA /* LibSpotijack.h in Headers */ = {isa = PBXBuildFile; fileRef = FA86C4B71F03FA25001ACBBA /* LibSpotijack.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -102,6 +103,7 @@
 		FA678C771F164402009D6AF8 /* Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 		FA678C791F164837009D6AF8 /* SpotijackSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotijackSessionManager.swift; sourceTree = "<group>"; };
 		FA687F931F3C966000B63453 /* SpotijackSessionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotijackSessionDelegate.swift; sourceTree = "<group>"; };
+		FA687F951F3C9D5100B63453 /* MockSpotifyTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSpotifyTrack.swift; sourceTree = "<group>"; };
 		FA6B961F1F3609500011D0D8 /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		FA8393751B16539A006736C8 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		FA86C4B51F03FA25001ACBBA /* LibSpotijack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LibSpotijack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -219,6 +221,14 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		FA687F971F3C9D5400B63453 /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				FA687F951F3C9D5100B63453 /* MockSpotifyTrack.swift */,
+			);
+			path = Mocks;
+			sourceTree = "<group>";
+		};
 		FA86C4B61F03FA25001ACBBA /* LibSpotijack */ = {
 			isa = PBXGroup;
 			children = (
@@ -309,6 +319,7 @@
 				FAC3007E1F17E04A00E47CB4 /* LibSpotijackTests.swift */,
 				FAD45AB81F2140920012EF3F /* TestData.swift */,
 				FAC300801F17E04A00E47CB4 /* Info.plist */,
+				FA687F971F3C9D5400B63453 /* Mocks */,
 			);
 			path = LibSpotijackTests;
 			sourceTree = "<group>";
@@ -605,6 +616,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FAC3007F1F17E04A00E47CB4 /* LibSpotijackTests.swift in Sources */,
+				FA687F961F3C9D5100B63453 /* MockSpotifyTrack.swift in Sources */,
 				FAD45AB91F2140920012EF3F /* TestData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
