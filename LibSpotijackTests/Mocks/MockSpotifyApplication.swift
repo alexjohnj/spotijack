@@ -20,7 +20,7 @@ internal class MockSpotifyApplication: NSObject {
     private var _repeating: Bool = false
     private var _shuffling: Bool = false
 
-    var _isActivated: Bool = false
+    var _activated: Bool = false
     var _isRunning: Bool = true
 
     init(playbackQueue: [MockSpotifyTrack]) {
@@ -42,7 +42,7 @@ extension MockSpotifyApplication: SBApplicationProtocol {
     }
 
     func activate() {
-        _isActivated = true
+        _activated = true
     }
 
     var isRunning: Bool {
