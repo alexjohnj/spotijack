@@ -12,19 +12,19 @@ import LibSpotijack
 
 // swiftlint:disable:next type_name
 internal class MockSpotijackAudioHijackApplicationSession: NSObject {
-    private var _hijacked = false
-    private var _recording = false
-    private var _speakerMuted = false
-    private var _paused = false
+    var _hijacked = false
+    var _recording = false
+    var _speakerMuted = false
+    var _paused = false
 
-    private var _name: String
+    var _name: String
 
-    private var _albumTag = ""
-    private var _artistTag = ""
-    private var _albumArtistTag = ""
-    private var _trackNumberTag = ""
-    private var _titleTag = ""
-    private var _discNumberTag = ""
+    var _albumTag = ""
+    var _artistTag = ""
+    var _albumArtistTag = ""
+    var _trackNumberTag = ""
+    var _titleTag = ""
+    var _discNumberTag = ""
 
     init(name: String) {
         _name = name

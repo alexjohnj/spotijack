@@ -11,14 +11,14 @@ import ScriptingBridge
 import LibSpotijack
 
 internal class MockSpotifyApplication: NSObject {
-    private var _playbackQueue: [MockSpotifyTrack]
-    private var _playedQueue: [MockSpotifyTrack] = []
+    var _playbackQueue: [MockSpotifyTrack]
+    var _playedQueue: [MockSpotifyTrack] = []
 
     // Backing Properties for SpotifyApplication protocol
-    private var _playerState: SpotifyEPlS = .paused
-    private var _playerPosition: Double = 0.0
-    private var _repeating: Bool = false
-    private var _shuffling: Bool = false
+    var _playerState: SpotifyEPlS = .paused
+    var _playerPosition: Double = 0.0
+    var _repeating: Bool = false
+    var _shuffling: Bool = false
 
     var _activated: Bool = false
     var _isRunning: Bool = true
