@@ -124,3 +124,20 @@ extension MockSpotifyApplication: SpotifyApplication {
         fatalError("Not implemented")
     }
 }
+
+// MARK: - Factory Method
+extension MockSpotifyApplication {
+    // Creates a `MockSpotifyApplication` with three tracks in the playback queue and the player state set to paused.
+    // Shuffling and repeat are disabled.
+    // The three tracks (from active to last) are "Let the Flames Begin", "Fake Happy", "Outro"
+    static func makeStandardApplication() -> MockSpotifyApplication {
+        let spotify = MockSpotifyApplication(playbackQueue: [TestTrack.LetTheFlamesBegin,
+                                                             TestTrack.FakeHappy,
+                                                             TestTrack.BabesNeverDieOutro])
+        spotify._playerState = .paused
+        spotify._repeating = false
+        spotify._shuffling = false
+
+        return spotify
+    }
+}

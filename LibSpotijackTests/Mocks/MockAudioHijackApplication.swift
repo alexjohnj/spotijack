@@ -43,9 +43,21 @@ extension MockAudioHijackApplication: SBApplicationProtocol {
     }
 }
 
-// MARK: - AudioHijackApplicationConformance
+// MARK: - AudioHijackApplication Conformance
 extension MockAudioHijackApplication: AudioHijackApplication {
     func sessions() -> [AudioHijackApplicationSession] {
         return _sessions
+    }
+}
+
+// MARK: - Factory Method
+extension MockAudioHijackApplication {
+    /// Returns a MockAudioHijackApplication with two sessions named "Spotijack" and "Not-Spotijack" respectively.
+    static func makeStandardApplication() -> MockAudioHijackApplication {
+        let audioHijackPro = MockAudioHijackApplication(
+            sessions: [MockSpotijackAudioHijackApplicationSession(name: "Spotijack"),
+                       MockSpotijackAudioHijackApplicationSession(name: "Not-Spotijack")])
+
+        return audioHijackPro
     }
 }
