@@ -34,7 +34,7 @@ extension MockSpotifyTrack: SpotifyTrack {
     var album: String { return _backingTrack.album }
     var discNumber: Int { return _backingTrack.discNumber }
     var duration: Int { return _backingTrack.duration }
-    var trackCount: Int { return _backingTrack.trackNumber }
+    var trackNumber: Int { return _backingTrack.trackNumber }
     var name: String { return _backingTrack.name }
     var artworkUrl: String { return _backingTrack.artworkURL }
     var albumArtist: String { return _backingTrack.albumArtist }
