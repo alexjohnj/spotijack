@@ -12,7 +12,7 @@ import Result
 
 public final class SpotijackSession {
     // MARK: - Properties - General
-    private weak var manager: SpotijackSessionManager?
+    internal weak var delegate: SpotijackSessionDelegate?
 
     // MARK: - Properties - Application Bridges
     internal var spotifyBridge: SpotifyApplication
@@ -65,7 +65,7 @@ public final class SpotijackSession {
     private var _isMuted: Bool = false {
         didSet {
             if _isMuted != oldValue {
-                manager?.muteStateDidChange(newMuteState: _isMuted)
+                delegate?.session(self, didMute: _isMuted)
             }
         }
     }
@@ -81,7 +81,7 @@ public final class SpotijackSession {
             case .ok(let status):
                 return status
             case .fail(let error):
-                manager?.sessionDidEncounterError(error)
+                delegate?.session(self, didEncounterError: error)
                 return false
             }
         }
@@ -95,7 +95,7 @@ public final class SpotijackSession {
             case .ok:
                 _isMuted = newValue
             case .fail(let error):
-                manager?.sessionDidEncounterError(error)
+                delegate?.session(self, didEncounterError: error)
             }
         }
     }
@@ -103,7 +103,7 @@ public final class SpotijackSession {
     private var _isRecording = false {
         didSet {
             if _isRecording != oldValue {
-                manager?.recordingStateDidChange(isRecording: _isRecording)
+                delegate?.session(self, didChangeRecordingState: _isRecording)
             }
         }
     }
@@ -115,7 +115,7 @@ public final class SpotijackSession {
             case .ok(let status):
                 return status
             case .fail(let error):
-                manager?.sessionDidEncounterError(error)
+                delegate?.session(self, didEncounterError: error)
                 return false
             }
         }
@@ -129,7 +129,7 @@ public final class SpotijackSession {
             case .ok:
                 _isRecording = newValue
             case .fail(let error):
-                manager?.sessionDidEncounterError(error)
+                delegate?.session(self, didEncounterError: error)
             }
         }
     }
@@ -145,14 +145,14 @@ public final class SpotijackSession {
                 spotifyBridge.playerPosition == 0.0 {
 
                 stopSpotijackSession()
-                manager?.trackDidChange(newTrack: _currentTrack)
-                manager?.didReachEndOfPlaybackQueue()
+                delegate?.session(self, didChangeToTrack: _currentTrack)
+                delegate?.sessionDidReachEndOfPlaybackQueue(self)
 
                 return
             }
 
             if _currentTrack != oldValue {
-                manager?.trackDidChange(newTrack: _currentTrack)
+                delegate?.session(self, didChangeToTrack: _currentTrack)
             }
 
             // Start a new recording if Spotijack is controlling the current
@@ -162,7 +162,7 @@ public final class SpotijackSession {
                 do {
                     try startNewRecording()
                 } catch (let error) {
-                    manager?.sessionDidEncounterError(error)
+                    delegate?.session(self, didEncounterError: error)
                 }
             }
         }
@@ -192,12 +192,9 @@ public final class SpotijackSession {
     private var _pastPollingInterval: TimeInterval?
 
     // MARK: - Lifecycle
-    internal init(spotifyBridge: SpotifyApplication, audioHijackBridge: AudioHijackApplication,
-                  manager: SpotijackSessionManager) {
+    internal init(spotifyBridge: SpotifyApplication, audioHijackBridge: AudioHijackApplication) {
         self.spotifyBridge = spotifyBridge
         self.audioHijackBridge = audioHijackBridge
-
-        self.manager = manager
     }
 
     // MARK: - Application Polling

@@ -73,8 +73,9 @@ extension SpotijackSessionManager {
         case (_, .fail(let error)):
             then(.fail(error))
         case (.ok(let spotifyBridge), .ok(let audioHijackBridge)):
-            let session = SpotijackSession(spotifyBridge: spotifyBridge,
-                                           audioHijackBridge: audioHijackBridge, manager: self)
+            let session = SpotijackSession(spotifyBridge: spotifyBridge, audioHijackBridge: audioHijackBridge)
+            session.delegate = self
+
             self.spotijackSession = session
 
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.7) {
@@ -109,26 +110,27 @@ extension SpotijackSessionManager {
     }
 }
 
-// MARK: - Session-Manager Communication
-extension SpotijackSessionManager {
-    func trackDidChange(newTrack: StaticSpotifyTrack?) {
-        notiCenter.post(TrackDidChange(sender: self, newTrack: newTrack))
+// MARK: - SpotijackSessionDelegate
+extension SpotijackSessionManager: SpotijackSessionDelegate {
+    func session(_ session: SpotijackSession, didChangeToTrack track: StaticSpotifyTrack?) {
+        notiCenter.post(TrackDidChange(sender: self, newTrack: track))
     }
 
-    func muteStateDidChange(newMuteState: Bool) {
-        notiCenter.post(MuteStateDidChange(sender: self, newMuteState: newMuteState))
+    func session(_ session: SpotijackSession, didMute isMuted: Bool) {
+        notiCenter.post(MuteStateDidChange(sender: self, newMuteState: isMuted))
     }
 
-    func recordingStateDidChange(isRecording: Bool) {
+    func session(_ session: SpotijackSession, didChangeRecordingState isRecording: Bool) {
         notiCenter.post(RecordingStateDidChange(sender: self, isRecording: isRecording))
     }
 
-    func sessionDidEncounterError(_ error: Error) {
-        spotijackSession = nil
+    func session(_ session: SpotijackSession, didEncounterError error: Error) {
+        self.spotijackSession = nil
         notiCenter.post(DidEncounterError(sender: self, error: error))
     }
 
-    func didReachEndOfPlaybackQueue() {
+    func sessionDidReachEndOfPlaybackQueue(_ session: SpotijackSession) {
         notiCenter.post(DidReachEndOfPlaybackQueue(sender: self))
     }
+
 }
