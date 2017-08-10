@@ -326,11 +326,11 @@
 		FAC3007D1F17E04A00E47CB4 /* LibSpotijackTests */ = {
 			isa = PBXGroup;
 			children = (
-				FAD45AB81F2140920012EF3F /* TestData.swift */,
 				FAC3007E1F17E04A00E47CB4 /* LibSpotijackTests.swift */,
 				FA687F9E1F3CB55900B63453 /* SpotijackSessionTests.swift */,
-				FAC300801F17E04A00E47CB4 /* Info.plist */,
+				FAD45AB81F2140920012EF3F /* TestData.swift */,
 				FA687F971F3C9D5400B63453 /* Mocks */,
+				FAC300801F17E04A00E47CB4 /* Info.plist */,
 			);
 			path = LibSpotijackTests;
 			sourceTree = "<group>";

@@ -7,32 +7,66 @@
 //
 
 import Foundation
+import LibSpotijack
 
-internal protocol TestTrack {
-    static var uri: String { get }
-    static var name: String { get }
-    static var artist: String { get }
-    static var album: String { get }
+extension StaticSpotifyTrack {
+    init(artist: String, album: String, discNumber: Int, duration: Int, trackNumber: Int, starred: Bool,
+         popularity: Int, id: String, name: String, artworkURL: String, albumArtist: String, spotifyURL: String) {
+        self.artist = artist
+        self.album = album
+        self.discNumber = discNumber
+        self.duration = duration
+        self.trackNumber = trackNumber
+        self.starred = starred
+        self.popularity = popularity
+        self.id = id
+        self.name = name
+        self.artworkURL = artworkURL
+        self.albumArtist = albumArtist
+        self.spotifyURL = spotifyURL
+    }
 }
 
-internal struct LetTheFlamesBegin: TestTrack {
-    static let uri: String = "spotify:track:2myJNvcL71V5IZ1N2NW29O"
-    static let name: String = "Let The Flames Begin"
-    static let artist: String = "Paramore"
-    static let album: String = "RIOT!"
-}
+internal enum TestTrack {
+    static let LetTheFlamesBegin = MockSpotifyTrack(backingTrack: StaticSpotifyTrack(
+        artist: "Paramore",
+        album: "RIOT",
+        discNumber: 1,
+        duration: 198,
+        trackNumber: 6,
+        starred: false,
+        popularity: 100,
+        id: "spotify:track:2myJNvcL71V5IZ1N2NW29O",
+        name: "Let The Flames Begin",
+        artworkURL: "https://spotify.com", // FAKE
+        albumArtist: "Paramore",
+        spotifyURL: "https://open.spotify.com/track/2myJNvcL71V5IZ1N2NW29O"))
 
-internal struct FakeHappy: TestTrack {
-    static let uri: String = "spotify:track:6t44iU80A0h8WQ7vc4OoRj"
-    static let name: String = "Fake Happy"
-    static let artist: String = "Paramore"
-    static let album: String = "After Laughter"
-}
+    static let FakeHappy = MockSpotifyTrack(backingTrack: StaticSpotifyTrack(
+        artist: "Paramore",
+        album: "Hard Times",
+        discNumber: 1,
+        duration: 234,
+        trackNumber: 6,
+        starred: false,
+        popularity: 50,
+        id: "spotify:track:6t44iU80A0h8WQ7vc4OoRj",
+        name: "Fake Happy",
+        artworkURL: "https://spotify.com", // FAKE
+        albumArtist: "Paramore",
+        spotifyURL: "https://open.spotify.com/track/6t44iU80A0h8WQ7vc4OoRj"))
 
-// The last track on the album.
-internal struct BabesNeverDieOutro: TestTrack {
-    static let uri: String = "spotify:track:3itTGCLe81VNhG9Jo2wHxP"
-    static let name: String = "Outro"
-    static let artist: String = "Honeyblood"
-    static let album: String = "Babes Never Die"
+    static let BabesNeverDieOutro = MockSpotifyTrack(backingTrack: StaticSpotifyTrack(
+        artist: "Honeyblood",
+        album: "Babes Never Die",
+        discNumber: 1,
+        duration: 73,
+        trackNumber: 12,
+        starred: true,
+        popularity: 100,
+        id: "spotify:track:3itTGCLe81VNhG9Jo2wHxP",
+        name: "Outro",
+        artworkURL: "https://spotify.com", // FAKE
+        albumArtist: "Honeyblood",
+        spotifyURL: "https://open.spotify.com/track/3itTGCLe81VNhG9Jo2wHxP"))
 }
