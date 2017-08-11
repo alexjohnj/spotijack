@@ -307,6 +307,8 @@ public final class SpotijackSession {
         if let pastPollingInterval = _pastPollingInterval {
             stopPolling()
             startPolling(every: pastPollingInterval)
+        } else {
+            stopPolling()
         }
     }
 

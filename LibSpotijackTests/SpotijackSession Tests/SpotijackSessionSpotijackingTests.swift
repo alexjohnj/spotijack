@@ -138,4 +138,36 @@ internal class SpotijackSessionSpotijackingTests: XCTestCase {
 
         XCTAssertFalse(session.isSpotijacking)
     }
+
+    func testEndingSpotijackingResumesPollingAtPreviousInterval() {
+        let expectedInterval = 42.0
+        let config = SpotijackSession.RecordingConfiguration(muteSpotify: false,
+                                                             disableShuffling: false,
+                                                             disableRepeat: false,
+                                                             pollingInterval: expectedInterval + 1,
+                                                             recordingStartDelay: 0.0)
+        let (session, _, _) = SpotijackSession.makeStandardApplications()
+        session.startPolling(every: expectedInterval)
+
+        XCTAssertNoThrow(try session.startSpotijackSession(config: config))
+        XCTAssertNotEqual(session._applicationPollingTimer?.timeInterval, expectedInterval)
+        session.stopSpotijackSession()
+
+        XCTAssertEqual(session._applicationPollingTimer?.timeInterval, expectedInterval)
+    }
+
+    func testEndSpotijackingWithoutPreviousPollingIntervalStopsPolling() {
+        let config = SpotijackSession.RecordingConfiguration(muteSpotify: false,
+                                                             disableShuffling: false,
+                                                             disableRepeat: false,
+                                                             pollingInterval: 42.0,
+                                                             recordingStartDelay: 0.0)
+        let (session, _, _) = SpotijackSession.makeStandardApplications()
+        session.stopPolling() // Ensure polling has not been started
+
+        XCTAssertNoThrow(try session.startSpotijackSession(config: config))
+        session.stopSpotijackSession()
+
+        XCTAssertNil(session._applicationPollingTimer)
+    }
 }
