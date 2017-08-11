@@ -33,7 +33,7 @@ internal class SpotijackSessionSpotijackingTests: XCTestCase {
     }
 
     // MARK: - Spotijacking Specific
-    func testSpotijackingGeneratesFiles() {
+    func testSpotijackingWithAsyncDelayGeneratesFiles() {
         let expectedRecordingCount = 2
         var receivedRecordingCount: Int?
         let spotijackingExpectation = expectation(description: "Waiting for Spotijacking process to finish")
@@ -42,7 +42,8 @@ internal class SpotijackSessionSpotijackingTests: XCTestCase {
         let recordingConfiguration = SpotijackSession.RecordingConfiguration(muteSpotify: false,
                                                                              disableShuffling: false,
                                                                              disableRepeat: false,
-                                                                             pollingInterval: 0.1)
+                                                                             pollingInterval: 0.1,
+                                                                             recordingStartDelay: 0.1)
         XCTAssertNoThrow(try session.startSpotijackSession(config: recordingConfiguration))
 
         // The delays here are to account for the pause Spotijack takes between starting new recordings.
@@ -64,6 +65,31 @@ internal class SpotijackSessionSpotijackingTests: XCTestCase {
 
         XCTAssertNotNil(receivedRecordingCount)
         XCTAssertEqual(receivedRecordingCount, expectedRecordingCount)
+    }
+
+    func testSpotijackingWithoutAsyncDelayGeneratesFiles() {
+        let expectedRecordingCount = 2
+        let (session, spotify, ahp) = SpotijackSession.makeStandardApplications()
+        let config = SpotijackSession.RecordingConfiguration(muteSpotify: false,
+                                                             disableShuffling: false,
+                                                             disableRepeat: false,
+                                                             pollingInterval: 50, // Will poll manually
+                                                             recordingStartDelay: 0)
+
+        XCTAssertNoThrow(try session.startSpotijackSession(config: config))
+
+        // Simulate three track changes producing two recordings
+        let nextTrack = {
+            session.pollSpotify()
+            session.pollAudioHijackPro()
+            spotify.nextTrack()
+            session.pollSpotify()
+            session.pollAudioHijackPro()
+        }
+        nextTrack()
+        nextTrack()
+
+        XCTAssertEqual(ahp._recordings.count, expectedRecordingCount)
     }
 
     func testReachingEndOfPlaybackQueuePostsInformsDelegate() {

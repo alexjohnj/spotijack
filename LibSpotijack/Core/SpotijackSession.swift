@@ -180,6 +180,8 @@ public final class SpotijackSession {
 
     internal var _applicationPollingTimer: Timer?
     private var activityToken: NSObjectProtocol?
+    /// The recording configuration used for the current Spotijack session or `nil` if not Spotijacking
+    internal var _currentRecordingConfiguration: RecordingConfiguration?
 
     /// Returns `true` if SpotijackSessionManager is polling Spotify and AHP.
     public var isPolling: Bool { return _applicationPollingTimer?.isValid ?? false }
@@ -275,7 +277,14 @@ public final class SpotijackSession {
         isSpotijacking = true
         activityToken = ProcessInfo.processInfo.beginActivity(options: [.userInitiated, .idleSystemSleepDisabled],
                                                               reason: "Spotijacking")
-        try startNewRecording()
+        _currentRecordingConfiguration = config
+
+        do {
+            try startNewRecording()
+        } catch (let error) {
+            stopSpotijackSession()
+            throw error
+        }
     }
 
     /// Stops a Spotijack recording session. Calling this method when no recording
@@ -288,6 +297,8 @@ public final class SpotijackSession {
 
         isRecording = false
         isSpotijacking = false
+        _currentRecordingConfiguration = nil
+
         if let activityToken = activityToken {
             ProcessInfo.processInfo.endActivity(activityToken)
             self.activityToken = nil
@@ -317,18 +328,20 @@ public final class SpotijackSession {
         spotifyBridge.setPlayerPosition!(0.0)
         spotijackSessionBridge.setMetadata(from: currentTrack)
 
-        // Wait a very short period before starting the recording to account
-        // for Spotify's slow response to AppleScript events. Hopefully, this
-        // will reduce the chance of the starts/ends of songs overlapping.
-        //
-        // I'm sure there's a load of multithreading bugs possible doing this
-        // but ¯\_(ツ)_/¯
-        //
-        // The choice of 0.10 seconds is based on my observations of how much
-        // songs tend to overlap.
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.10) { [weak self] in
-            spotijackSessionBridge.startRecording!()
+        guard let delay = _currentRecordingConfiguration?.recordingStartDelay else {
+            preconditionFailure("Current recording configuration not set for a Spotijack session")
+        }
+
+        let newRecordingBlock = { [weak self] in
+            self?.isRecording = true
             self?.spotifyBridge.play!()
+        }
+
+        if delay == 0 {
+            newRecordingBlock()
+        } else {
+            DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: newRecordingBlock)
+            return
         }
     }
 
@@ -351,13 +364,18 @@ public extension SpotijackSession {
         public let disableRepeat: Bool
         /// Frequency we should poll Spotify and AHP when Spotijacking.
         public let pollingInterval: TimeInterval
+        /// The pause Spotijack should make between a track ending and starting a new recording. Introducing this pause
+        /// reduces the likelihood of the end of one track overlapping the start of the next but adds a short gap to the
+        /// start of the recording. I recommend keeping this value around 0.1 seconds.
+        public let recordingStartDelay: TimeInterval
 
         public init(muteSpotify: Bool = false, disableShuffling: Bool = false, disableRepeat: Bool = false,
-                    pollingInterval: TimeInterval = 0.1) {
+                    pollingInterval: TimeInterval = 0.1, recordingStartDelay: TimeInterval = 0.1) {
             self.muteSpotify = muteSpotify
             self.disableShuffling = disableShuffling
             self.disableRepeat = disableRepeat
             self.pollingInterval = pollingInterval
+            self.recordingStartDelay = recordingStartDelay
         }
     }
 }
