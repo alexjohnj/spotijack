@@ -12,10 +12,19 @@ import LibSpotijack
 
 internal class MockAudioHijackApplication: NSObject {
     var _activated: Bool = false
-    var _sessions: [MockSpotijackAudioHijackApplicationSession]
+    var _sessions: [MockSpotijackAudioHijackApplicationSession] {
+        didSet {
+            _sessions.forEach { $0.parentApplication = self }
+        }
+    }
+    var _recordings: [MockAudioHijackAudioRecording] = []
 
     init(sessions: [MockSpotijackAudioHijackApplicationSession]) {
         _sessions = sessions
+
+        super.init()
+
+        _sessions.forEach { $0.parentApplication = self }
     }
 }
 

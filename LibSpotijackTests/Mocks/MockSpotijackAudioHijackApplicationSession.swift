@@ -12,8 +12,17 @@ import LibSpotijack
 
 // swiftlint:disable:next type_name
 internal class MockSpotijackAudioHijackApplicationSession: NSObject {
+    weak var parentApplication: MockAudioHijackApplication?
+
     var _hijacked = false
-    var _recording = false
+    var _recording = false {
+        willSet {
+            if _recording == true,
+                newValue == false {
+                parentApplication?._recordings.append(MockAudioHijackAudioRecording(name: _titleTag, path: "C://FAKE"))
+            }
+        }
+    }
     var _speakerMuted = false
     var _paused = false
 

@@ -98,7 +98,7 @@ import ScriptingBridge
     @objc optional func audioInputs() -> SBElementArray
     @objc optional func audioOutputs() -> SBElementArray
     @objc optional func sessions() -> [AudioHijackApplicationSession]
-    @objc optional func audioRecordings() -> SBElementArray
+    @objc optional func audioRecordings() -> [AudioHijackAudioRecording]
 }
 extension SBApplication: AudioHijackApplication {}
 
