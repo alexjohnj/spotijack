@@ -97,7 +97,7 @@ extension MockSpotijackAudioHijackApplicationSession: AudioHijackApplicationSess
     }
 
     func setAlbumTag(_ albumTag: String!) {
-        _albumArtistTag = albumTag
+        _albumTag = albumTag
     }
 
     func setArtistTag(_ artistTag: String!) {
