@@ -1,5 +1,5 @@
 //
-//  SpotijackSession+MakeStandardApplications.swift
+//  SpotijackSessionExtensions.swift
 //  LibSpotijackTests
 //
 //  Created by Alex Jackson on 10/08/2017.
