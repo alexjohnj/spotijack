@@ -170,4 +170,26 @@ internal class SpotijackSessionSpotijackingTests: XCTestCase {
 
         XCTAssertNil(session._applicationPollingTimer)
     }
+
+    func testStartNewRecordingUpdatesAudioHijackProSessionTags() {
+        let (session, spotify, ahp) = SpotijackSession.makeStandardApplications()
+        let ahpSession = ahp._sessions.first(where: { $0.name == "Spotijack" })!
+        let expectedTrack = spotify._playbackQueue.first!
+
+        let config = SpotijackSession.RecordingConfiguration(muteSpotify: false,
+                                                             disableShuffling: false,
+                                                             disableRepeat: false,
+                                                             pollingInterval: 1,
+                                                             recordingStartDelay: 0.0)
+
+        XCTAssertNoThrow(try session.startSpotijackSession(config: config))
+        session.stopSpotijackSession()
+
+        XCTAssertEqual(ahpSession._titleTag, expectedTrack.name)
+        XCTAssertEqual(ahpSession._albumTag, expectedTrack.album)
+        XCTAssertEqual(ahpSession._artistTag, expectedTrack.artist)
+        XCTAssertEqual(ahpSession._albumArtistTag, expectedTrack.albumArtist)
+        XCTAssertEqual(ahpSession._discNumberTag, String(describing: expectedTrack.discNumber))
+        XCTAssertEqual(ahpSession._trackNumberTag, String(describing: expectedTrack.trackNumber))
+    }
 }
