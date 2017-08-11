@@ -62,7 +62,7 @@ extension MockSpotifyApplication: SpotifyApplication {
     var playerState: SpotifyEPlS { return _playerState }
     var playerPosition: Double { return _playerPosition }
     var repeating: Bool { return _repeating }
-    var shuffling: Bool { return _repeating }
+    var shuffling: Bool { return _shuffling }
 
     func nextTrack() {
         _playedQueue.append(_playbackQueue.removeFirst())
