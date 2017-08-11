@@ -92,8 +92,7 @@ internal class SpotijackSessionSpotijackingTests: XCTestCase {
         XCTAssertEqual(ahp._recordings.count, expectedRecordingCount)
     }
 
-    func testReachingEndOfPlaybackQueuePostsInformsDelegate() {
-        let spotijackingExpectation = expectation(description: "Waiting to skip final track")
+    func testReachingEndOfPlaybackQueueInformsDelegate() {
         var delegateWasInformed = false
         let delegate = MockSpotijackSessionDelegate()
         delegate.onSessionDidReachEndOfPlaybackQueue = { _ in
@@ -103,19 +102,21 @@ internal class SpotijackSessionSpotijackingTests: XCTestCase {
         let (session, spotify, _) = SpotijackSession.makeStandardApplications()
         session.delegate = delegate
 
-        // Skip to final track in queue
-        spotify.nextTrack()
-        spotify.nextTrack()
-        XCTAssertNoThrow(try session.startSpotijackSession(config: SpotijackSession.RecordingConfiguration()))
+        let config = SpotijackSession.RecordingConfiguration(muteSpotify: false,
+                                                             disableShuffling: false,
+                                                             disableRepeat: false,
+                                                             pollingInterval: 50.0,
+                                                             recordingStartDelay: 0)
+        XCTAssertNoThrow(try session.startSpotijackSession(config: config))
+        session._applicationPollingTimer?.fire()
 
-        DispatchQueue.global(qos: .userInitiated).asyncAfter(deadline: .now() + 0.15) {
+        let nextTrack = {
+            session._applicationPollingTimer?.fire()
             spotify.nextTrack()
-            DispatchQueue.global(qos: .userInitiated).asyncAfter(deadline: .now() + 0.15) {
-                spotijackingExpectation.fulfill()
-            }
+            session._applicationPollingTimer?.fire()
         }
 
-        wait(for: [spotijackingExpectation], timeout: 1.0)
+        for _ in 0..<3 { nextTrack() }
 
         XCTAssertTrue(delegateWasInformed)
     }
