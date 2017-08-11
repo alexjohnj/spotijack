@@ -118,4 +118,24 @@ internal class SpotijackSessionSpotijackingTests: XCTestCase {
 
         XCTAssertTrue(delegateWasInformed)
     }
+
+    func testReachingEndOfPlaybackQueueEndsSpotijacking() {
+        let (session, spotify, _) = SpotijackSession.makeStandardApplications()
+        let config = SpotijackSession.RecordingConfiguration(muteSpotify: false,
+                                                             disableShuffling: false,
+                                                             disableRepeat: false,
+                                                             pollingInterval: 50.0,
+                                                             recordingStartDelay: 0.0)
+
+        XCTAssertNoThrow(try session.startSpotijackSession(config: config))
+        let nextTrack = {
+            session._applicationPollingTimer?.fire()
+            spotify.nextTrack()
+            session._applicationPollingTimer?.fire()
+        }
+
+        for _ in 0..<3 { nextTrack() }
+
+        XCTAssertFalse(session.isSpotijacking)
+    }
 }
