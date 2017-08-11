@@ -90,6 +90,28 @@ internal class SpotijackSessionSpotijackingTests: XCTestCase {
         XCTAssertEqual(ahp._recordings.count, expectedRecordingCount)
     }
 
+    func testEndingSpotijackingGeneratesARecordingFile() {
+        let expectedRecordingCount = 3
+        let (session, spotify, ahp) = SpotijackSession.makeStandardApplications()
+        let config = SpotijackSession.RecordingConfiguration(muteSpotify: false,
+                                                             disableShuffling: false,
+                                                             disableRepeat: false,
+                                                             pollingInterval: 50,
+                                                             recordingStartDelay: 0)
+        let nextTrack = {
+            session._applicationPollingTimer?.fire()
+            spotify.nextTrack()
+            session._applicationPollingTimer?.fire()
+        }
+
+        XCTAssertNoThrow(try session.startSpotijackSession(config: config))
+        nextTrack() // Recording 1
+        nextTrack() // Recording 2
+        session.stopSpotijackSession() // Should generate recording 3
+
+        XCTAssertEqual(ahp._recordings.count, expectedRecordingCount)
+    }
+
     func testReachingEndOfPlaybackQueueInformsDelegate() {
         var delegateWasInformed = false
         let delegate = MockSpotijackSessionDelegate()
