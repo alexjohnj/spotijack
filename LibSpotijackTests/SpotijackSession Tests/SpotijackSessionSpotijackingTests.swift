@@ -77,15 +77,13 @@ internal class SpotijackSessionSpotijackingTests: XCTestCase {
                                                              recordingStartDelay: 0)
 
         XCTAssertNoThrow(try session.startSpotijackSession(config: config))
+        let nextTrack = {
+            session._applicationPollingTimer?.fire()
+            spotify.nextTrack()
+            session._applicationPollingTimer?.fire()
+        }
 
         // Simulate three track changes producing two recordings
-        let nextTrack = {
-            session.pollSpotify()
-            session.pollAudioHijackPro()
-            spotify.nextTrack()
-            session.pollSpotify()
-            session.pollAudioHijackPro()
-        }
         nextTrack()
         nextTrack()
 
