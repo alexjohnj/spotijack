@@ -37,7 +37,7 @@ internal class MainWindowController: NSWindowController {
                 session.startPolling(every: 0.1)
                 self?.refreshUI()
             case .fail(let error):
-                self?.showError(error, block: nil)
+               _ = self?.presentError(error)
             }
         }
     }
@@ -49,7 +49,7 @@ extension MainWindowController {
         SpotijackSessionManager.shared.establishSession { [weak self] sessionResult in
             switch sessionResult {
             case .fail(let error):
-                self?.showError(error, block: nil)
+               _ = self?.presentError(error)
             case .ok(let session):
                 if session.isSpotijacking {
                     session.stopSpotijackSession()
@@ -57,7 +57,7 @@ extension MainWindowController {
                     do {
                         try session.startSpotijackSession(config: Preferences.shared.recordingConfiguration)
                     } catch (let error) {
-                        self?.showError(error, block: nil)
+                       _ = self?.presentError(error)
                     }
                 }
             }
@@ -68,7 +68,7 @@ extension MainWindowController {
         SpotijackSessionManager.shared.establishSession { [weak self] sessionResult in
             switch sessionResult {
             case .fail(let error):
-                self?.showError(error, block: nil)
+               _ = self?.presentError(error)
             case .ok(let session):
                 session.isMuted = !session.isMuted
             }
@@ -88,7 +88,7 @@ extension MainWindowController {
                 self?.updateRecordButton(isRecording: session.isRecording)
                 self?.updateMuteButton(isMuted: session.isMuted)
             case .fail(let error):
-                self?.showError(error, block: nil)
+               _ = self?.presentError(error)
             }
         }
     }
@@ -124,38 +124,6 @@ extension MainWindowController {
     }
 }
 
-// MARK: - Helper Functions
-extension MainWindowController {
-    /// Presents a sheet built from the description and recovery suggestion
-    /// of `error`.
-    ///
-    /// - parameter error: The error to present.
-    /// - parameter block: A block to execute after the error is dismissed. If
-    ///     `error` conforms to `RecoverableError`, its recovery options will
-    ///      be attempted first before calling `block`. You should use a different
-    ///      method if you need to know the result of the error recovery.
-    private func showError(_ error: Error, block: ((NSApplication.ModalResponse) -> Void)?) {
-        guard let window = window else {
-            return
-        }
-
-        let alert = NSAlert(error: error)
-
-        if error is FatalError {
-            alert.alertStyle = .critical
-        }
-
-        if let error = error as? RecoverableError {
-            alert.beginSheetModal(for: window, completionHandler: ({ response in
-                _ = error.attemptRecovery(optionIndex: response.rawValue)
-                block?(response)
-            }))
-        } else {
-            alert.beginSheetModal(for: window, completionHandler: block)
-        }
-    }
-}
-
 // MARK: - Notification Handling
 extension MainWindowController {
     private func muteStateDidChange(noti: MuteStateDidChange) {
@@ -171,7 +139,7 @@ extension MainWindowController {
     }
 
     private func didEncounterError(noti: DidEncounterError) {
-        self.showError(noti.error, block: nil)
+        _ = self.presentError(noti.error)
     }
 
     private func didReachEndOfPlaybackQueue(noti: DidReachEndOfPlaybackQueue) {
@@ -223,5 +191,21 @@ extension MainWindowController {
             object: sessionManager,
             queue: .main,
             using: { [weak self] noti in self?.didReachEndOfPlaybackQueue(noti: noti) })
+    }
+}
+
+// MARK: Responder Chain Error Interception
+extension NSWindowController {
+    override open func presentError(_ error: Error) -> Bool {
+        guard error is SpotijackError.SpotijackSessionNotFound else {
+            return super.presentError(error)
+        }
+
+        do {
+            try SpotijackSessionCreator.createSpotijackSession()
+            return true
+        } catch (let error) {
+            return super.presentError(error)
+        }
     }
 }
