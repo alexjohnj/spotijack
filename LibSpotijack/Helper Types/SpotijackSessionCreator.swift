@@ -8,8 +8,8 @@
 
 import Foundation
 
-internal enum SpotijackSessionCreator {
-    static func createSpotijackSession() throws {
+public enum SpotijackSessionCreator {
+    public static func createSpotijackSession() throws {
         guard let creationScriptPath = Constants.libSpotijackBundle.url(forResource: "ConfigureSpotijackSession",
                                                                         withExtension: "applescript") else {
             preconditionFailure("Spotijack session configuration script could not be loaded from the framework bundle.")

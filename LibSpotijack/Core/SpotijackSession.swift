@@ -26,24 +26,8 @@ public final class SpotijackSession {
             session.startHijackingRelaunch!(.yes)
             return .ok(session)
         case .fail(let error):
-            // Try and create a new session if one doesn't exist
-            switch error {
-            case is SpotijackError.SpotijackSessionNotFound:
-                do {
-                    try SpotijackSessionCreator.createSpotijackSession()
-                    switch getFirstSpotijackSession() {
-                    case .ok(let session):
-                        session.startHijackingRelaunch!(.yes)
-                        return .ok(session)
-                    case .fail(let reacquireError):
-                        return .fail(reacquireError)
-                    }
-                } catch (let creationError) {
-                    return .fail(creationError)
-                }
-            default:
-                return .fail(error)
-            }
+            delegate?.session(self, didEncounterError: error)
+            return .fail(error)
         }
     }
 
