@@ -23,6 +23,7 @@ internal class MainWindowController: NSWindowController {
     private var _recordingStateDidChangeObserver: NotificationObserver?
     private var _trackDidChangeObserver: NotificationObserver?
     private var _didReachEndOfQueueObserver: NotificationObserver?
+    private var _didEndSpotijackingObserver: NotificationObserver?
 
     // MARK: Window Lifecycle
     override func windowDidLoad() {
@@ -50,6 +51,8 @@ extension MainWindowController {
             } else {
                 try session.startSpotijacking(config: Preferences.shared.recordingConfiguration)
             }
+
+            updateSpotijackButton(isSpotijacking: session.isSpotijacking)
         } catch (let error) {
             _ = presentError(error)
         }
@@ -73,7 +76,7 @@ extension MainWindowController {
         do {
             let session = try SpotijackSessionManager.shared()
             updateTrackStatusFields(track: session.currentTrack)
-            updateSpotijackButton(isSpotijacking: session.isRecording)
+            updateSpotijackButton(isSpotijacking: session.isSpotijacking)
             updateMuteButton(isMuted: session.isMuted)
         } catch (let error) {
             _ = presentError(error)
@@ -117,10 +120,6 @@ extension MainWindowController {
         updateMuteButton(isMuted: noti.newMuteState)
     }
 
-    private func recordingStateDidChange(noti: RecordingStateDidChange) {
-        updateSpotijackButton(isSpotijacking: noti.isRecording)
-    }
-
     private func trackDidChange(noti: TrackDidChange) {
         updateTrackStatusFields(track: noti.newTrack)
     }
@@ -141,6 +140,10 @@ extension MainWindowController {
                                                          comment: "Explanation of why session has ended.")
 
         NSUserNotificationCenter.default.deliver(notification)
+    }
+
+    private func didEndSpotijacking(noti: DidEndSpotijacking) {
+        updateSpotijackButton(isSpotijacking: false)
     }
 
     /// Registers the window controller for notifications posted by
@@ -168,17 +171,17 @@ extension MainWindowController {
                 queue: .main,
                 using: { [weak self] noti in self?.trackDidChange(noti: noti) })
 
-            _recordingStateDidChangeObserver = notificationCenter.addObserver(
-                forType: RecordingStateDidChange.self,
-                object: session,
-                queue: .main,
-                using: { [weak self] noti in self?.recordingStateDidChange(noti: noti) })
-
             _didReachEndOfQueueObserver = notificationCenter.addObserver(
                 forType: DidReachEndOfPlaybackQueue.self,
                 object: session,
                 queue: .main,
                 using: { [weak self] noti in self?.didReachEndOfPlaybackQueue(noti: noti) })
+
+            _didEndSpotijackingObserver = notificationCenter.addObserver(
+                forType: DidEndSpotijacking.self,
+                object: session,
+                queue: .main,
+                using: { [weak self] noti in self?.didEndSpotijacking(noti: noti) })
         } catch (let error) {
             print("Could not register MainWindowController for SpotijackSession notifications"
                 + " because \(error.localizedDescription)")
