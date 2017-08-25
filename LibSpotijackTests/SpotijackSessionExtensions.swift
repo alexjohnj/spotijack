@@ -9,13 +9,14 @@
 import Foundation
 @testable import LibSpotijack
 
-extension SpotijackSession {
+extension SpotijackSessionManager {
     /// Makes standard mock Spotify and AHP applications and configures a new SpotijackSession to use them.
     // swiftlint:disable:next large_tuple
-    static func makeStandardApplications() -> (SpotijackSession, MockSpotifyApplication, MockAudioHijackApplication) {
+    typealias StandardApplications = (SpotijackSessionManager, MockSpotifyApplication, MockAudioHijackApplication)
+    static func makeStandardApplications() -> StandardApplications {
         let spotify = MockSpotifyApplication.makeStandardApplication()
         let ahp = MockAudioHijackApplication.makeStandardApplication()
-        let session = SpotijackSession(spotifyBridge: spotify, audioHijackBridge: ahp)
+        let session = SpotijackSessionManager(spotifyBridge: spotify, audioHijackBridge: ahp)
 
         return (session, spotify, ahp)
     }

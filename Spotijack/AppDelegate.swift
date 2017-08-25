@@ -34,15 +34,13 @@ extension AppDelegate: NSApplicationDelegate {
     }
 
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
-        if SpotijackSessionManager.shared.isSpotijacking {
-            return false
-        } else {
-            return true
-        }
+        let isSpotijacking = (try? SpotijackSessionManager.shared().isSpotijacking) ?? false
+        return !isSpotijacking
     }
 
     func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
-        if SpotijackSessionManager.shared.isSpotijacking,
+        let isSpotijacking = (try? SpotijackSessionManager.shared().isSpotijacking) ?? false
+        if isSpotijacking,
             let window = mainWindowController.window {
             presentTerminationWarning(window: window)
             return .terminateLater
@@ -52,13 +50,10 @@ extension AppDelegate: NSApplicationDelegate {
     }
 
     func applicationWillTerminate(_ notification: Notification) {
-        if SpotijackSessionManager.shared.isSpotijacking {
-            SpotijackSessionManager.shared.establishSession { sessionResult in
-                guard case .ok(let session) = sessionResult else {
-                    return
-                }
-
-                session.stopSpotijackSession()
+        let isSpotijacking = (try? SpotijackSessionManager.shared().isSpotijacking) ?? false
+        if isSpotijacking {
+            do {
+                try? SpotijackSessionManager.shared().stopSpotijacking()
             }
         }
     }

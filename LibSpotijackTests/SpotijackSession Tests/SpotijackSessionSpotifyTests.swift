@@ -13,7 +13,7 @@ import XCTest
 internal class SpotijackSessionSpotifyTests: XCTestCase {
     func testGetCurrentTrack() {
         let expectedTrack = TestTrack.LetTheFlamesBegin._backingTrack
-        let (session, _, _) = SpotijackSession.makeStandardApplications()
+        let (session, _, _) = SpotijackSessionManager.makeStandardApplications()
 
         XCTAssertNotNil(session.currentTrack)
         XCTAssertEqual(session.currentTrack, expectedTrack)
@@ -22,11 +22,13 @@ internal class SpotijackSessionSpotifyTests: XCTestCase {
     func testChangeTrackNotifiesDelegate() {
         let expectedTrack = TestTrack.FakeHappy._backingTrack
         var receivedTrack: StaticSpotifyTrack?
-        let delegate = MockSpotijackSessionDelegate()
-        delegate.onSessionDidChangeToTrack = { (_, newTrack) in receivedTrack = newTrack }
 
-        let (session, spotify, _) = SpotijackSession.makeStandardApplications()
-        session.delegate = delegate
+        let (session, spotify, _) = SpotijackSessionManager.makeStandardApplications()
+        let obs = session.notificationCenter.addObserver(forType: TrackDidChange.self,
+                                                         object: session,
+                                                         queue: .main,
+                                                         using: { noti in
+                                                            receivedTrack = noti.newTrack })
 
         spotify.nextTrack()
 

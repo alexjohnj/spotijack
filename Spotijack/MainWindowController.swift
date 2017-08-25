@@ -31,14 +31,11 @@ internal class MainWindowController: NSWindowController {
         registerForSpotijackNotifications()
 
         // Start polling and update the UI
-        SpotijackSessionManager.shared.establishSession { [weak self] sessionResult in
-            switch sessionResult {
-            case .ok(let session):
-                session.startPolling(every: 0.1)
-                self?.refreshUI()
-            case .fail(let error):
-               _ = self?.presentError(error)
-            }
+        do {
+            try SpotijackSessionManager.shared().startPolling(every: 0.1)
+            refreshUI()
+        } catch (let error) {
+            _ = presentError(error)
         }
     }
 }
@@ -46,32 +43,24 @@ internal class MainWindowController: NSWindowController {
 // MARK: - UI Actions
 extension MainWindowController {
     @IBAction func recordButtonClicked(_ sender: NSButton) {
-        SpotijackSessionManager.shared.establishSession { [weak self] sessionResult in
-            switch sessionResult {
-            case .fail(let error):
-               _ = self?.presentError(error)
-            case .ok(let session):
-                if session.isSpotijacking {
-                    session.stopSpotijackSession()
-                } else {
-                    do {
-                        try session.startSpotijackSession(config: Preferences.shared.recordingConfiguration)
-                    } catch (let error) {
-                       _ = self?.presentError(error)
-                    }
-                }
+        do {
+            let session = try SpotijackSessionManager.shared()
+            if session.isSpotijacking {
+                session.stopSpotijacking()
+            } else {
+                try session.startSpotijacking(config: Preferences.shared.recordingConfiguration)
             }
+        } catch (let error) {
+            _ = presentError(error)
         }
     }
 
     @IBAction func muteButtonClicked(_ sender: NSButton) {
-        SpotijackSessionManager.shared.establishSession { [weak self] sessionResult in
-            switch sessionResult {
-            case .fail(let error):
-               _ = self?.presentError(error)
-            case .ok(let session):
-                session.isMuted = !session.isMuted
-            }
+        do {
+            let session = try SpotijackSessionManager.shared()
+            session.isMuted = !session.isMuted
+        } catch (let error) {
+            _ = presentError(error)
         }
     }
 }
@@ -81,15 +70,13 @@ extension MainWindowController {
     /// Refreshes the user interface updating the recording button state, now
     /// playing state and mute button state.
     private func refreshUI() {
-        SpotijackSessionManager.shared.establishSession { [weak self] sessionResult in
-            switch sessionResult {
-            case .ok(let session):
-                self?.updateTrackStatusFields(track: session.currentTrack)
-                self?.updateRecordButton(isRecording: session.isRecording)
-                self?.updateMuteButton(isMuted: session.isMuted)
-            case .fail(let error):
-               _ = self?.presentError(error)
-            }
+        do {
+            let session = try SpotijackSessionManager.shared()
+            updateTrackStatusFields(track: session.currentTrack)
+            updateRecordButton(isRecording: session.isRecording)
+            updateMuteButton(isMuted: session.isMuted)
+        } catch (let error) {
+            _ = presentError(error)
         }
     }
 
@@ -159,38 +146,43 @@ extension MainWindowController {
     /// Registers the window controller for notifications posted by
     /// SpotijackSessionManager
     private func registerForSpotijackNotifications() {
-        let sessionManager = SpotijackSessionManager.shared
-        let notificationCenter = sessionManager.notiCenter
+        do {
+            let session = try SpotijackSessionManager.shared()
+            let notificationCenter = session.notificationCenter
 
-        _muteStateDidChangeObserver = notificationCenter.addObserver(
-            forType: MuteStateDidChange.self,
-            object: sessionManager,
-            queue: .main,
-            using: { [weak self] noti in self?.muteStateDidChange(noti: noti) })
+            _muteStateDidChangeObserver = notificationCenter.addObserver(
+                forType: MuteStateDidChange.self,
+                object: session,
+                queue: .main,
+                using: { [weak self] noti in self?.muteStateDidChange(noti: noti) })
 
-        _didEncounterErrorObserver = notificationCenter.addObserver(
-            forType: DidEncounterError.self,
-            object: sessionManager,
-            queue: .main,
-            using: { [weak self] noti in self?.didEncounterError(noti: noti) })
+            _didEncounterErrorObserver = notificationCenter.addObserver(
+                forType: DidEncounterError.self,
+                object: session,
+                queue: .main,
+                using: { [weak self] noti in self?.didEncounterError(noti: noti) })
 
-        _trackDidChangeObserver = notificationCenter.addObserver(
-            forType: TrackDidChange.self,
-            object: sessionManager,
-            queue: .main,
-            using: { [weak self] noti in self?.trackDidChange(noti: noti) })
+            _trackDidChangeObserver = notificationCenter.addObserver(
+                forType: TrackDidChange.self,
+                object: session,
+                queue: .main,
+                using: { [weak self] noti in self?.trackDidChange(noti: noti) })
 
-        _recordingStateDidChangeObserver = notificationCenter.addObserver(
-            forType: RecordingStateDidChange.self,
-            object: sessionManager,
-            queue: .main,
-            using: { [weak self] noti in self?.recordingStateDidChange(noti: noti) })
+            _recordingStateDidChangeObserver = notificationCenter.addObserver(
+                forType: RecordingStateDidChange.self,
+                object: session,
+                queue: .main,
+                using: { [weak self] noti in self?.recordingStateDidChange(noti: noti) })
 
-        _didReachEndOfQueueObserver = notificationCenter.addObserver(
-            forType: DidReachEndOfPlaybackQueue.self,
-            object: sessionManager,
-            queue: .main,
-            using: { [weak self] noti in self?.didReachEndOfPlaybackQueue(noti: noti) })
+            _didReachEndOfQueueObserver = notificationCenter.addObserver(
+                forType: DidReachEndOfPlaybackQueue.self,
+                object: session,
+                queue: .main,
+                using: { [weak self] noti in self?.didReachEndOfPlaybackQueue(noti: noti) })
+        } catch (let error) {
+            print("Could not register MainWindowController for SpotijackSession notifications"
+                + " because \(error.localizedDescription)")
+        }
     }
 }
 

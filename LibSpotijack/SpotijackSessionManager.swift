@@ -1,3 +1,4 @@
+//swiftlint:disable file_length
 //
 //  SpotijackSession.swift
 //  LibSpotijack
@@ -9,14 +10,64 @@
 import Cocoa
 import ScriptingBridge
 import Result
+import TypedNotification
 
-public final class SpotijackSession {
-    // MARK: - Properties - General
-    internal weak var delegate: SpotijackSessionDelegate?
+//swiftlint:disable type_body_length
+/// `SpotijackSessionManager` coordinates a Spotijack recording session. It maintains a scripting bridge to Spotify,
+/// Audio Hijack Pro and a recording session named "Spotijack" in Audio Hijack Pro. The session manager is responsible
+/// for polling the applications and starting new recordings when the track changes in Spotify.
+///
+/// # Creation
+///
+/// `SpotijackSessionManager` can be used as a singleton (recommended) or an instance. The singleton is accessed via
+/// the throwing `shared()` method which will launch and establish a scripting interface to Spotify and Audio Hijack
+/// Pro. A new instance is created using the `init(spotifyBridge:audioHijackBridge:notificationCenter:)` method which
+/// takes pre-established scripting interfaces as its arguments. This method is provided for the rare case where there
+/// are multiple instances of Spotify and Audio Hijack Pro launched (and tests).
+///
+/// # Usage
+///
+/// For a new instance of `SpotijackSessionManager`, polling will be disabled. Use `startPolling(every:)` to start
+/// polling at a given interval. Add observers to the manager's `notificationCenter` property to be notified of when
+/// various aspects of the applications change.
+///
+/// When polling is enabled, changing the track in Spotify **will not** start a new recording. You must start
+/// _Spotijacking_ using the `startSpotijacking(config:)` method do this. This method takes a
+/// `SpotijackSessionManager.RecordingConfiguration` object which, amongst things, tells the session manager how
+/// frequently to poll while Spotijacking. You can end Spotijacking using the `stopSpotijacking()` method.
+///
+/// ## Automatic Spotijacking Ending
+///
+/// Spotijacking will be automatically ended under a few circumstances:
+///
+/// - When the session manager encounters an error.
+/// - When there are no more songs to play in Spotify.
+/// - If the recording is ended by Audio Hijack Pro.
+///
+/// ## Errors
+///
+/// Most errors should be caught when using the throwing `shared()` method. However, an error could be encountered
+/// while polling. Users should observe for the `DidEncounterError` notification which is posted if an error is
+/// encoutered when polling.
+public final class SpotijackSessionManager {
+    // MARK: - Singleton
+    private static var _shared: SpotijackSessionManager!
+    /// The shared session manager instance. Will attempt to launch Spotify and Audio Hijack Pro if they haven't been
+    /// launched. Will throw if the applications can not be launched or a scripting bridge can't be established.
+    public static func shared() throws -> SpotijackSessionManager {
+        if _shared == nil {
+            _shared = try SpotijackSessionManager()
+        }
+
+        return _shared
+    }
+
+    // MARK: - Properties General
+    public var notificationCenter: TypedNotificationCenter
 
     // MARK: - Properties - Application Bridges
-    internal var spotifyBridge: SpotifyApplication
-    internal var audioHijackBridge: AudioHijackApplication
+    internal let spotifyBridge: SpotifyApplication
+    internal let audioHijackBridge: AudioHijackApplication
 
     /// A scripting bridge interface to the Spotijack session in Audio Hijack Pro.
     /// Accessing this property will make Audio Hijack Pro start hijacking Spotify.
@@ -26,7 +77,7 @@ public final class SpotijackSession {
             session.startHijackingRelaunch!(.yes)
             return .ok(session)
         case .fail(let error):
-            delegate?.session(self, didEncounterError: error)
+            notificationCenter.post(DidEncounterError(sender: self, error: error))
             return .fail(error)
         }
     }
@@ -48,7 +99,7 @@ public final class SpotijackSession {
     private var _isMuted: Bool = false {
         didSet {
             if _isMuted != oldValue {
-                delegate?.session(self, didMute: _isMuted)
+                notificationCenter.post(MuteStateDidChange(sender: self, newMuteState: _isMuted))
             }
         }
     }
@@ -64,7 +115,7 @@ public final class SpotijackSession {
             case .ok(let status):
                 return status
             case .fail(let error):
-                delegate?.session(self, didEncounterError: error)
+                notificationCenter.post(DidEncounterError(sender: self, error: error))
                 return false
             }
         }
@@ -78,7 +129,7 @@ public final class SpotijackSession {
             case .ok:
                 _isMuted = newValue
             case .fail(let error):
-                delegate?.session(self, didEncounterError: error)
+                notificationCenter.post(DidEncounterError(sender: self, error: error))
             }
         }
     }
@@ -89,14 +140,14 @@ public final class SpotijackSession {
     private var _isRecording = false {
         didSet {
             if _isRecording != oldValue {
-                delegate?.session(self, didChangeRecordingState: _isRecording)
+                notificationCenter.post(RecordingStateDidChange(sender: self, isRecording: _isRecording))
             }
 
             // Test if recording was ended via AHP while Spotijacking
             if  isSpotijacking == true,
                 _isRecording == false,
                 _isRecordingTempDisabled == false {
-                stopSpotijackSession()
+                stopSpotijacking()
             }
         }
     }
@@ -108,7 +159,7 @@ public final class SpotijackSession {
             case .ok(let status):
                 return status
             case .fail(let error):
-                delegate?.session(self, didEncounterError: error)
+                notificationCenter.post(DidEncounterError(sender: self, error: error))
                 return false
             }
         }
@@ -122,7 +173,7 @@ public final class SpotijackSession {
             case .ok:
                 _isRecording = newValue
             case .fail(let error):
-                delegate?.session(self, didEncounterError: error)
+                notificationCenter.post(DidEncounterError(sender: self, error: error))
             }
         }
     }
@@ -137,15 +188,15 @@ public final class SpotijackSession {
                 case .paused = spotifyBridge.playerState!,
                 spotifyBridge.playerPosition == 0.0 {
 
-                stopSpotijackSession()
-                delegate?.session(self, didChangeToTrack: _currentTrack)
-                delegate?.sessionDidReachEndOfPlaybackQueue(self)
+                stopSpotijacking()
+                notificationCenter.post(TrackDidChange(sender: self, newTrack: _currentTrack))
+                notificationCenter.post(DidReachEndOfPlaybackQueue(sender: self))
 
                 return
             }
 
             if _currentTrack != oldValue {
-                delegate?.session(self, didChangeToTrack: _currentTrack)
+                notificationCenter.post(TrackDidChange(sender: self, newTrack: _currentTrack))
             }
 
             // Start a new recording if Spotijack is controlling the current
@@ -155,7 +206,7 @@ public final class SpotijackSession {
                 do {
                     try startNewRecording()
                 } catch (let error) {
-                    delegate?.session(self, didEncounterError: error)
+                    notificationCenter.post(DidEncounterError(sender: self, error: error))
                 }
             }
         }
@@ -187,9 +238,46 @@ public final class SpotijackSession {
     private var _pastPollingInterval: TimeInterval?
 
     // MARK: - Lifecycle
-    internal init(spotifyBridge: SpotifyApplication, audioHijackBridge: AudioHijackApplication) {
+    public init(spotifyBridge: SpotifyApplication, audioHijackBridge: AudioHijackApplication,
+                notificationCenter: TypedNotificationCenter = NotificationCenter.default) {
         self.spotifyBridge = spotifyBridge
         self.audioHijackBridge = audioHijackBridge
+        self.notificationCenter = notificationCenter
+    }
+
+    private convenience init() throws {
+        let launchOptions: NSWorkspace.LaunchOptions = [.withoutActivation, .andHide]
+        let isAHPLaunched = NSWorkspace.shared.launchApplication(
+            withBundleIdentifier: Constants.audioHijackBundle.identifier,
+            options: launchOptions,
+            additionalEventParamDescriptor: nil,
+            launchIdentifier: nil
+        )
+
+        let isSpotifyLaunched = NSWorkspace.shared.launchApplication(
+            withBundleIdentifier: Constants.spotifyBundle.identifier,
+            options: launchOptions,
+            additionalEventParamDescriptor: nil,
+            launchIdentifier: nil
+        )
+
+        guard isAHPLaunched == true else {
+            throw SpotijackError.CantStartApplication(appName: Constants.spotifyBundle.name)
+        }
+
+        guard isSpotifyLaunched == true else {
+            throw SpotijackError.CantStartApplication(appName: Constants.audioHijackBundle.name)
+        }
+
+        guard let ahpBridge = SBApplication(bundleIdentifier: Constants.audioHijackBundle.identifier) else {
+            throw SpotijackError.NoScriptingInterface(appName: Constants.audioHijackBundle.name)
+        }
+
+        guard let spotifyBridge = SBApplication(bundleIdentifier: Constants.spotifyBundle.identifier) else {
+            throw SpotijackError.NoScriptingInterface(appName: Constants.spotifyBundle.name)
+        }
+
+        self.init(spotifyBridge: spotifyBridge, audioHijackBridge: ahpBridge)
     }
 
     // MARK: - Application Polling
@@ -244,7 +332,7 @@ public final class SpotijackSession {
     /// Start a Spotijack recording session. Calling this method when a recording
     /// session is already in progress has no effect. Polling will be restarted
     /// at the interval specified in `config`.
-    public func startSpotijackSession(config: RecordingConfiguration) throws {
+    public func startSpotijacking(config: RecordingConfiguration) throws {
         guard isSpotijacking == false else {
             return
         }
@@ -276,7 +364,7 @@ public final class SpotijackSession {
         do {
             try startNewRecording()
         } catch (let error) {
-            stopSpotijackSession()
+            stopSpotijacking()
             throw error
         }
     }
@@ -284,7 +372,7 @@ public final class SpotijackSession {
     /// Stops a Spotijack recording session. Calling this method when no recording
     /// session is in progress has no effect. If we were polling when Spotijacking
     /// started, we'll resume polling at that interval.
-    public func stopSpotijackSession() {
+    public func stopSpotijacking() {
         guard isSpotijacking == true else {
             return
         }
@@ -309,14 +397,14 @@ public final class SpotijackSession {
     }
 
     /// Starts a new recording in AHP and resets Spotify's play position.
-    /// If there is no new track, ends the cu rrent Spotijack session.
+    /// If there is no new track, ends the current Spotijack session.
     private func startNewRecording() throws {
         // Check we can still communicate with the recording session
         let spotijackSessionBridge = try self.spotijackSessionBridge.dematerialize()
 
         // End the session if there are no more tracks
         guard let currentTrack = currentTrack else {
-            stopSpotijackSession()
+            stopSpotijacking()
             return
         }
 
@@ -348,13 +436,13 @@ public final class SpotijackSession {
     // Called when a `DidEncounterError` notification is posted. Ends polling and
     // any Spotijack controlled recording sessions that were running.
     private func didEncounterError(_ error: Error) {
-        stopSpotijackSession()
+        stopSpotijacking()
         stopPolling()
     }
 }
 
 // MARK: - RecordingConfiguration
-public extension SpotijackSession {
+public extension SpotijackSessionManager {
     public struct RecordingConfiguration {
         /// Should the Spotijack session be muted when starting Spotijacking?
         public let muteSpotify: Bool

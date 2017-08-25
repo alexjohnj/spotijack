@@ -93,8 +93,8 @@ internal class Preferences {
 // MARK: - LibSpotijack Integration
 extension Preferences {
     /// Generates a `RecordingConfiguration` based on the user's preferences
-    internal var recordingConfiguration: SpotijackSession.RecordingConfiguration {
-        let config = SpotijackSession.RecordingConfiguration(
+    internal var recordingConfiguration: SpotijackSessionManager.RecordingConfiguration {
+        let config = SpotijackSessionManager.RecordingConfiguration(
             muteSpotify: shouldMuteSpotify,
             disableShuffling: shouldDisableShuffling,
             disableRepeat: shouldDisableRepeat,

@@ -14,7 +14,7 @@ internal class SpotijackSessionAudioHijackTests: XCTestCase {
     // MARK: - Mute Tests
     func testGetSessionMuteState() {
         let expectedMuteState = true
-        let (session, _, ahp) = SpotijackSession.makeStandardApplications()
+        let (session, _, ahp) = SpotijackSessionManager.makeStandardApplications()
         ahp._sessions.first(where: { $0._name == "Spotijack" })?.setSpeakerMuted(expectedMuteState)
 
         XCTAssertEqual(session.isMuted, expectedMuteState)
@@ -22,7 +22,7 @@ internal class SpotijackSessionAudioHijackTests: XCTestCase {
 
     func testSetSessionMuteState() {
         let expectedMuteState = true
-        let (session, _, ahp) = SpotijackSession.makeStandardApplications()
+        let (session, _, ahp) = SpotijackSessionManager.makeStandardApplications()
         let spotijackAHPSession = ahp._sessions.first(where: { $0._name == "Spotijack" })!
 
         session.isMuted = expectedMuteState
@@ -30,15 +30,15 @@ internal class SpotijackSessionAudioHijackTests: XCTestCase {
         XCTAssertEqual(spotijackAHPSession._speakerMuted, expectedMuteState)
     }
 
-    func testChangeMuteStateNotifiesDelegate() {
+    func testChangeMuteStatePostsNotification() {
         let expectedMuteState = true
         var receivedMuteState: Bool?
 
-        let mockDelegate = MockSpotijackSessionDelegate()
-        mockDelegate.onSessionDidMute = { (_, isMuted) in receivedMuteState = isMuted }
-
-        let (session, _, _) = SpotijackSession.makeStandardApplications()
-        session.delegate = mockDelegate
+        let (session, _, _) = SpotijackSessionManager.makeStandardApplications()
+        let obs = session.notificationCenter.addObserver(forType: MuteStateDidChange.self,
+                                                         object: session,
+                                                         queue: .main,
+                                                         using: { noti in receivedMuteState = noti.newMuteState })
 
         session.isMuted = expectedMuteState
 
@@ -48,7 +48,7 @@ internal class SpotijackSessionAudioHijackTests: XCTestCase {
     // MARK: - AHP Session Access
     func testAccessingAHPSessionStartsHijacking() {
         let expectedHijackingState = true
-        let (session, _, ahp) = SpotijackSession.makeStandardApplications()
+        let (session, _, ahp) = SpotijackSessionManager.makeStandardApplications()
         let spotijackAHPSession = ahp._sessions.first(where: { $0._name == "Spotijack" })!
 
         spotijackAHPSession.stopHijacking()
@@ -61,7 +61,7 @@ internal class SpotijackSessionAudioHijackTests: XCTestCase {
     // MARK: - Recording Tests
     func testGetRecordingState() {
         let expectedRecordingState = true
-        let (session, _, ahp) = SpotijackSession.makeStandardApplications()
+        let (session, _, ahp) = SpotijackSessionManager.makeStandardApplications()
         let spotijackAHPSession = ahp._sessions.first(where: { $0._name == "Spotijack" })!
         spotijackAHPSession.startRecording()
 
@@ -70,24 +70,22 @@ internal class SpotijackSessionAudioHijackTests: XCTestCase {
 
     func testSetRecordingState() {
         let expectedRecordingState = true
-        let (session, _, ahp) = SpotijackSession.makeStandardApplications()
+        let (session, _, ahp) = SpotijackSessionManager.makeStandardApplications()
         let spotijackAHPSession = ahp._sessions.first(where: { $0._name == "Spotijack" })!
 
         session.isRecording = expectedRecordingState
         XCTAssertEqual(spotijackAHPSession._recording, expectedRecordingState)
     }
 
-    func testChangeRecordingStateNotifiesDelegate() {
+    func testChangeRecordingStatePostsNotification() {
         let expectedRecordingState = true
         var receivedRecordingState: Bool?
 
-        let delegate = MockSpotijackSessionDelegate()
-        delegate.onSessionDidChangeRecordingState = { (_, isRecording) in
-            receivedRecordingState = isRecording
-        }
-
-        let (session, _, _) = SpotijackSession.makeStandardApplications()
-        session.delegate = delegate
+        let (session, _, _) = SpotijackSessionManager.makeStandardApplications()
+        let obs = session.notificationCenter.addObserver(forType: RecordingStateDidChange.self,
+                                                         object: session,
+                                                         queue: .main,
+                                                         using: { noti in receivedRecordingState = noti.isRecording })
         session.isRecording = true
 
         XCTAssertNotNil(receivedRecordingState)

@@ -13,7 +13,7 @@ import Foundation
 internal class SpotijackSessionSpotijackingTests: XCTestCase {
     // MARK: - General Polling
     func testStartStopPolling() {
-        let (session, _, _) = SpotijackSession.makeStandardApplications()
+        let (session, _, _) = SpotijackSessionManager.makeStandardApplications()
 
         session.startPolling(every: 1.0)
         XCTAssertNotNil(session._applicationPollingTimer)
@@ -26,7 +26,7 @@ internal class SpotijackSessionSpotijackingTests: XCTestCase {
 
     func testStartPollingRespectsInterval() {
         let expectedInterval: TimeInterval = 1.0
-        let (session, _, _) = SpotijackSession.makeStandardApplications()
+        let (session, _, _) = SpotijackSessionManager.makeStandardApplications()
 
         session.startPolling(every: expectedInterval)
         XCTAssertEqual(session._applicationPollingTimer?.timeInterval, expectedInterval)
@@ -38,13 +38,13 @@ internal class SpotijackSessionSpotijackingTests: XCTestCase {
         var receivedRecordingCount: Int?
         let spotijackingExpectation = expectation(description: "Waiting for Spotijacking process to finish")
 
-        let (session, spotify, ahp) = SpotijackSession.makeStandardApplications()
-        let recordingConfiguration = SpotijackSession.RecordingConfiguration(muteSpotify: false,
+        let (session, spotify, ahp) = SpotijackSessionManager.makeStandardApplications()
+        let recordingConfiguration = SpotijackSessionManager.RecordingConfiguration(muteSpotify: false,
                                                                              disableShuffling: false,
                                                                              disableRepeat: false,
                                                                              pollingInterval: 0.1,
                                                                              recordingStartDelay: 0.1)
-        XCTAssertNoThrow(try session.startSpotijackSession(config: recordingConfiguration))
+        XCTAssertNoThrow(try session.startSpotijacking(config: recordingConfiguration))
 
         // The delays here are to account for the pause Spotijack takes between starting new recordings.
         let queue = DispatchQueue.global(qos: .userInitiated)
@@ -61,7 +61,7 @@ internal class SpotijackSessionSpotijackingTests: XCTestCase {
         }
 
         wait(for: [spotijackingExpectation], timeout: 1.0)
-        session.stopSpotijackSession()
+        session.stopSpotijacking()
 
         XCTAssertNotNil(receivedRecordingCount)
         XCTAssertEqual(receivedRecordingCount, expectedRecordingCount)
@@ -69,14 +69,14 @@ internal class SpotijackSessionSpotijackingTests: XCTestCase {
 
     func testSpotijackingWithoutAsyncDelayGeneratesFiles() {
         let expectedRecordingCount = 2
-        let (session, spotify, ahp) = SpotijackSession.makeStandardApplications()
-        let config = SpotijackSession.RecordingConfiguration(muteSpotify: false,
+        let (session, spotify, ahp) = SpotijackSessionManager.makeStandardApplications()
+        let config = SpotijackSessionManager.RecordingConfiguration(muteSpotify: false,
                                                              disableShuffling: false,
                                                              disableRepeat: false,
                                                              pollingInterval: 50, // Will poll manually
                                                              recordingStartDelay: 0)
 
-        XCTAssertNoThrow(try session.startSpotijackSession(config: config))
+        XCTAssertNoThrow(try session.startSpotijacking(config: config))
         let nextTrack = {
             session._applicationPollingTimer?.fire()
             spotify.nextTrack()
@@ -92,8 +92,8 @@ internal class SpotijackSessionSpotijackingTests: XCTestCase {
 
     func testEndingSpotijackingGeneratesARecordingFile() {
         let expectedRecordingCount = 3
-        let (session, spotify, ahp) = SpotijackSession.makeStandardApplications()
-        let config = SpotijackSession.RecordingConfiguration(muteSpotify: false,
+        let (session, spotify, ahp) = SpotijackSessionManager.makeStandardApplications()
+        let config = SpotijackSessionManager.RecordingConfiguration(muteSpotify: false,
                                                              disableShuffling: false,
                                                              disableRepeat: false,
                                                              pollingInterval: 50,
@@ -104,30 +104,29 @@ internal class SpotijackSessionSpotijackingTests: XCTestCase {
             session._applicationPollingTimer?.fire()
         }
 
-        XCTAssertNoThrow(try session.startSpotijackSession(config: config))
+        XCTAssertNoThrow(try session.startSpotijacking(config: config))
         nextTrack() // Recording 1
         nextTrack() // Recording 2
-        session.stopSpotijackSession() // Should generate recording 3
+        session.stopSpotijacking() // Should generate recording 3
 
         XCTAssertEqual(ahp._recordings.count, expectedRecordingCount)
     }
 
-    func testReachingEndOfPlaybackQueueInformsDelegate() {
-        var delegateWasInformed = false
-        let delegate = MockSpotijackSessionDelegate()
-        delegate.onSessionDidReachEndOfPlaybackQueue = { _ in
-            delegateWasInformed = true
-        }
+    func testReachingEndOfPlaybackQueuePostsNotification() {
+        var notificationWasPosted = false
 
-        let (session, spotify, _) = SpotijackSession.makeStandardApplications()
-        session.delegate = delegate
+        let (session, spotify, _) = SpotijackSessionManager.makeStandardApplications()
+        let obs = session.notificationCenter.addObserver(forType: DidReachEndOfPlaybackQueue.self,
+                                                         object: session,
+                                                         queue: .main,
+                                                         using: { _ in notificationWasPosted = true })
 
-        let config = SpotijackSession.RecordingConfiguration(muteSpotify: false,
+        let config = SpotijackSessionManager.RecordingConfiguration(muteSpotify: false,
                                                              disableShuffling: false,
                                                              disableRepeat: false,
                                                              pollingInterval: 50.0,
                                                              recordingStartDelay: 0)
-        XCTAssertNoThrow(try session.startSpotijackSession(config: config))
+        XCTAssertNoThrow(try session.startSpotijacking(config: config))
         session._applicationPollingTimer?.fire()
 
         let nextTrack = {
@@ -138,18 +137,18 @@ internal class SpotijackSessionSpotijackingTests: XCTestCase {
 
         for _ in 0..<3 { nextTrack() }
 
-        XCTAssertTrue(delegateWasInformed)
+        XCTAssertTrue(notificationWasPosted)
     }
 
     func testReachingEndOfPlaybackQueueEndsSpotijacking() {
-        let (session, spotify, _) = SpotijackSession.makeStandardApplications()
-        let config = SpotijackSession.RecordingConfiguration(muteSpotify: false,
+        let (session, spotify, _) = SpotijackSessionManager.makeStandardApplications()
+        let config = SpotijackSessionManager.RecordingConfiguration(muteSpotify: false,
                                                              disableShuffling: false,
                                                              disableRepeat: false,
                                                              pollingInterval: 50.0,
                                                              recordingStartDelay: 0.0)
 
-        XCTAssertNoThrow(try session.startSpotijackSession(config: config))
+        XCTAssertNoThrow(try session.startSpotijacking(config: config))
         let nextTrack = {
             session._applicationPollingTimer?.fire()
             spotify.nextTrack()
@@ -163,49 +162,49 @@ internal class SpotijackSessionSpotijackingTests: XCTestCase {
 
     func testEndingSpotijackingResumesPollingAtPreviousInterval() {
         let expectedInterval = 42.0
-        let config = SpotijackSession.RecordingConfiguration(muteSpotify: false,
+        let config = SpotijackSessionManager.RecordingConfiguration(muteSpotify: false,
                                                              disableShuffling: false,
                                                              disableRepeat: false,
                                                              pollingInterval: expectedInterval + 1,
                                                              recordingStartDelay: 0.0)
-        let (session, _, _) = SpotijackSession.makeStandardApplications()
+        let (session, _, _) = SpotijackSessionManager.makeStandardApplications()
         session.startPolling(every: expectedInterval)
 
-        XCTAssertNoThrow(try session.startSpotijackSession(config: config))
+        XCTAssertNoThrow(try session.startSpotijacking(config: config))
         XCTAssertNotEqual(session._applicationPollingTimer?.timeInterval, expectedInterval)
-        session.stopSpotijackSession()
+        session.stopSpotijacking()
 
         XCTAssertEqual(session._applicationPollingTimer?.timeInterval, expectedInterval)
     }
 
     func testEndSpotijackingWithoutPreviousPollingIntervalStopsPolling() {
-        let config = SpotijackSession.RecordingConfiguration(muteSpotify: false,
+        let config = SpotijackSessionManager.RecordingConfiguration(muteSpotify: false,
                                                              disableShuffling: false,
                                                              disableRepeat: false,
                                                              pollingInterval: 42.0,
                                                              recordingStartDelay: 0.0)
-        let (session, _, _) = SpotijackSession.makeStandardApplications()
+        let (session, _, _) = SpotijackSessionManager.makeStandardApplications()
         session.stopPolling() // Ensure polling has not been started
 
-        XCTAssertNoThrow(try session.startSpotijackSession(config: config))
-        session.stopSpotijackSession()
+        XCTAssertNoThrow(try session.startSpotijacking(config: config))
+        session.stopSpotijacking()
 
         XCTAssertNil(session._applicationPollingTimer)
     }
 
     func testStartNewRecordingUpdatesAudioHijackProSessionTags() {
-        let (session, spotify, ahp) = SpotijackSession.makeStandardApplications()
+        let (session, spotify, ahp) = SpotijackSessionManager.makeStandardApplications()
         let ahpSession = ahp._sessions.first(where: { $0.name == "Spotijack" })!
         let expectedTrack = spotify._playbackQueue.first!
 
-        let config = SpotijackSession.RecordingConfiguration(muteSpotify: false,
+        let config = SpotijackSessionManager.RecordingConfiguration(muteSpotify: false,
                                                              disableShuffling: false,
                                                              disableRepeat: false,
                                                              pollingInterval: 1,
                                                              recordingStartDelay: 0.0)
 
-        XCTAssertNoThrow(try session.startSpotijackSession(config: config))
-        session.stopSpotijackSession()
+        XCTAssertNoThrow(try session.startSpotijacking(config: config))
+        session.stopSpotijacking()
 
         XCTAssertEqual(ahpSession._titleTag, expectedTrack.name)
         XCTAssertEqual(ahpSession._albumTag, expectedTrack.album)
@@ -218,15 +217,15 @@ internal class SpotijackSessionSpotijackingTests: XCTestCase {
     /// Test ending a recording via the Audio Hijack Pro application also ends Spotijacking. Failure to do so would lead
     /// to an inconsistent internal state.
     func testEndRecordingViaAHPEndsSpotijacking() {
-        let (session, _, ahp) = SpotijackSession.makeStandardApplications()
-        let config = SpotijackSession.RecordingConfiguration(muteSpotify: false,
+        let (session, _, ahp) = SpotijackSessionManager.makeStandardApplications()
+        let config = SpotijackSessionManager.RecordingConfiguration(muteSpotify: false,
                                                              disableShuffling: false,
                                                              disableRepeat: false,
                                                              pollingInterval: 50.0,
                                                              recordingStartDelay: 0.0)
         let ahpSession = ahp._sessions.first(where: { $0.name == "Spotijack" })!
 
-        XCTAssertNoThrow(try session.startSpotijackSession(config: config))
+        XCTAssertNoThrow(try session.startSpotijacking(config: config))
         ahpSession.stopRecording()
         session.pollSpotify()
         session.pollAudioHijackPro()
@@ -236,35 +235,35 @@ internal class SpotijackSessionSpotijackingTests: XCTestCase {
 
     // MARK: - Recording Configuration
     func testStartSpotijackingRespectsDisableShufflingConfiguration() {
-        let (session, spotify, _) = SpotijackSession.makeStandardApplications()
-        let config = SpotijackSession.RecordingConfiguration(muteSpotify: true,
+        let (session, spotify, _) = SpotijackSessionManager.makeStandardApplications()
+        let config = SpotijackSessionManager.RecordingConfiguration(muteSpotify: true,
                                                              disableShuffling: true,
                                                              disableRepeat: true,
                                                              pollingInterval: 50,
                                                              recordingStartDelay: 0.0)
         spotify.setShuffling(true)
-        XCTAssertNoThrow(try session.startSpotijackSession(config: config))
+        XCTAssertNoThrow(try session.startSpotijacking(config: config))
 
         XCTAssertFalse(spotify.shuffling)
     }
 
     func testStartSpotijackingRespectsDisableRepeatingConfiguration() {
-        let (session, spotify, _) = SpotijackSession.makeStandardApplications()
-        let config = SpotijackSession.RecordingConfiguration(muteSpotify: true,
+        let (session, spotify, _) = SpotijackSessionManager.makeStandardApplications()
+        let config = SpotijackSessionManager.RecordingConfiguration(muteSpotify: true,
                                                              disableShuffling: true,
                                                              disableRepeat: true,
                                                              pollingInterval: 50,
                                                              recordingStartDelay: 0.0)
 
         spotify.setRepeating(true)
-        XCTAssertNoThrow(try session.startSpotijackSession(config: config))
+        XCTAssertNoThrow(try session.startSpotijacking(config: config))
         XCTAssertFalse(spotify.repeating)
     }
 
     func testStartSpotijackingRespectsMuteSessionRecordingConfiguration() {
-        let (session, _, ahp) = SpotijackSession.makeStandardApplications()
+        let (session, _, ahp) = SpotijackSessionManager.makeStandardApplications()
         let ahpSession = ahp._sessions.first(where: { $0.name == "Spotijack" })!
-        let config = SpotijackSession.RecordingConfiguration(muteSpotify: true,
+        let config = SpotijackSessionManager.RecordingConfiguration(muteSpotify: true,
                                                              disableShuffling: true,
                                                              disableRepeat: true,
                                                              pollingInterval: 50,
@@ -272,20 +271,20 @@ internal class SpotijackSessionSpotijackingTests: XCTestCase {
 
         ahpSession.setSpeakerMuted(true)
 
-        XCTAssertNoThrow(try session.startSpotijackSession(config: config))
+        XCTAssertNoThrow(try session.startSpotijacking(config: config))
         XCTAssertTrue(ahpSession.speakerMuted)
     }
 
     func testStartSpotijackingRespectsRecordingConfigurationPollingInterval() {
         let expectedInterval = 50.0
-        let (session, _, _) = SpotijackSession.makeStandardApplications()
-        let config = SpotijackSession.RecordingConfiguration(muteSpotify: true,
+        let (session, _, _) = SpotijackSessionManager.makeStandardApplications()
+        let config = SpotijackSessionManager.RecordingConfiguration(muteSpotify: true,
                                                              disableShuffling: true,
                                                              disableRepeat: true,
                                                              pollingInterval: expectedInterval,
                                                              recordingStartDelay: 0.0)
 
-        XCTAssertNoThrow(try session.startSpotijackSession(config: config))
+        XCTAssertNoThrow(try session.startSpotijacking(config: config))
         XCTAssertEqual(session._applicationPollingTimer?.timeInterval, expectedInterval)
     }
 }
