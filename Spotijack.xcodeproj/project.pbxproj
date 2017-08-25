@@ -118,8 +118,6 @@
 		FA86C4B51F03FA25001ACBBA /* LibSpotijack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LibSpotijack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA86C4B71F03FA25001ACBBA /* LibSpotijack.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LibSpotijack.h; sourceTree = "<group>"; };
 		FA86C4B81F03FA25001ACBBA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		FA93A2721B0914D500A61F6E /* SPJSessionCreator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPJSessionCreator.h; sourceTree = "<group>"; };
-		FA93A2731B0914D500A61F6E /* SPJSessionCreator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPJSessionCreator.m; sourceTree = "<group>"; };
 		FA93A2751B09150500A61F6E /* SessionProperties.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = SessionProperties.plist; sourceTree = "<group>"; };
 		FA95035B1A421B76009D7149 /* Spotijack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Spotijack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA95035F1A421B76009D7149 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -148,14 +146,10 @@
 		FADD9EC01F03FB2800EAC2BC /* Spotify.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Spotify.swift; sourceTree = "<group>"; };
 		FADD9EC11F03FB2800EAC2BC /* SpotifyScripting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotifyScripting.swift; sourceTree = "<group>"; };
 		FADF0C481F389EC80034152B /* SpotijackError+FatalError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SpotijackError+FatalError.swift"; sourceTree = "<group>"; };
-		FAE1C1481B07D67D007FF95C /* SPJConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPJConstants.h; sourceTree = "<group>"; };
-		FAE1C1491B07D67D007FF95C /* SPJConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPJConstants.m; sourceTree = "<group>"; };
 		FAE1C1591B07DF7C007FF95C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainWindow.xib; sourceTree = "<group>"; };
 		FAE1C15A1B07DF80007FF95C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/PreferencesWindow.xib; sourceTree = "<group>"; };
 		FAE1C15B1B07DFB7007FF95C /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		FAF81BE91A421FB5008F3360 /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
-		FAF81BEB1A422351008F3360 /* SPJSessionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPJSessionController.h; sourceTree = "<group>"; };
-		FAF81BEC1A422351008F3360 /* SPJSessionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPJSessionController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -256,16 +250,6 @@
 			path = LibSpotijack;
 			sourceTree = "<group>";
 		};
-		FA93A2701B090C6100A61F6E /* Error Recovery */ = {
-			isa = PBXGroup;
-			children = (
-				FA93A2721B0914D500A61F6E /* SPJSessionCreator.h */,
-				FA93A2731B0914D500A61F6E /* SPJSessionCreator.m */,
-			);
-			name = "Error Recovery";
-			path = ..;
-			sourceTree = "<group>";
-		};
 		FA9503521A421B76009D7149 = {
 			isa = PBXGroup;
 			children = (
@@ -295,7 +279,6 @@
 				FA1992D31F35EF71000881D9 /* PreferencesWindowController.swift */,
 				FA6B961F1F3609500011D0D8 /* Preferences.swift */,
 				FADF0C481F389EC80034152B /* SpotijackError+FatalError.swift */,
-				FAB41F0D1F25FE8E00448440 /* Objc-Disabled */,
 				FAF81BE81A421ED9008F3360 /* XIBs */,
 				FA9503651A421B76009D7149 /* Images.xcassets */,
 				FA95035E1A421B76009D7149 /* Supporting Files */,
@@ -313,18 +296,6 @@
 				FA3CF4E71B3C5AB700E8EF60 /* Credits.rtf */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		FAB41F0D1F25FE8E00448440 /* Objc-Disabled */ = {
-			isa = PBXGroup;
-			children = (
-				FAE1C1481B07D67D007FF95C /* SPJConstants.h */,
-				FAE1C1491B07D67D007FF95C /* SPJConstants.m */,
-				FA93A2701B090C6100A61F6E /* Error Recovery */,
-				FAF81BEB1A422351008F3360 /* SPJSessionController.h */,
-				FAF81BEC1A422351008F3360 /* SPJSessionController.m */,
-			);
-			path = "Objc-Disabled";
 			sourceTree = "<group>";
 		};
 		FAC3007D1F17E04A00E47CB4 /* LibSpotijackTests */ = {
