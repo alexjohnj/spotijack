@@ -10,6 +10,7 @@ import XCTest
 import Foundation
 @testable import LibSpotijack
 
+//swiftlint:disable:next type_body_length
 internal class SpotijackSessionSpotijackingTests: XCTestCase {
     // MARK: - General Polling
     func testStartStopPolling() {
@@ -231,6 +232,22 @@ internal class SpotijackSessionSpotijackingTests: XCTestCase {
         session.pollAudioHijackPro()
 
         XCTAssertFalse(session.isSpotijacking)
+    }
+
+    func testEndingSpotijackingPostsNotification() {
+        let (session, _, _) = SpotijackSessionManager.makeStandardApplications()
+        let config = SpotijackSessionManager.RecordingConfiguration()
+        var wasNotified = false
+
+        let obs = session.notificationCenter.addObserver(forType: DidEndSpotijacking.self,
+                                                         object: session,
+                                                         queue: .main,
+                                                         using: { _ in wasNotified = true })
+
+        XCTAssertNoThrow(try session.startSpotijacking(config: config))
+        session.stopSpotijacking()
+
+        XCTAssertTrue(wasNotified)
     }
 
     // MARK: - Recording Configuration

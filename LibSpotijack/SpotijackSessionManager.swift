@@ -394,6 +394,8 @@ public final class SpotijackSessionManager {
         } else {
             stopPolling()
         }
+
+        notificationCenter.post(DidEndSpotijacking(sender: self))
     }
 
     /// Starts a new recording in AHP and resets Spotify's play position.
