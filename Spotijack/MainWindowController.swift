@@ -14,7 +14,7 @@ internal class MainWindowController: NSWindowController {
     // MARK: Interface Builder Outlets
     @IBOutlet private weak var statusField: NSTextField!
     @IBOutlet private weak var artistAlbumField: NSTextField!
-    @IBOutlet private weak var recordButton: NSButton!
+    @IBOutlet private weak var spotijackButton: NSButton!
     @IBOutlet private weak var muteButton: NSButton!
 
     // MARK: Notification Observer Tokens
@@ -42,7 +42,7 @@ internal class MainWindowController: NSWindowController {
 
 // MARK: - UI Actions
 extension MainWindowController {
-    @IBAction func recordButtonClicked(_ sender: NSButton) {
+    @IBAction func spotijackButtonClicked(_ sender: NSButton) {
         do {
             let session = try SpotijackSessionManager.shared()
             if session.isSpotijacking {
@@ -73,7 +73,7 @@ extension MainWindowController {
         do {
             let session = try SpotijackSessionManager.shared()
             updateTrackStatusFields(track: session.currentTrack)
-            updateRecordButton(isRecording: session.isRecording)
+            updateSpotijackButton(isSpotijacking: session.isRecording)
             updateMuteButton(isMuted: session.isMuted)
         } catch (let error) {
             _ = presentError(error)
@@ -90,13 +90,13 @@ extension MainWindowController {
         }
     }
 
-    private func updateRecordButton(isRecording: Bool) {
-        if isRecording {
-            recordButton.title = NSLocalizedString("Recording", comment: "")
-            recordButton.state = .on
+    private func updateSpotijackButton(isSpotijacking: Bool) {
+        if isSpotijacking {
+            spotijackButton.title = NSLocalizedString("Recording", comment: "")
+            spotijackButton.state = .on
         } else {
-            recordButton.title = NSLocalizedString("Record", comment: "")
-            recordButton.state = .off
+            spotijackButton.title = NSLocalizedString("Record", comment: "")
+            spotijackButton.state = .off
         }
     }
 
@@ -118,7 +118,7 @@ extension MainWindowController {
     }
 
     private func recordingStateDidChange(noti: RecordingStateDidChange) {
-        updateRecordButton(isRecording: noti.isRecording)
+        updateSpotijackButton(isSpotijacking: noti.isRecording)
     }
 
     private func trackDidChange(noti: TrackDidChange) {

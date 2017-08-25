@@ -11,7 +11,7 @@
             <connections>
                 <outlet property="artistAlbumField" destination="2zZ-cK-X9C" id="IDn-Tv-lm0"/>
                 <outlet property="muteButton" destination="L0G-Ma-Vh5" id="Ihy-gH-Ubh"/>
-                <outlet property="recordButton" destination="AKD-kg-1UY" id="ccZ-hm-blr"/>
+                <outlet property="spotijackButton" destination="AKD-kg-1UY" id="ccZ-hm-blr"/>
                 <outlet property="statusField" destination="SVJ-Xv-L1m" id="xIo-ac-N8n"/>
                 <outlet property="window" destination="uSh-TC-Nzq" id="lMK-yp-7zr"/>
             </connections>
@@ -25,7 +25,7 @@
             <rect key="screenRect" x="0.0" y="0.0" width="3440" height="1440"/>
             <view key="contentView" id="d0Y-fb-agL">
                 <rect key="frame" x="0.0" y="0.0" width="350" height="119"/>
-                <autoresizingMask key="autoresizingMask"/>
+                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
                     <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="251" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="X0s-D8-cKM">
                         <rect key="frame" x="20" y="52" width="310" height="47"/>
@@ -63,7 +63,7 @@
                             <font key="font" metaFont="systemBold" size="12"/>
                         </buttonCell>
                         <connections>
-                            <action selector="recordButtonClicked:" target="-2" id="XqR-4D-0MN"/>
+                            <action selector="spotijackButtonClicked:" target="-2" id="XqR-4D-0MN"/>
                         </connections>
                     </button>
                     <button toolTip="Mute Spotify without affecting recordings" horizontalHuggingPriority="1000" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="L0G-Ma-Vh5">
@@ -78,7 +78,7 @@
                             <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                         </buttonCell>
                         <connections>
-                            <action selector="muteButtonClicked:" target="-2" id="b5c-CP-W7r"/>
+                            <action selector="muteButtonClicked:" target="-2" id="Hss-lt-a0N"/>
                         </connections>
                     </button>
                 </subviews>
