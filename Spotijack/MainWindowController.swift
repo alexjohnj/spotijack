@@ -13,7 +13,7 @@ import TypedNotification
 internal class MainWindowController: NSWindowController {
     // MARK: Interface Builder Outlets
     @IBOutlet private weak var statusField: NSTextField!
-    @IBOutlet private weak var artistField: NSTextField!
+    @IBOutlet private weak var artistAlbumField: NSTextField!
     @IBOutlet private weak var recordButton: NSButton!
     @IBOutlet private weak var muteButton: NSButton!
 
@@ -96,10 +96,10 @@ extension MainWindowController {
     private func updateTrackStatusFields(track: StaticSpotifyTrack?) {
         if let track = track {
             statusField.stringValue = track.name
-            artistField.stringValue = track.artist
+            artistAlbumField.stringValue = "\(track.artist) — \(track.album)"
         } else {
             statusField.stringValue = NSLocalizedString("Ready to Record", comment: "")
-            artistField.stringValue = ""
+            artistAlbumField.stringValue = ""
         }
     }
 
