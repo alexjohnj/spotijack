@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="13156.6" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="13189.4" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13156.6"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13189.4"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+        <capability name="stacking Non-gravity area distributions on NSStackView" minToolsVersion="7.0" minSystemVersion="10.11"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="MainWindowController" customModule="Spotijack" customModuleProvider="target">
@@ -20,37 +21,43 @@
         <window title="Spotijack" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="uSh-TC-Nzq">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="335" y="390" width="305" height="119"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="3440" height="1418"/>
+            <rect key="contentRect" x="335" y="390" width="350" height="119"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="3440" height="1440"/>
             <view key="contentView" id="d0Y-fb-agL">
-                <rect key="frame" x="0.0" y="0.0" width="305" height="119"/>
+                <rect key="frame" x="0.0" y="0.0" width="350" height="119"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SVJ-Xv-L1m">
-                        <rect key="frame" x="18" y="77" width="269" height="22"/>
-                        <constraints>
-                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="237" id="n5f-YB-avb"/>
-                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="22" id="pf1-4T-o0O"/>
-                        </constraints>
-                        <textFieldCell key="cell" controlSize="mini" sendsActionOnEndEditing="YES" placeholderString="Status" id="Dbj-7N-ITI">
-                            <font key="font" metaFont="system" size="18"/>
-                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2zZ-cK-X9C">
-                        <rect key="frame" x="18" y="52" width="269" height="17"/>
-                        <constraints>
-                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="237" id="9qs-aC-smd"/>
-                        </constraints>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" placeholderString="Artist" id="7op-DH-RlE">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
+                    <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="251" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="X0s-D8-cKM">
+                        <rect key="frame" x="20" y="52" width="310" height="47"/>
+                        <subviews>
+                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SVJ-Xv-L1m">
+                                <rect key="frame" x="-2" y="25" width="314" height="22"/>
+                                <textFieldCell key="cell" controlSize="mini" sendsActionOnEndEditing="YES" placeholderString="Status" id="Dbj-7N-ITI">
+                                    <font key="font" metaFont="system" size="18"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2zZ-cK-X9C">
+                                <rect key="frame" x="-2" y="0.0" width="314" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" placeholderString="Artist" id="7op-DH-RlE">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                        </subviews>
+                        <visibilityPriorities>
+                            <integer value="1000"/>
+                            <integer value="1000"/>
+                        </visibilityPriorities>
+                        <customSpacing>
+                            <real value="3.4028234663852886e+38"/>
+                            <real value="3.4028234663852886e+38"/>
+                        </customSpacing>
+                    </stackView>
                     <button toolTip="Start recording" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="AKD-kg-1UY">
-                        <rect key="frame" x="124" y="7" width="57" height="19"/>
+                        <rect key="frame" x="147" y="7" width="57" height="19"/>
                         <buttonCell key="cell" type="recessed" title="Record" bezelStyle="recessed" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="VHG-XA-Bdi">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
                             <font key="font" metaFont="systemBold" size="12"/>
@@ -60,7 +67,7 @@
                         </connections>
                     </button>
                     <button toolTip="Mute Spotify without affecting recordings" horizontalHuggingPriority="1000" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="L0G-Ma-Vh5">
-                        <rect key="frame" x="261" y="7" width="24" height="19"/>
+                        <rect key="frame" x="306" y="7" width="24" height="19"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="24" id="lSB-xv-Vt6"/>
                         </constraints>
@@ -77,23 +84,20 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="L0G-Ma-Vh5" firstAttribute="centerY" secondItem="AKD-kg-1UY" secondAttribute="centerY" id="0JM-N2-7eS"/>
-                    <constraint firstItem="SVJ-Xv-L1m" firstAttribute="top" secondItem="d0Y-fb-agL" secondAttribute="top" constant="20" symbolic="YES" id="0l0-eM-fs2"/>
-                    <constraint firstAttribute="trailing" secondItem="SVJ-Xv-L1m" secondAttribute="trailing" constant="20" symbolic="YES" id="Adj-mT-vj8"/>
                     <constraint firstAttribute="bottom" secondItem="AKD-kg-1UY" secondAttribute="bottom" constant="8" id="C2a-UX-LNE"/>
-                    <constraint firstAttribute="trailing" secondItem="2zZ-cK-X9C" secondAttribute="trailing" constant="20" symbolic="YES" id="EBB-iW-E5x"/>
+                    <constraint firstItem="X0s-D8-cKM" firstAttribute="leading" secondItem="d0Y-fb-agL" secondAttribute="leading" constant="20" symbolic="YES" id="C8W-Tf-8a6"/>
+                    <constraint firstAttribute="trailing" secondItem="X0s-D8-cKM" secondAttribute="trailing" constant="20" symbolic="YES" id="DEP-ea-yYx"/>
+                    <constraint firstItem="X0s-D8-cKM" firstAttribute="top" secondItem="d0Y-fb-agL" secondAttribute="top" constant="20" symbolic="YES" id="PVu-XW-S6n"/>
                     <constraint firstAttribute="centerX" secondItem="AKD-kg-1UY" secondAttribute="centerX" id="V7r-6M-qGW"/>
-                    <constraint firstItem="2zZ-cK-X9C" firstAttribute="leading" secondItem="d0Y-fb-agL" secondAttribute="leading" constant="20" symbolic="YES" id="fQW-Oj-RuK"/>
-                    <constraint firstItem="AKD-kg-1UY" firstAttribute="top" secondItem="2zZ-cK-X9C" secondAttribute="bottom" constant="26" id="hGX-yQ-44W"/>
-                    <constraint firstItem="SVJ-Xv-L1m" firstAttribute="leading" secondItem="d0Y-fb-agL" secondAttribute="leading" constant="20" symbolic="YES" id="j8x-MT-Ivf"/>
+                    <constraint firstItem="AKD-kg-1UY" firstAttribute="top" secondItem="X0s-D8-cKM" secondAttribute="bottom" constant="26" id="chu-1O-Cew"/>
                     <constraint firstAttribute="trailing" secondItem="L0G-Ma-Vh5" secondAttribute="trailing" constant="20" symbolic="YES" id="kk9-No-lIs"/>
-                    <constraint firstItem="2zZ-cK-X9C" firstAttribute="top" secondItem="SVJ-Xv-L1m" secondAttribute="bottom" constant="8" symbolic="YES" id="vM3-j3-LGg"/>
                 </constraints>
             </view>
             <contentBorderThickness minY="32"/>
             <connections>
                 <outlet property="delegate" destination="-2" id="ea6-We-iEi"/>
             </connections>
-            <point key="canvasLocation" x="-1907" y="54"/>
+            <point key="canvasLocation" x="-1479" y="14"/>
         </window>
     </objects>
     <resources>
