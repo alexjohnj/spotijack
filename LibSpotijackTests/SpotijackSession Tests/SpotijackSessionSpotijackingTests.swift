@@ -215,6 +215,25 @@ internal class SpotijackSessionSpotijackingTests: XCTestCase {
         XCTAssertEqual(ahpSession._trackNumberTag, String(describing: expectedTrack.trackNumber))
     }
 
+    /// Test ending a recording via the Audio Hijack Pro application also ends Spotijacking. Failure to do so would lead
+    /// to an inconsistent internal state.
+    func testEndRecordingViaAHPEndsSpotijacking() {
+        let (session, _, ahp) = SpotijackSession.makeStandardApplications()
+        let config = SpotijackSession.RecordingConfiguration(muteSpotify: false,
+                                                             disableShuffling: false,
+                                                             disableRepeat: false,
+                                                             pollingInterval: 50.0,
+                                                             recordingStartDelay: 0.0)
+        let ahpSession = ahp._sessions.first(where: { $0.name == "Spotijack" })!
+
+        XCTAssertNoThrow(try session.startSpotijackSession(config: config))
+        ahpSession.stopRecording()
+        session.pollSpotify()
+        session.pollAudioHijackPro()
+
+        XCTAssertFalse(session.isSpotijacking)
+    }
+
     // MARK: - Recording Configuration
     func testStartSpotijackingRespectsDisableShufflingConfiguration() {
         let (session, spotify, _) = SpotijackSession.makeStandardApplications()

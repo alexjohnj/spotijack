@@ -83,10 +83,20 @@ public final class SpotijackSession {
         }
     }
 
+    /// Is recording temporarily disabled by Spotijack while starting a new recording?
+    private var _isRecordingTempDisabled = false
+
     private var _isRecording = false {
         didSet {
             if _isRecording != oldValue {
                 delegate?.session(self, didChangeRecordingState: _isRecording)
+            }
+
+            // Test if recording was ended via AHP while Spotijacking
+            if  isSpotijacking == true,
+                _isRecording == false,
+                _isRecordingTempDisabled == false {
+                stopSpotijackSession()
             }
         }
     }
@@ -279,8 +289,10 @@ public final class SpotijackSession {
             return
         }
 
-        isRecording = false
         isSpotijacking = false
+
+        _isRecordingTempDisabled = false
+        isRecording = false
         _currentRecordingConfiguration = nil
 
         if let activityToken = activityToken {
@@ -309,6 +321,7 @@ public final class SpotijackSession {
         }
 
         // Start a new recording
+        _isRecordingTempDisabled = true
         isRecording = false
         spotifyBridge.pause!()
         spotifyBridge.setPlayerPosition!(0.0)
@@ -319,6 +332,7 @@ public final class SpotijackSession {
         }
 
         let newRecordingBlock = { [weak self] in
+            self?._isRecordingTempDisabled = false
             self?.isRecording = true
             self?.spotifyBridge.play!()
         }
