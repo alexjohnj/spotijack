@@ -195,7 +195,7 @@ extension MainWindowController {
 }
 
 // MARK: Responder Chain Error Interception
-extension NSWindowController {
+extension MainWindowController {
     override open func presentError(_ error: Error) -> Bool {
         guard error is SpotijackError.SpotijackSessionNotFound else {
             return super.presentError(error)
