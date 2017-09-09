@@ -11,7 +11,6 @@ import Foundation
 
 extension SpotijackSessionManager {
     /// Makes standard mock Spotify and AHP applications and configures a new SpotijackSession to use them.
-    // swiftlint:disable:next large_tuple
     typealias StandardApplications = (SpotijackSessionManager, MockSpotifyApplication, MockAudioHijackApplication)
     static func makeStandardApplications() -> StandardApplications {
         let spotify = MockSpotifyApplication.makeStandardApplication()
