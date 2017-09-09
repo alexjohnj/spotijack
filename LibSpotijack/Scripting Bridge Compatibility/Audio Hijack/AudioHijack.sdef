@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dictionary SYSTEM "file://localhost/System/Library/DTDs/sdef.dtd">
+<!-- declare the namespace for using XInclude so we can include the standard suite -->
+<dictionary xmlns:xi="http://www.w3.org/2003/XInclude">
+	
+	<!-- use XInclude to include the standard suite -->
+    <xi:include href="file:///System/Library/ScriptingDefinitions/CocoaStandard.sdef" xpointer="xpointer(/dictionary/suite)"/>
+	
+	<!-- specific suite(s) for the application follow... -->
+	<suite name="Audio Hijack Pro Suite" code="AHPs">
+		<cocoa name="AHP2Suite"/>
+		
+		
+		<enumeration name="relaunch options" code="RelO">
+			<enumerator name="yes" code="yes " description="Relaunch the application being hijacked."/>
+			<enumerator name="no" code="no  " description="Do not relaunch the application being hijacked."/>
+			<enumerator name="ask" code="ask " description="Ask the user whether or not to relaunch the application being hijacked."/>
+		</enumeration>
+		<enumeration name="silence monitor actions" code="SMTh">
+			<enumerator name="do nothing" code="SMof" description=""/>
+			<enumerator name="remove" code="SMra" description=""/>
+			<enumerator name="stop" code="SMsp" description=""/>
+			<enumerator name="start new file" code="SMsn" description=""/>
+		</enumeration>
+		<enumeration name="file and recording limit units" code="Unit">
+			<enumerator name="GB" code="GB  " description=""/>
+			<enumerator name="MB" code="MB  " description=""/>
+			<enumerator name="Hr" code="Hour" description=""/>
+			<enumerator name="Min" code="Min " description=""/>
+		</enumeration>
+		<enumeration name="audio encodings" code="AEnc">
+			<enumerator name="MP3" code="MP3 " description=""/>
+			<enumerator name="AAC" code="AAC " description=""/>
+			<enumerator name="Apple Lossless" code="ALAC" description=""/>
+			<enumerator name="AIFF" code="AIFF" description=""/>
+			<enumerator name="WAV" code="WAV " description=""/>
+		</enumeration>
+		<enumeration name="encoding styles" code="EncS">
+			<enumerator name="CBR" code="CBR " description=""/>
+			<enumerator name="VBR" code="VBR " description=""/>
+			<enumerator name="ABR" code="ABR " description=""/>
+			<enumerator name="Normal" code="Norm" description=""/>
+			<enumerator name="Bookmarkable" code="Book" description=""/>
+			<enumerator name="Sixteen Bit" code="16bt" description=""/>
+			<enumerator name="Twenty Four Bit" code="24bt" description=""/>
+		</enumeration>
+		<enumeration name="audio channels" code="AudC">
+			<enumerator name="Stereo" code="Ster" description=""/>
+			<enumerator name="Joint Stereo" code="JSte" description=""/>
+			<enumerator name="Mono" code="Mono" description=""/>
+			<enumerator name="Left Mono" code="MonL" description=""/>
+			<enumerator name="Right Mono" code="MonR" description=""/>
+		</enumeration>
+		<enumeration name="timer actions" code="TAct">
+			<enumerator name="actionRecord" code="Reco" description=""/>
+			<enumerator name="actionMute" code="Mute" description=""/>
+			<enumerator name="actionQuit" code="Quit" description=""/>
+		</enumeration>
+		
+		
+		
+		
+		<class name="application" code="capp" inherits="application" description="Audio Hijack Pro's top level scripting object">
+			<cocoa class="AHPApplication"/>
+			
+			<element type="browser window" access="r">
+				<cocoa key="allBrowserWindows"/>
+				<accessor style="index"/>
+				<accessor style="id"/>
+			</element>
+			
+			<element type="audio input" access="r">
+				<cocoa key="allInputs"/>
+				<accessor style="index"/>
+				<accessor style="name"/>
+				<accessor style="id"/>
+			</element>
+			<element type="audio output" access="r">
+				<cocoa key="allOutputs"/>
+				<accessor style="index"/>
+				<accessor style="name"/>
+				<accessor style="id"/>
+			</element>
+			<element type="session" access="rw">
+				<cocoa key="allSessions"/>
+				<accessor style="id"/>
+				<accessor style="index"/>
+				<accessor style="name"/>
+				<accessor style="range"/>
+				<accessor style="test"/>
+			</element>
+			<element type="audio recording" access="r">
+				<cocoa key="allRecordings"/>
+				<accessor style="index"/>
+				<accessor style="name"/>
+				<accessor style="range"/>
+				<accessor style="test"/>
+			</element>
+			
+		</class>
+		
+		<class name="browser window" code="bWND" inherits="window" description="A browser window">
+			<cocoa class="AHPComponentNSWindow"/>
+			
+			<property name="selection" code="WndS" type="session" description="The selected session" access="rw">
+				<cocoa key="selectedSession"/>
+			</property>
+			
+		</class>
+		
+		<class name="application session" code="ASes" inherits="session" description="A session hijacking an application's audio output">
+			<cocoa class="AHApplescriptApplicationSession"/>
+			
+			<property name="targeted application" code="pPth" type="text" description="POSIX path to the application to use" access="rw">
+				<cocoa key="applicationPath"/>
+			</property>
+			<property name="launch argument" code="pURL" type="text" description="POSIX path to a file or URL of a network resource to pass to the application when launched" access="rw">
+				<cocoa key="urlReference"/>
+			</property>
+			
+		</class>
+		
+		<class name="audio device session" code="DSes" inherits="session" description="A session using a specific audio device">
+			<cocoa class="AHApplescriptDeviceSession"/>
+			
+			<property name="input device" code="pInD" type="audio input" description="The audio input" access="rw">
+				<cocoa key="inputDevice"/>
+			</property>
+			<property name="output device" code="pOtD" type="audio output" description="The audio output" access="rw">
+				<cocoa key="outputDevice"/>
+			</property>
+			
+		</class>
+		
+		<class name="radio device session" code="RSes" inherits="session" description="A session using a specific radio device">
+			<cocoa class="AHApplescriptRadioSession"/>
+			
+			<property name="frequency" code="pFrq" type="integer" description="The frequency tuned to, measured in Hertz. (Ex: 770 AM is 770000, 89.9 FM is 89900000)" access="rw"/>
+			<property name="output device" code="pOtD" type="audio output" description="The audio output" access="rw">
+				<cocoa key="outputDevice"/>
+			</property>
+			
+		</class>
+		
+		<class name="system audio session" code="TSes" inherits="session" description="A session using a system audio device">
+			<cocoa class="AHApplescriptTotalHijackSession"/>
+		</class>
+		
+		<class name="session" code="Sess" description="A hijack session">
+			<cocoa class="AHApplescriptSession"/>
+			
+			<property name="hijacked" code="pHiJ" type="boolean" description="is the session currently hijacking the audio?" access="r"/>
+			
+			<property name="current hijacking time" code="pCHt" type="real" description="current number of seconds of hijacked audio" access="r">
+				<cocoa key="activeTime"/>
+			</property>
+			<property name="current recording time" code="pCRt" type="real" description="current number of seconds of recorded audio" access="r">
+				<cocoa key="recordingTime"/>
+			</property>
+			
+			<property name="recording" code="pIsR" type="boolean" description="is the session currently recording the audio?" access="r"/>
+			<property name="speaker muted" code="pSpk" type="boolean" description="has the audio sent to the speaker been muted?" access="rw"/>
+			<property name="paused" code="pPse" type="boolean" description="is recording currently paused?" access="r"/>
+			<property name="id" code="ID  " type="text" description="Unique ID for the object" access="r">
+				<cocoa key="uuid"/>
+			</property>
+			<property name="name" code="pnam" type="text" description="Name of the session" access="rw"/>
+			<property name="album tag" code="pAlb" type="text" description="Album name with which to tag recordings" access="rw">
+				<cocoa key="album"/>
+			</property>
+			<property name="artist tag" code="pArt" type="text" description="Artist name with which to tag recordings" access="rw">
+				<cocoa key="artist"/>
+			</property>
+			<property name="album artist tag" code="pAlA" type="text" description="Album Artist with which to tag recordings" access="rw">
+				<cocoa key="albumArtist"/>
+			</property>
+			<property name="composer tag" code="pCmp" type="text" description="Composer with which to tag recordings" access="rw">
+				<cocoa key="composer"/>
+			</property>
+			<property name="comment tag" code="pCmt" type="text" description="Comment with which to tag recordings" access="rw">
+				<cocoa key="comment"/>
+			</property>
+			<property name="genre tag" code="pGen" type="text" description="Genre with which to tag recordings" access="rw">
+				<cocoa key="genre"/>
+			</property>
+			<property name="track number tag" code="pTnm" type="text" description="Track number with which to tag recordings" access="rw">
+				<cocoa key="trackNum"/>
+			</property>
+			<property name="track count tag" code="pTrC" type="text" description="Track number count with which to tag recordings" access="rw">
+				<cocoa key="trackCount"/>
+			</property>
+			<property name="title tag" code="pTil" type="text" description="Title with which to tag recordings" access="rw">
+				<cocoa key="title"/>
+			</property>
+			<property name="year tag" code="pYer" type="text" description="Year of recording with which to tag recordings" access="rw">
+				<cocoa key="year"/>
+			</property>
+			<property name="lyrics tag" code="pLyr" type="text" description="Lyrics or Notes with which to tag recordings" access="rw">
+				<cocoa key="lyrics"/>
+			</property>
+			<property name="grouping tag" code="pGrp" type="text" description="Grouping identifier with which to tag recordings" access="rw">
+				<cocoa key="grouping"/>
+			</property>
+			<property name="disc number tag" code="pDsc" type="text" description="Disc number with which to tag recordings" access="rw">
+				<cocoa key="disc"/>
+			</property>
+			<property name="disc count tag" code="pDsC" type="text" description="Disc number count with which to tag recordings" access="rw">
+				<cocoa key="discCount"/>
+			</property>
+			<property name="bpm tag" code="pBPM" type="text" description="BPM count with which to tag recordings" access="rw">
+				<cocoa key="bpm"/>
+			</property>
+			<property name="part of compilation tag" code="pPOC" type="boolean" description="Tag for if the recording is part of a compilation" access="rw">
+				<cocoa key="partOfCompliation"/>
+			</property>
+			
+			
+			<property name="output name format" code="pOnf" type="text" description="Format with which the output file should be saved" access="rw">
+				<cocoa key="outputNameFormat"/>
+			</property>
+			<property name="output folder" code="pFld" type="text" description="POSIX path to where to save recorded files" access="rw">
+				<cocoa key="outputFolder"/>
+			</property>
+			<property name="post recording script" code="pScp" type="text" description="POSIX path to an applescript file to run once the recording has completed" access="rw">
+				<cocoa key="processScript"/>
+			</property>
+			<property name="silence monitor action" code="pSlm" type="silence monitor options" description="The action taken by the session when it detects silence" access="rw">
+				<cocoa key="silenceMonitor"/>
+			</property>
+			<property name="file size limit" code="pFsl" type="size or length limit" description="The maximum file size of a recording" access="rw">
+				<cocoa key="fileSizeLimit"/>
+			</property>
+			<property name="recording time limit" code="pRtl" type="size or length limit" description="The total length of the recording" access="rw">
+				<cocoa key="recordingTimeLimit"/>
+			</property>
+			<property name="recording format" code="pRec" type="audio recording format" description="The recording format to use when hijacking and saving to a file" access="rw">
+				<cocoa key="recordingFormat"/>
+			</property>
+			
+			
+			<responds-to command="start hijacking">
+				<cocoa method="handleHijackCommand:"/>
+			</responds-to>
+			<responds-to command="stop hijacking">
+				<cocoa method="handleStopHijackingCommand:"/>
+			</responds-to>
+			<responds-to command="start recording">
+				<cocoa method="handleStartRecordingCommand:"/>
+			</responds-to>
+			<responds-to command="stop recording">
+				<cocoa method="handleStopRecordingCommand:"/>
+			</responds-to>
+			<responds-to command="pause recording">
+				<cocoa method="handlePauseRecordingCommand:"/>
+			</responds-to>
+			<responds-to command="unpause recording">
+				<cocoa method="handleUnPauseRecordingCommand:"/>
+			</responds-to>
+			<responds-to command="split recording">
+				<cocoa method="handleSplitRecordingCommand:"/>
+			</responds-to>
+			
+			
+			<element type="timer" access="rw">
+				<cocoa key="orderedTimers"/>
+				<accessor style="index"/>
+				<accessor style="id"/>
+			</element>
+			
+		</class>
+		
+		<class name="timer" code="TimR" description="A timer object">
+			<cocoa class="AHActionTimer"/>
+			
+			<property name="id" code="ID  " type="text" description="Unique ID for the object" access="r">
+				<cocoa key="uuid"/>
+			</property>
+			<property name="active" code="pAct" type="boolean" description="is the timer currently running?" access="r">
+				<cocoa key="isActive"/>
+			</property>
+			<property name="scheduled" code="pSch" type="boolean" description="is the timer valid and scheduled to run?" access="r">
+				<cocoa key="isScheduled"/>
+			</property>
+			<property name="enabled" code="pEnd" type="boolean" description="is the timer scheduled to run?" access="rw"/>
+			<property name="next run date" code="pNrd" type="date" description="The date and time the timer is next scheduled to run" access="r">
+				<cocoa key="nextStartDate"/>
+			</property>
+			<property name="start time" code="pStm" type="date" description="Date and time to start recording." access="rw"/>
+			<property name="duration" code="pDur" type="integer" description="Number of seconds to record" access="rw"/>
+			<property name="runs Sunday" code="pSun" type="boolean" description="The timer should run every Sunday of the week" access="rw"/>
+			<property name="runs Monday" code="pMon" type="boolean" description="The timer should run every Monday of the week" access="rw"/>
+			<property name="runs Tuesday" code="pTue" type="boolean" description="The timer should run every Tuesday of the week" access="rw"/>
+			<property name="runs Wednesday" code="pWed" type="boolean" description="The timer should run every Wednesday of the week" access="rw"/>
+			<property name="runs Thursday" code="pThu" type="boolean" description="The timer should run every Thursday of the week" access="rw"/>
+			<property name="runs Friday" code="pFri" type="boolean" description="The timer should run every Friday of the week" access="rw"/>
+			<property name="runs Saturday" code="pSat" type="boolean" description="The timer should run every Saturday of the week" access="rw"/>
+			<property name="actions" code="pDos" description="The list of actions to perform (record, mute, quit)" access="rw"><type type="timer actions" list="yes"/>
+				<cocoa key="orderedActions"/>
+			</property>
+			
+		</class>
+		
+		<record-type name="silence monitor options" code="SlMC" description="Configuration for the silence monitor">
+			<property name="action" code="pAtn" type="silence monitor actions" description="What to do when silence is detected"/>
+			<property name="level" code="pLvl" type="real" description="The dB threshold defining what is silence"/>
+			<property name="duration" code="pDur" type="real" description="Number of seconds the sound should be below the level before the action takes effect"/>
+		</record-type>
+		
+		<record-type name="size or length limit" code="slLm" description="">
+			<property name="enabled" code="pEnd" type="boolean" description="is the limit enforced?"/>
+			<property name="value" code="pVal" type="real" description="The time length or file size"/>
+			<property name="unit" code="pUnt" type="file and recording limit units" description="The units to interpret the value in"/>
+		</record-type>
+		
+		<class name="audio device" code="ADev" description="An audio device connected to the machine">
+			<cocoa class="AHAudioDevice"/>
+			
+			<property name="name" code="pnam" type="text" description="The name of the audio device" access="r">
+				<cocoa key="fullName"/>
+			</property>
+			<property name="id" code="ID  " type="text" description="Unique ID for the object" access="r">
+				<cocoa key="deviceUUID"/>
+			</property>
+			
+		</class>
+		
+		<class name="audio input" code="IDev" inherits="audio device" description="An audio input (i.e. line-in, microphone)">
+			<cocoa class="AHAudioInputDevice"/>
+		</class>
+		
+		<class name="audio output" code="ODev" inherits="audio device" description="An audio output (i.e. line-out, speakers)">
+			<cocoa class="AHAudioOutputDevice"/>
+		</class>
+		
+		<class name="audio recording" code="Reco" description="A recorded sound file">
+			<cocoa class="AHAudioRecordingFile"/>
+			
+			<property name="name" code="pnam" type="text" description="The name of the recording" access="r"/>
+			<property name="path" code="ppth" type="text" description="The the POSIX path of the recording on disk." access="r"/>
+			
+		</class>
+		
+		<record-type name="audio recording format" code="RecF" description="The recording format to use when hijacking and saving to a file">
+			<property name="encoding" code="pEnc" type="audio encodings" description="The encoding of the audio in the output file" />
+			<property name="style" code="pTyp" type="encoding styles" description="The style of encoding. This will be specific to the encoding." />
+			<property name="channels" code="pChn" type="audio channels" description="The channels of the audio to record." />
+			<property name="sample rate" code="pSrt" type="real" description="The sample rate of the recording in khz." >
+				<cocoa key="sampleRate"/>
+			</property>
+			<property name="bit rate" code="pBrt" type="integer" description="The bit rate of the recording in kbps." />
+			<property name="quality" code="pQal" type="integer" description="The quality of the recording." />
+			<property name="VBR quality" code="pVBR" type="integer" description="The VBR quality of the recording." >
+				<cocoa key="VBRQuality"/>
+			</property>
+		</record-type>
+				
+		
+		<command name="start hijacking" code="AHPsHjak" description="Hijack the audio source associated with a session">
+			<direct-parameter type="session" description="the session to start hijacking"/>
+			<parameter name="relaunch" code="Reln" optional="yes" type="relaunch options" description="If this is an application session, should a running application be relaunched to allow hijacking? Defaults to 'ask'">
+				<cocoa key="relaunch"/>
+			</parameter>
+		</command>
+		<command name="stop hijacking" code="AHPsSHjk" description="Stop the hijacking of the audio source associated with a session">
+			<direct-parameter type="session" description="the session to stop hijacking"/>
+		</command>
+		<command name="start recording" code="AHPsReco" description="Begin recording the audio source">
+			<direct-parameter type="session" description="the session to start recording"/>
+		</command>
+		<command name="stop recording" code="AHPsSRec" description="Stop recording the audio source">
+			<direct-parameter type="session" description="the session to stop recording"/>
+		</command>
+		<command name="pause recording" code="AHPsPaus" description="Pause recording the audio source">
+			<direct-parameter type="session" description="the session to pause recording"/>
+		</command>
+		<command name="unpause recording" code="AHPsUpau" description="Un-pause recording the audio source">
+			<direct-parameter type="session" description="the session to unpause recording"/>
+		</command>
+		<command name="split recording" code="AHPsSplt" description="Split the audio recording into a new file">
+			<direct-parameter type="session" description="the session to split recording"/>
+		</command>
+		
+	</suite>
+	
+</dictionary>

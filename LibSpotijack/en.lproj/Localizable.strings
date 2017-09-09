@@ -1,0 +1,35 @@
+/* 
+  Localizable.strings
+  Spotijack
+
+  Created by Alex Jackson on 06/08/2017.
+  Copyright © 2017 Alex Jackson. All rights reserved.
+*/
+
+// Errors
+
+// {AppName} has not been launched.
+"ERROR_APP_NOT_LAUNCHED_DESC" = "%@ has not been launched.";
+// Try manually starting {AppName}
+"ERROR_APP_NOT_LAUNCHED_SUGG" = "Try manually starting %@.";
+
+// Could not start {AppName}.
+"ERROR_CANT_START_APP_DESC" = "Could not start %@.";
+// Please check {AppName} is installed.
+"ERROR_CANT_START_APP_SUGG" = "Please check %@ is installed.";
+
+// A scripting interface for {AppName} could not be established
+"ERROR_NO_SCRIPTING_INT_DESC" = "A scripting interface for %@ could not be established.";
+// Check you are using a version of {AppName} that supports AppleScript
+"ERROR_NO_SCRIPTING_INT_SUGG" = "Check you are using a version of %@ that supports AppleScript.";
+
+// A running instance of {AppName} could not be found.
+"ERROR_NO_RUNNING_INSTANCE_DESC" = "A running instance of %@ could not be found.";
+"ERROR_NO_RUNNING_INSTANCE_SUGG" = "¯\_(ツ)_/¯";
+
+"ERROR_CREATE_SPOTIJACK_DESC" = "Could not create a \"Spotijack\" session in Audio Hijack Pro.";
+// This might be helpful {ErrorMessage}.
+"ERROR_CREATE_SPOTIJACK_SUGG" = "Try creating a session named \"Spotijack\" manually. This might be helpful: \"%@\".";
+
+"ERROR_NO_SPOTIJACK_FOUND_DESC" = "No Spotijack session found in Audio Hijack Pro.";
+"ERROR_NO_SPOTIJACK_FOUND_SUGG" = "Try creating a session named \"Spotijack\" manually.";

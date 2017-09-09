@@ -13,8 +13,8 @@
 "Recording" = "Recording";
 
 // Recording in progress quit alert
-"Recording in Progress" = "Recording in Progress";
-"Are you sure you want to quit?" = "Are you sure you want to quit?";
+"SESSION_QUIT_MESSAGE" = "Are You Sure You Want to Quit?";
+"SESSION_QUIT_INFORMATIVE" = "A recording is currently in progress. Quitting will terminate the recording.";
 
 // No track playing alert
 "No track playing" = "No Track Playing";
@@ -33,29 +33,3 @@
 // User Notifications
 "SESSION_END_NOTI" = "Recording Finished";
 "SESSION_END_NOTI_SUBT" = "There are no more songs to record in Spotify.";
-
-// Error Localised Descriptions
-"AHP_OPEN_ERROR" = "Unable to open Audio Hijack Pro.";
-"AHP_OPEN_ERROR_REASON" = "Audio Hijack Pro is not installed.";
-"AHP_OPEN_ERROR_SUGGESTION" = "Install Audio Hijack Pro and restart Spotijack.";
-
-"AHP_SCRIPT_OPEN_ERROR" = "Unable to open Audio Hijack Pro.";
-"AHP_SCRIPT_OPEN_REASON" = "Audio Hijack Pro is not scriptable.";
-"AHP_SCRIPT_OPEN_REASON" = "Please ensure you're using a version of Audio Hijack Pro that supports scripting.";
-
-"SPOT_OPEN_ERROR" = "Unable to open Spotify.";
-"SPOT_OPEN_ERROR_REASON" = "Spotify is not installed.";
-"SPOT_OPEN_ERROR_SUGGESTION" = "Install Spotify and restart Spotijack.";
-
-"SPOT_SCRIPT_OPEN_ERROR" = "Unable to open Spotify.";
-"SPOT_SCRIPT_OPEN_REASON" = "Spotify is not scriptable.";
-"SPOT_SCRIPT_OPEN_SUGGESTION" = "Please ensure you're using a version of Spotify that supports scripting.";
-
-"AHP_NO_SESS_ERROR" = "Could not start a recording session in Audio Hijack Pro.";
-"AHP_NO_SESS_ERROR_REASON" = "No recording sessions with the name \"Spotijack\" exist.";
-"AHP_NO_SESS_ERROR_SUGGESTION" = "Do you want me to create a recording session called \"Spotijack\" in Audio Hijack Pro?";
-"AHP_NO_SESS_ERROR_FIX_CREATE" = "Create it";
-
-"SPOT_NO_SONG_ERROR" = "Could not start recording.";
-"SPOT_NO_SONG_ERROR_REASON" = "Spotify is not playing any songs to record.";
-"SPOT_NO_SONG_ERROR_SUGGESTION" = "Start playing a song in Spotify and try recording again.";

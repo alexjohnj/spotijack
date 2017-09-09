@@ -80,6 +80,17 @@ enum AudioHijackTimerActions {
 };
 typedef enum AudioHijackTimerActions AudioHijackTimerActions;
 
+@protocol AudioHijackGenericMethods
+
+- (void) closeSaving:(AudioHijackSaveOptions)saving savingIn:(NSURL *)savingIn;  // Close a document.
+- (void) saveIn:(NSURL *)in_ as:(id)as;  // Save a document.
+- (void) printWithProperties:(NSDictionary *)withProperties printDialog:(BOOL)printDialog;  // Print a document.
+- (void) delete;  // Delete an object.
+- (void) duplicateTo:(SBObject *)to withProperties:(NSDictionary *)withProperties;  // Copy an object.
+- (void) moveTo:(SBObject *)to;  // Move an object to a new location.
+
+@end
+
 
 
 /*
@@ -89,8 +100,8 @@ typedef enum AudioHijackTimerActions AudioHijackTimerActions;
 // The application's top-level scripting object.
 @interface AudioHijackApplication : SBApplication
 
-- (SBElementArray *) documents;
-- (SBElementArray *) windows;
+- (SBElementArray<AudioHijackDocument *> *) documents;
+- (SBElementArray<AudioHijackWindow *> *) windows;
 
 @property (copy, readonly) NSString *name;  // The name of the application.
 @property (readonly) BOOL frontmost;  // Is this the active application?
@@ -104,23 +115,17 @@ typedef enum AudioHijackTimerActions AudioHijackTimerActions;
 @end
 
 // A document.
-@interface AudioHijackDocument : SBObject
+@interface AudioHijackDocument : SBObject <AudioHijackGenericMethods>
 
 @property (copy, readonly) NSString *name;  // Its name.
 @property (readonly) BOOL modified;  // Has it been modified since the last save?
 @property (copy, readonly) NSURL *file;  // Its location on disk, if it has one.
 
-- (void) closeSaving:(AudioHijackSaveOptions)saving savingIn:(NSURL *)savingIn;  // Close a document.
-- (void) saveIn:(NSURL *)in_ as:(id)as;  // Save a document.
-- (void) printWithProperties:(NSDictionary *)withProperties printDialog:(BOOL)printDialog;  // Print a document.
-- (void) delete;  // Delete an object.
-- (void) duplicateTo:(SBObject *)to withProperties:(NSDictionary *)withProperties;  // Copy an object.
-- (void) moveTo:(SBObject *)to;  // Move an object to a new location.
 
 @end
 
 // A window.
-@interface AudioHijackWindow : SBObject
+@interface AudioHijackWindow : SBObject <AudioHijackGenericMethods>
 
 @property (copy, readonly) NSString *name;  // The title of the window.
 - (NSInteger) id;  // The unique identifier of the window.
@@ -135,12 +140,6 @@ typedef enum AudioHijackTimerActions AudioHijackTimerActions;
 @property BOOL zoomed;  // Is the window zoomed right now?
 @property (copy, readonly) AudioHijackDocument *document;  // The document whose contents are displayed in the window.
 
-- (void) closeSaving:(AudioHijackSaveOptions)saving savingIn:(NSURL *)savingIn;  // Close a document.
-- (void) saveIn:(NSURL *)in_ as:(id)as;  // Save a document.
-- (void) printWithProperties:(NSDictionary *)withProperties printDialog:(BOOL)printDialog;  // Print a document.
-- (void) delete;  // Delete an object.
-- (void) duplicateTo:(SBObject *)to withProperties:(NSDictionary *)withProperties;  // Copy an object.
-- (void) moveTo:(SBObject *)to;  // Move an object to a new location.
 
 @end
 
@@ -153,11 +152,11 @@ typedef enum AudioHijackTimerActions AudioHijackTimerActions;
 // Audio Hijack Pro's top level scripting object
 @interface AudioHijackApplication (AudioHijackProSuite)
 
-- (SBElementArray *) browserWindows;
-- (SBElementArray *) audioInputs;
-- (SBElementArray *) audioOutputs;
-- (SBElementArray *) sessions;
-- (SBElementArray *) audioRecordings;
+- (SBElementArray<AudioHijackBrowserWindow *> *) browserWindows;
+- (SBElementArray<AudioHijackAudioInput *> *) audioInputs;
+- (SBElementArray<AudioHijackAudioOutput *> *) audioOutputs;
+- (SBElementArray<AudioHijackSession *> *) sessions;
+- (SBElementArray<AudioHijackAudioRecording *> *) audioRecordings;
 
 @end
 
@@ -170,9 +169,9 @@ typedef enum AudioHijackTimerActions AudioHijackTimerActions;
 @end
 
 // A hijack session
-@interface AudioHijackSession : SBObject
+@interface AudioHijackSession : SBObject <AudioHijackGenericMethods>
 
-- (SBElementArray *) timers;
+- (SBElementArray<AudioHijackTimer *> *) timers;
 
 @property (readonly) BOOL hijacked;  // is the session currently hijacking the audio?
 @property (readonly) double currentHijackingTime;  // current number of seconds of hijacked audio
@@ -206,12 +205,6 @@ typedef enum AudioHijackTimerActions AudioHijackTimerActions;
 @property (copy) NSDictionary *recordingTimeLimit;  // The total length of the recording
 @property (copy) NSDictionary *recordingFormat;  // The recording format to use when hijacking and saving to a file
 
-- (void) closeSaving:(AudioHijackSaveOptions)saving savingIn:(NSURL *)savingIn;  // Close a document.
-- (void) saveIn:(NSURL *)in_ as:(id)as;  // Save a document.
-- (void) printWithProperties:(NSDictionary *)withProperties printDialog:(BOOL)printDialog;  // Print a document.
-- (void) delete;  // Delete an object.
-- (void) duplicateTo:(SBObject *)to withProperties:(NSDictionary *)withProperties;  // Copy an object.
-- (void) moveTo:(SBObject *)to;  // Move an object to a new location.
 - (void) startHijackingRelaunch:(AudioHijackRelaunchOptions)relaunch;  // Hijack the audio source associated with a session
 - (void) stopHijacking;  // Stop the hijacking of the audio source associated with a session
 - (void) startRecording;  // Begin recording the audio source
@@ -256,7 +249,7 @@ typedef enum AudioHijackTimerActions AudioHijackTimerActions;
 @end
 
 // A timer object
-@interface AudioHijackTimer : SBObject
+@interface AudioHijackTimer : SBObject <AudioHijackGenericMethods>
 
 - (NSString *) id;  // Unique ID for the object
 @property (readonly) BOOL active;  // is the timer currently running?
@@ -272,29 +265,17 @@ typedef enum AudioHijackTimerActions AudioHijackTimerActions;
 @property BOOL runsThursday;  // The timer should run every Thursday of the week
 @property BOOL runsFriday;  // The timer should run every Friday of the week
 @property BOOL runsSaturday;  // The timer should run every Saturday of the week
-@property (copy) NSArray *actions;  // The list of actions to perform (record, mute, quit)
+@property (copy) NSArray<NSAppleEventDescriptor *> *actions;  // The list of actions to perform (record, mute, quit)
 
-- (void) closeSaving:(AudioHijackSaveOptions)saving savingIn:(NSURL *)savingIn;  // Close a document.
-- (void) saveIn:(NSURL *)in_ as:(id)as;  // Save a document.
-- (void) printWithProperties:(NSDictionary *)withProperties printDialog:(BOOL)printDialog;  // Print a document.
-- (void) delete;  // Delete an object.
-- (void) duplicateTo:(SBObject *)to withProperties:(NSDictionary *)withProperties;  // Copy an object.
-- (void) moveTo:(SBObject *)to;  // Move an object to a new location.
 
 @end
 
 // An audio device connected to the machine
-@interface AudioHijackAudioDevice : SBObject
+@interface AudioHijackAudioDevice : SBObject <AudioHijackGenericMethods>
 
 @property (copy, readonly) NSString *name;  // The name of the audio device
 - (NSString *) id;  // Unique ID for the object
 
-- (void) closeSaving:(AudioHijackSaveOptions)saving savingIn:(NSURL *)savingIn;  // Close a document.
-- (void) saveIn:(NSURL *)in_ as:(id)as;  // Save a document.
-- (void) printWithProperties:(NSDictionary *)withProperties printDialog:(BOOL)printDialog;  // Print a document.
-- (void) delete;  // Delete an object.
-- (void) duplicateTo:(SBObject *)to withProperties:(NSDictionary *)withProperties;  // Copy an object.
-- (void) moveTo:(SBObject *)to;  // Move an object to a new location.
 
 @end
 
@@ -311,17 +292,11 @@ typedef enum AudioHijackTimerActions AudioHijackTimerActions;
 @end
 
 // A recorded sound file
-@interface AudioHijackAudioRecording : SBObject
+@interface AudioHijackAudioRecording : SBObject <AudioHijackGenericMethods>
 
 @property (copy, readonly) NSString *name;  // The name of the recording
 @property (copy, readonly) NSString *path;  // The the POSIX path of the recording on disk.
 
-- (void) closeSaving:(AudioHijackSaveOptions)saving savingIn:(NSURL *)savingIn;  // Close a document.
-- (void) saveIn:(NSURL *)in_ as:(id)as;  // Save a document.
-- (void) printWithProperties:(NSDictionary *)withProperties printDialog:(BOOL)printDialog;  // Print a document.
-- (void) delete;  // Delete an object.
-- (void) duplicateTo:(SBObject *)to withProperties:(NSDictionary *)withProperties;  // Copy an object.
-- (void) moveTo:(SBObject *)to;  // Move an object to a new location.
 
 @end
 

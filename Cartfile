@@ -1,2 +1,3 @@
-github "CocoaLumberjack/CocoaLumberjack" ~> 3.0
-github "sparkle-project/Sparkle" ~>1.9
+github "sparkle-project/Sparkle" ~> 1.9
+github "alexjohnj/Result" ~> 1.0
+github "alexjohnj/TypedNotification" ~> 1.0
