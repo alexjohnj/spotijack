@@ -29,7 +29,6 @@
 		FA9503661A421B76009D7149 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA9503651A421B76009D7149 /* Images.xcassets */; };
 		FA9503691A421B76009D7149 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA9503671A421B76009D7149 /* MainMenu.xib */; };
 		FAAF86DD1F31F79300833028 /* SpotijackSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAF86DC1F31F79300833028 /* SpotijackSessionManager.swift */; };
-		FAB41F0E1F25FFF800448440 /* LibSpotijack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA86C4B51F03FA25001ACBBA /* LibSpotijack.framework */; };
 		FAB41F101F26002A00448440 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB41F0F1F26002A00448440 /* AppDelegate.swift */; };
 		FAB41F111F2600A000448440 /* LibSpotijack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA86C4B51F03FA25001ACBBA /* LibSpotijack.framework */; };
 		FAB41F121F2600A000448440 /* LibSpotijack.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FA86C4B51F03FA25001ACBBA /* LibSpotijack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -169,7 +168,6 @@
 				FAB41F151F2600AF00448440 /* TypedNotification.framework in Frameworks */,
 				FAB41F111F2600A000448440 /* LibSpotijack.framework in Frameworks */,
 				FAB41F171F2600AF00448440 /* Result.framework in Frameworks */,
-				FAB41F0E1F25FFF800448440 /* LibSpotijack.framework in Frameworks */,
 				FABADAF41F025D36001751AE /* Sparkle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -445,7 +443,7 @@
 			attributes = {
 				CLASSPREFIX = "";
 				LastSwiftUpdateCheck = 0900;
-				LastUpgradeCheck = 0900;
+				LastUpgradeCheck = 0930;
 				ORGANIZATIONNAME = "Alex Jackson";
 				TargetAttributes = {
 					FA86C4B41F03FA25001ACBBA = {
@@ -765,12 +763,14 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -816,12 +816,14 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
