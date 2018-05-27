@@ -1,3 +1,2 @@
-github "alexjohnj/Result" "1.0.1"
-github "alexjohnj/TypedNotification" "1.0.1"
-github "sparkle-project/Sparkle" "1.18.0"
+github "alexjohnj/Result" "v1.0.2"
+github "alexjohnj/TypedNotification" "v1.0.2"

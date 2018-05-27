@@ -37,8 +37,6 @@
 		FAB41F171F2600AF00448440 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAC9A9F11F0403C400A19299 /* Result.framework */; };
 		FAB41F181F2600AF00448440 /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FAC9A9F11F0403C400A19299 /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		FAB41F1A1F26019A00448440 /* MainWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB41F191F26019A00448440 /* MainWindowController.swift */; };
-		FABADAF41F025D36001751AE /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FABADAF31F025D36001751AE /* Sparkle.framework */; };
-		FABADAF51F025D36001751AE /* Sparkle.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FABADAF31F025D36001751AE /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		FABE36B81F3DDC5000A34923 /* SpotijackSessionSpotijackingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABE36B71F3DDC5000A34923 /* SpotijackSessionSpotijackingTests.swift */; };
 		FABE36BA1F3DDEB800A34923 /* MockAudioHijackAudioRecording.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABE36B91F3DDEB800A34923 /* MockAudioHijackAudioRecording.swift */; };
 		FAC300811F17E04A00E47CB4 /* LibSpotijack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA86C4B51F03FA25001ACBBA /* LibSpotijack.framework */; };
@@ -86,7 +84,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				FABADAF51F025D36001751AE /* Sparkle.framework in Embed Frameworks */,
 				FAB41F121F2600A000448440 /* LibSpotijack.framework in Embed Frameworks */,
 				FAB41F161F2600AF00448440 /* TypedNotification.framework in Embed Frameworks */,
 				FAB41F181F2600AF00448440 /* Result.framework in Embed Frameworks */,
@@ -168,7 +165,6 @@
 				FAB41F151F2600AF00448440 /* TypedNotification.framework in Frameworks */,
 				FAB41F111F2600A000448440 /* LibSpotijack.framework in Frameworks */,
 				FAB41F171F2600AF00448440 /* Result.framework in Frameworks */,
-				FABADAF41F025D36001751AE /* Sparkle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
