@@ -35,7 +35,7 @@ internal class MainWindowController: NSWindowController {
         do {
             try SpotijackSessionManager.shared().startPolling(every: 0.1)
             refreshUI()
-        } catch (let error) {
+        } catch {
             _ = presentError(error)
         }
     }
@@ -53,7 +53,7 @@ extension MainWindowController {
             }
 
             updateSpotijackButton(isSpotijacking: session.isSpotijacking)
-        } catch (let error) {
+        } catch {
             _ = presentError(error)
         }
     }
@@ -62,7 +62,7 @@ extension MainWindowController {
         do {
             let session = try SpotijackSessionManager.shared()
             session.isMuted = !session.isMuted
-        } catch (let error) {
+        } catch {
             _ = presentError(error)
         }
     }
@@ -78,7 +78,7 @@ extension MainWindowController {
             updateTrackStatusFields(track: session.currentTrack)
             updateSpotijackButton(isSpotijacking: session.isSpotijacking)
             updateMuteButton(isMuted: session.isMuted)
-        } catch (let error) {
+        } catch {
             _ = presentError(error)
         }
     }
@@ -182,7 +182,7 @@ extension MainWindowController {
                 object: session,
                 queue: .main,
                 using: { [weak self] noti in self?.didEndSpotijacking(noti: noti) })
-        } catch (let error) {
+        } catch {
             print("Could not register MainWindowController for SpotijackSession notifications"
                 + " because \(error.localizedDescription)")
         }
@@ -199,7 +199,7 @@ extension MainWindowController {
         do {
             try SpotijackSessionCreator.createSpotijackSession()
             return true
-        } catch (let error) {
+        } catch {
             return super.presentError(error)
         }
     }

@@ -205,7 +205,7 @@ public final class SpotijackSessionManager {
                 isSpotijacking == true {
                 do {
                     try startNewRecording()
-                } catch (let error) {
+                } catch {
                     notificationCenter.post(DidEncounterError(sender: self, error: error))
                 }
             }
@@ -363,7 +363,7 @@ public final class SpotijackSessionManager {
 
         do {
             try startNewRecording()
-        } catch (let error) {
+        } catch {
             stopSpotijacking()
             throw error
         }
