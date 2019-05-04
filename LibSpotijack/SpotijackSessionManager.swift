@@ -70,15 +70,10 @@ public final class SpotijackSessionManager {
 
     public let notificationCenter: TypedNotificationCenter
 
-    /// Returns the currently playing track in Spotify. Can return `nil` if no track is playing or if Spotify can not
-    /// be accessed. For the latter, a `DidEncounterError` notification is also posted.
+    /// Returns the currently playing track in Spotify or `nil` if no track is playing.
     ///
     public var currentTrack: StaticSpotifyTrack? {
-        if let track = spotifyBridge.currentTrack {
-            return StaticSpotifyTrack(from: track)
-        } else {
-            return nil
-        }
+        return spotifyBridge.currentTrack.map(StaticSpotifyTrack.init(from:))
     }
 
     /// Queries Audio Hijack Pro to determine if the Spotijack session is muted. Returns false and posts a
@@ -217,36 +212,9 @@ public final class SpotijackSessionManager {
         }
     }
 
-    private var _currentTrack: StaticSpotifyTrack? = nil {
+    private var _cachedTrackId: String? = nil {
         didSet {
-            // First see if we've reached the end of Spotify's playback queue. This isn't a definitive way of checking
-            // the queue but it should work most of the time.
-            if  _currentTrack != oldValue,
-                isSpotijacking == true,
-                case .paused = spotifyBridge.playerState!,
-                spotifyBridge.playerPosition == 0.0 {
 
-                stopSpotijacking()
-                notificationCenter.post(TrackDidChange(object: self, newTrack: _currentTrack))
-                notificationCenter.post(DidReachEndOfPlaybackQueue(object: self))
-
-                return
-            }
-
-            if _currentTrack != oldValue {
-                notificationCenter.post(TrackDidChange(object: self, newTrack: _currentTrack))
-            }
-
-            // Start a new recording if Spotijack is controlling the current
-            // recording session.
-            if _currentTrack != oldValue,
-                isSpotijacking == true {
-                do {
-                    try startNewRecording()
-                } catch {
-                    notificationCenter.post(DidEncounterError(object: self, error: error))
-                }
-            }
         }
     }
 
@@ -408,9 +376,47 @@ public final class SpotijackSessionManager {
         pollAudioHijackPro()
     }
 
+    /// ID of the track playing in Spotify when it was last polled.
+    private var _lastSpotifyTrackId: String?
+
     // Synchronise the internal Spotify state
     internal func pollSpotify() {
-        _currentTrack = currentTrack
+        // Accessing properties on an SBObject is expensive so the state checks in this method are ordered to minimise
+        // the number of SBObject properties queried.
+
+        // At a minimum, the track ID has to be queried so this SBObject method call is unavoidable.
+        let currentTrackId = spotifyBridge.currentTrack?.id!()
+
+        // Nothing needs to be done if the track id hasn't changed.
+        guard currentTrackId != _lastSpotifyTrackId else {
+            return
+        }
+
+        defer {
+            _lastSpotifyTrackId = currentTrackId
+
+            // This is the most expensive call in this method because building a `StaticSpotifyTrack` requires accessing
+            // lots of SBObject properties.
+            notificationCenter.post(TrackDidChange(object: self, newTrack: self.currentTrack))
+        }
+
+        // Further checks are only needed if Spotijack is controlling the recording session.
+        guard isSpotijacking else {
+            return
+        }
+
+        // End Spotijacking if Spotify is at the end of its playback queue. This is not a foolproof check.
+        if spotifyBridge.playerState == .paused, // Expensive
+            spotifyBridge.playerPosition == 0 { // Expensive
+            stopSpotijacking()
+            notificationCenter.post(DidReachEndOfPlaybackQueue(object: self))
+        } else { // Otherwise start a new recording
+            do {
+                try startNewRecording()
+            } catch {
+                notificationCenter.post(DidEncounterError(object: self, error: error))
+            }
+        }
     }
 
     // Synchronise the internal AHP state
