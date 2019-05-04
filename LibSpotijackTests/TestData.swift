@@ -16,13 +16,11 @@ internal enum TestTrack {
         discNumber: 1,
         duration: 198,
         trackNumber: 6,
-        starred: false,
-        popularity: 100,
         id: "spotify:track:2myJNvcL71V5IZ1N2NW29O",
         name: "Let The Flames Begin",
-        artworkURL: "https://spotify.com", // FAKE
-        albumArtist: "Paramore",
-        spotifyURL: "https://open.spotify.com/track/2myJNvcL71V5IZ1N2NW29O"))
+        albumArtist: "Paramore"
+        )
+    )
 
     static let FakeHappy = MockSpotifyTrack(backingTrack: StaticSpotifyTrack(
         artist: "Paramore",
@@ -30,13 +28,11 @@ internal enum TestTrack {
         discNumber: 1,
         duration: 234,
         trackNumber: 6,
-        starred: false,
-        popularity: 50,
         id: "spotify:track:6t44iU80A0h8WQ7vc4OoRj",
         name: "Fake Happy",
-        artworkURL: "https://spotify.com", // FAKE
-        albumArtist: "Paramore",
-        spotifyURL: "https://open.spotify.com/track/6t44iU80A0h8WQ7vc4OoRj"))
+        albumArtist: "Paramore"
+        )
+    )
 
     static let BabesNeverDieOutro = MockSpotifyTrack(backingTrack: StaticSpotifyTrack(
         artist: "Honeyblood",
@@ -44,11 +40,9 @@ internal enum TestTrack {
         discNumber: 1,
         duration: 73,
         trackNumber: 12,
-        starred: true,
-        popularity: 100,
         id: "spotify:track:3itTGCLe81VNhG9Jo2wHxP",
         name: "Outro",
-        artworkURL: "https://spotify.com", // FAKE
-        albumArtist: "Honeyblood",
-        spotifyURL: "https://open.spotify.com/track/3itTGCLe81VNhG9Jo2wHxP"))
+        albumArtist: "Honeyblood"
+        )
+    )
 }

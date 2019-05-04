@@ -51,7 +51,7 @@ extension MockSpotifyApplication: SBApplicationProtocol {
     }
 
     func get() -> Any! {
-        fatalError("Not implemented")
+        return self
     }
 }
 

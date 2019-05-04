@@ -73,7 +73,7 @@ public final class SpotijackSessionManager {
 
     public let notificationCenter: TypedNotificationCenter
 
-    /// Returns the currently playing track in Spotify or `nil` if no track is playing.
+    /// The currently playing track in Spotify or `nil` if no track is playing.
     ///
     public var currentTrack: StaticSpotifyTrack? {
         return spotifyBridge.currentTrack.map(StaticSpotifyTrack.init(from:))
@@ -212,12 +212,6 @@ public final class SpotijackSessionManager {
                 _isRecordingTempDisabled == false {
                 stopSpotijacking()
             }
-        }
-    }
-
-    private var _cachedTrackId: String? = nil {
-        didSet {
-
         }
     }
 
@@ -402,9 +396,9 @@ public final class SpotijackSessionManager {
         defer {
             _lastSpotifyTrackId = currentTrackId
 
-            // This is the most expensive call in this method because building a `StaticSpotifyTrack` requires accessing
-            // lots of SBObject properties.
-            notificationCenter.post(TrackDidChange(object: self, newTrack: self.currentTrack))
+            // This is the most expensive call because building a `StaticSpotifyTrack` involves accessing lots of
+            // SBObject properties.
+            notificationCenter.post(TrackDidChange(object: self, newTrack: currentTrack))
             os_signpost(.end, log: log, name: "Poll Spotify", "Track changed")
         }
 
@@ -414,8 +408,8 @@ public final class SpotijackSessionManager {
         }
 
         // End Spotijacking if Spotify is at the end of its playback queue. This is not a foolproof check.
-        if spotifyBridge.playerState == .paused, // Expensive
-            spotifyBridge.playerPosition == 0 { // Expensive
+        if spotifyBridge.playerState == .paused,
+            spotifyBridge.playerPosition == 0 {
             stopSpotijacking()
             notificationCenter.post(DidReachEndOfPlaybackQueue(object: self))
         } else { // Otherwise start a new recording
@@ -511,7 +505,7 @@ public extension SpotijackSessionManager {
         public let recordingStartDelay: TimeInterval
 
         public init(muteSpotify: Bool = false, disableShuffling: Bool = false, disableRepeat: Bool = false,
-                    pollingInterval: TimeInterval = 0.1, recordingStartDelay: TimeInterval = 0.1) {
+                    pollingInterval: TimeInterval = 0.1, recordingStartDelay: TimeInterval = 0) {
             self.muteSpotify = muteSpotify
             self.disableShuffling = disableShuffling
             self.disableRepeat = disableRepeat

@@ -23,7 +23,7 @@ internal class MockSpotifyTrack: NSObject {
 // MARK: - SBObjectProtocol Conformance
 extension MockSpotifyTrack: SBObjectProtocol {
     func get() -> Any! {
-        fatalError("Not implemented")
+        return self
     }
 }
 
@@ -36,11 +36,7 @@ extension MockSpotifyTrack: SpotifyTrack {
     var duration: Int { return _backingTrack.duration }
     var trackNumber: Int { return _backingTrack.trackNumber }
     var name: String { return _backingTrack.name }
-    var artworkUrl: String { return _backingTrack.artworkURL }
     var albumArtist: String { return _backingTrack.albumArtist }
-    var spotifyUrl: String { return _backingTrack.spotifyURL }
-    var starred: Bool { return _backingTrack.starred }
-    var popularity: Int { return _backingTrack.popularity }
 
     func id() -> String {
         return _backingTrack.id

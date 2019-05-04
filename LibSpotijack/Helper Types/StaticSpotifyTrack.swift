@@ -18,29 +18,24 @@ public struct StaticSpotifyTrack {
     public let discNumber: Int
     public let duration: Int
     public let trackNumber: Int
-    public let starred: Bool
-    public let popularity: Int
     public let id: String
     public let name: String
-    public let artworkURL: String
     public let albumArtist: String
-    public let spotifyURL: String
 }
 
 extension StaticSpotifyTrack {
     public init(from track: SpotifyTrack) {
-        self.artist = track.artist!
-        self.album = track.album!
-        self.discNumber = track.discNumber!
-        self.duration = track.duration!
-        self.trackNumber = track.trackNumber!
-        self.starred = track.starred!
-        self.popularity = track.popularity!
-        self.id = track.id!()
-        self.name = track.name!
-        self.artworkURL = track.artworkUrl!
-        self.albumArtist = track.albumArtist!
-        self.spotifyURL = track.spotifyUrl!
+        // Load all the track's properties to avoid multiple RPC calls for each property
+        // swiftlint:disable:next force_cast
+        let loadedTrack = track.get() as! SpotifyTrack
+        self.artist = loadedTrack.artist!
+        self.album = loadedTrack.album!
+        self.discNumber = loadedTrack.discNumber!
+        self.duration = loadedTrack.duration!
+        self.trackNumber = loadedTrack.trackNumber!
+        self.id = loadedTrack.id!()
+        self.name = loadedTrack.name!
+        self.albumArtist = loadedTrack.albumArtist!
     }
 }
 
