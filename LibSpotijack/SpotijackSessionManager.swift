@@ -157,7 +157,7 @@ public final class SpotijackSessionManager {
     /// Audio Hijack Pro start hijacking Spotify.
     ///
     internal var spotijackSessionBridge: Result<AudioHijackApplicationSession, SpotijackError.SpotijackSessionNotFound> {
-        switch getFirstSpotijackSession() {
+        switch _spotijackSession {
         case .success(let session):
             session.startHijackingRelaunch!(.yes)
             return .success(session)
@@ -167,12 +167,19 @@ public final class SpotijackSessionManager {
         }
     }
 
-    /// Gets the first session called "Spotijack" reported by Audio Hijack Pro.
-    ///
-    private func getFirstSpotijackSession() -> Result<AudioHijackApplicationSession, SpotijackError.SpotijackSessionNotFound> {
-        let sessions = audioHijackBridge.sessions!()
+    private var _cachedSpotijackSession: AudioHijackApplicationSession?
 
-        if let session = sessions.first(where: { $0.name == "Spotijack" }) {
+    /// The Spotijack session in Audio Hijack pro used for recording.
+    private var _spotijackSession: Result<AudioHijackApplicationSession, SpotijackError.SpotijackSessionNotFound> {
+        // Querying AHPs list of sessions is quite expensive so caching the session is a big boost to polling
+        // performance. The SBObject returned references the session by its index in AHPs list of session so we also
+        // check the name of the session hasn't changed as this would indicate the Spotijack session has moved or been
+        // deleted.
+        if let cachedSession = _cachedSpotijackSession,
+            cachedSession.name == "Spotijack" {
+            return .success(cachedSession)
+        } else if let session = audioHijackBridge.sessions!().first(where: { $0.name == "Spotijack" }) {
+            _cachedSpotijackSession = session
             return .success(session)
         } else {
             return .failure(SpotijackError.SpotijackSessionNotFound())
