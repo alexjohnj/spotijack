@@ -12,7 +12,9 @@ opt_in_rules:
   - overridden_super_call
   - private_outlet
 
-line_length: 120
+line_length:
+  warning: 150
+  ignores_function_declarations: true
 
 identifier_name:
   excluded:

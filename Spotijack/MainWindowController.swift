@@ -17,13 +17,7 @@ internal class MainWindowController: NSWindowController {
     @IBOutlet private weak var spotijackButton: NSButton!
     @IBOutlet private weak var muteButton: NSButton!
 
-    // MARK: Notification Observer Tokens
-    private var _muteStateDidChangeObserver: NotificationObserver?
-    private var _didEncounterErrorObserver: NotificationObserver?
-    private var _recordingStateDidChangeObserver: NotificationObserver?
-    private var _trackDidChangeObserver: NotificationObserver?
-    private var _didReachEndOfQueueObserver: NotificationObserver?
-    private var _didEndSpotijackingObserver: NotificationObserver?
+    private let _observationBag = NotificationObservationBag()
 
     // MARK: Window Lifecycle
     override func windowDidLoad() {
@@ -153,35 +147,40 @@ extension MainWindowController {
             let session = try SpotijackSessionManager.shared()
             let notificationCenter = session.notificationCenter
 
-            _muteStateDidChangeObserver = notificationCenter.addObserver(
+            notificationCenter.addObserver(
                 forType: MuteStateDidChange.self,
                 object: session,
                 queue: .main,
-                using: { [weak self] noti in self?.muteStateDidChange(noti: noti) })
+                using: { [weak self] noti in self?.muteStateDidChange(noti: noti) }
+            ).stored(in: _observationBag)
 
-            _didEncounterErrorObserver = notificationCenter.addObserver(
+            notificationCenter.addObserver(
                 forType: DidEncounterError.self,
                 object: session,
                 queue: .main,
-                using: { [weak self] noti in self?.didEncounterError(noti: noti) })
+                using: { [weak self] noti in self?.didEncounterError(noti: noti) }
+            ).stored(in: _observationBag)
 
-            _trackDidChangeObserver = notificationCenter.addObserver(
+            notificationCenter.addObserver(
                 forType: TrackDidChange.self,
                 object: session,
                 queue: .main,
-                using: { [weak self] noti in self?.trackDidChange(noti: noti) })
+                using: { [weak self] noti in self?.trackDidChange(noti: noti) }
+            ).stored(in: _observationBag)
 
-            _didReachEndOfQueueObserver = notificationCenter.addObserver(
+            notificationCenter.addObserver(
                 forType: DidReachEndOfPlaybackQueue.self,
                 object: session,
                 queue: .main,
-                using: { [weak self] noti in self?.didReachEndOfPlaybackQueue(noti: noti) })
+                using: { [weak self] noti in self?.didReachEndOfPlaybackQueue(noti: noti) }
+            ).stored(in: _observationBag)
 
-            _didEndSpotijackingObserver = notificationCenter.addObserver(
+            notificationCenter.addObserver(
                 forType: DidEndSpotijacking.self,
                 object: session,
                 queue: .main,
-                using: { [weak self] noti in self?.didEndSpotijacking(noti: noti) })
+                using: { [weak self] noti in self?.didEndSpotijacking(noti: noti) }
+            ).stored(in: _observationBag)
         } catch {
             print("Could not register MainWindowController for SpotijackSession notifications"
                 + " because \(error.localizedDescription)")

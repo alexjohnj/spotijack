@@ -7,25 +7,7 @@
 //
 
 import Foundation
-import LibSpotijack
-
-extension StaticSpotifyTrack {
-    init(artist: String, album: String, discNumber: Int, duration: Int, trackNumber: Int, starred: Bool,
-         popularity: Int, id: String, name: String, artworkURL: String, albumArtist: String, spotifyURL: String) {
-        self.artist = artist
-        self.album = album
-        self.discNumber = discNumber
-        self.duration = duration
-        self.trackNumber = trackNumber
-        self.starred = starred
-        self.popularity = popularity
-        self.id = id
-        self.name = name
-        self.artworkURL = artworkURL
-        self.albumArtist = albumArtist
-        self.spotifyURL = spotifyURL
-    }
-}
+@testable import LibSpotijack
 
 internal enum TestTrack {
     static let LetTheFlamesBegin = MockSpotifyTrack(backingTrack: StaticSpotifyTrack(

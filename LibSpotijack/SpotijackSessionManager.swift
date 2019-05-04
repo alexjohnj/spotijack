@@ -9,7 +9,6 @@
 
 import Cocoa
 import ScriptingBridge
-import Result
 import TypedNotification
 
 //swiftlint:disable type_body_length
@@ -71,25 +70,25 @@ public final class SpotijackSessionManager {
 
     /// A scripting bridge interface to the Spotijack session in Audio Hijack Pro.
     /// Accessing this property will make Audio Hijack Pro start hijacking Spotify.
-    internal var spotijackSessionBridge: Result<AudioHijackApplicationSession> {
+    internal var spotijackSessionBridge: Result<AudioHijackApplicationSession, SpotijackError.SpotijackSessionNotFound> {
         switch getFirstSpotijackSession() {
-        case .ok(let session):
+        case .success(let session):
             session.startHijackingRelaunch!(.yes)
-            return .ok(session)
-        case .fail(let error):
-            notificationCenter.post(DidEncounterError(sender: self, error: error))
-            return .fail(error)
+            return .success(session)
+        case .failure(let error):
+            notificationCenter.post(DidEncounterError(object: self, error: error))
+            return .failure(error)
         }
     }
 
     /// Gets the first session called "Spotijack" reported by Audio Hijack Pro.
-    private func getFirstSpotijackSession() -> Result<AudioHijackApplicationSession> {
+    private func getFirstSpotijackSession() -> Result<AudioHijackApplicationSession, SpotijackError.SpotijackSessionNotFound> {
         let sessions = audioHijackBridge.sessions!()
 
         if let session = sessions.first(where: { $0.name == "Spotijack" }) {
-            return .ok(session)
+            return .success(session)
         } else {
-            return .fail(SpotijackError.SpotijackSessionNotFound())
+            return .failure(SpotijackError.SpotijackSessionNotFound())
         }
     }
 
@@ -99,7 +98,7 @@ public final class SpotijackSessionManager {
     private var _isMuted: Bool = false {
         didSet {
             if _isMuted != oldValue {
-                notificationCenter.post(MuteStateDidChange(sender: self, newMuteState: _isMuted))
+                notificationCenter.post(MuteStateDidChange(object: self, newMuteState: _isMuted))
             }
         }
     }
@@ -112,10 +111,10 @@ public final class SpotijackSessionManager {
         // Accessing it does not change the internal mute state.
         get {
             switch spotijackSessionBridge.map({ $0.speakerMuted! }) {
-            case .ok(let status):
+            case .success(let status):
                 return status
-            case .fail(let error):
-                notificationCenter.post(DidEncounterError(sender: self, error: error))
+            case .failure(let error):
+                notificationCenter.post(DidEncounterError(object: self, error: error))
                 return false
             }
         }
@@ -126,10 +125,10 @@ public final class SpotijackSessionManager {
             }
 
             switch result {
-            case .ok:
+            case .success:
                 _isMuted = newValue
-            case .fail(let error):
-                notificationCenter.post(DidEncounterError(sender: self, error: error))
+            case .failure(let error):
+                notificationCenter.post(DidEncounterError(object: self, error: error))
             }
         }
     }
@@ -140,7 +139,7 @@ public final class SpotijackSessionManager {
     private var _isRecording = false {
         didSet {
             if _isRecording != oldValue {
-                notificationCenter.post(RecordingStateDidChange(sender: self, isRecording: _isRecording))
+                notificationCenter.post(RecordingStateDidChange(object: self, isRecording: _isRecording))
             }
 
             // Test if recording was ended via AHP while Spotijacking
@@ -156,10 +155,10 @@ public final class SpotijackSessionManager {
     public var isRecording: Bool {
         get {
             switch spotijackSessionBridge.map({ $0.recording! }) {
-            case .ok(let status):
+            case .success(let status):
                 return status
-            case .fail(let error):
-                notificationCenter.post(DidEncounterError(sender: self, error: error))
+            case .failure(let error):
+                notificationCenter.post(DidEncounterError(object: self, error: error))
                 return false
             }
         }
@@ -170,10 +169,10 @@ public final class SpotijackSessionManager {
             }
 
             switch result {
-            case .ok:
+            case .success:
                 _isRecording = newValue
-            case .fail(let error):
-                notificationCenter.post(DidEncounterError(sender: self, error: error))
+            case .failure(let error):
+                notificationCenter.post(DidEncounterError(object: self, error: error))
             }
         }
     }
@@ -189,14 +188,14 @@ public final class SpotijackSessionManager {
                 spotifyBridge.playerPosition == 0.0 {
 
                 stopSpotijacking()
-                notificationCenter.post(TrackDidChange(sender: self, newTrack: _currentTrack))
-                notificationCenter.post(DidReachEndOfPlaybackQueue(sender: self))
+                notificationCenter.post(TrackDidChange(object: self, newTrack: _currentTrack))
+                notificationCenter.post(DidReachEndOfPlaybackQueue(object: self))
 
                 return
             }
 
             if _currentTrack != oldValue {
-                notificationCenter.post(TrackDidChange(sender: self, newTrack: _currentTrack))
+                notificationCenter.post(TrackDidChange(object: self, newTrack: _currentTrack))
             }
 
             // Start a new recording if Spotijack is controlling the current
@@ -206,7 +205,7 @@ public final class SpotijackSessionManager {
                 do {
                     try startNewRecording()
                 } catch {
-                    notificationCenter.post(DidEncounterError(sender: self, error: error))
+                    notificationCenter.post(DidEncounterError(object: self, error: error))
                 }
             }
         }
@@ -347,7 +346,7 @@ public final class SpotijackSessionManager {
         }
 
         if config.muteSpotify {
-            try spotijackSessionBridge.dematerialize().setSpeakerMuted!(true)
+            try spotijackSessionBridge.get().setSpeakerMuted!(true)
         }
 
         if isPolling {
@@ -395,14 +394,14 @@ public final class SpotijackSessionManager {
             stopPolling()
         }
 
-        notificationCenter.post(DidEndSpotijacking(sender: self))
+        notificationCenter.post(DidEndSpotijacking(object: self))
     }
 
     /// Starts a new recording in AHP and resets Spotify's play position.
     /// If there is no new track, ends the current Spotijack session.
     private func startNewRecording() throws {
         // Check we can still communicate with the recording session
-        let spotijackSessionBridge = try self.spotijackSessionBridge.dematerialize()
+        let spotijackSessionBridge = try self.spotijackSessionBridge.get()
 
         // End the session if there are no more tracks
         guard let currentTrack = currentTrack else {
@@ -445,7 +444,7 @@ public final class SpotijackSessionManager {
 
 // MARK: - RecordingConfiguration
 public extension SpotijackSessionManager {
-    public struct RecordingConfiguration {
+    struct RecordingConfiguration {
         /// Should the Spotijack session be muted when starting Spotijacking?
         public let muteSpotify: Bool
         /// Should shuffling be disabled in Spotify when starting Spotijacking?

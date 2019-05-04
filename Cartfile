@@ -1,2 +1,1 @@
-github "alexjohnj/Result" ~> 1.0
-github "alexjohnj/TypedNotification" ~> 1.0
+github "alexjohnj/TypedNotification" ~> 2.0

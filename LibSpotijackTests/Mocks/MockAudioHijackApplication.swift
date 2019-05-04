@@ -38,7 +38,8 @@ extension MockAudioHijackApplication: SBApplicationProtocol {
         get {
             fatalError("Not implemented")
         }
-        set(newValue) {
+
+        set { // swiftlint:disable:this unused_setter_value
             fatalError("Not implemented")
         }
     }

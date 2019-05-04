@@ -10,6 +10,6 @@ import Cocoa
 
 internal class PreferencesWindowController: NSWindowController {
     override var windowNibName: NSNib.Name? {
-        return NSNib.Name("PreferencesWindow")
+        return "PreferencesWindow"
     }
 }

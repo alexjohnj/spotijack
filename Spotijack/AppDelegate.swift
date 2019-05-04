@@ -11,7 +11,7 @@ import LibSpotijack
 
 @NSApplicationMain
 internal class AppDelegate: NSObject {
-    private lazy var mainWindowController = MainWindowController(windowNibName: NSNib.Name("MainWindow"))
+    private lazy var mainWindowController = MainWindowController(windowNibName: "MainWindow")
     private lazy var prefencesWindowController = PreferencesWindowController()
 }
 

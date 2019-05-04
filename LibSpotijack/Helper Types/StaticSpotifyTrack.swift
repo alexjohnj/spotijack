@@ -25,7 +25,9 @@ public struct StaticSpotifyTrack {
     public let artworkURL: String
     public let albumArtist: String
     public let spotifyURL: String
+}
 
+extension StaticSpotifyTrack {
     public init(from track: SpotifyTrack) {
         self.artist = track.artist!
         self.album = track.album!
