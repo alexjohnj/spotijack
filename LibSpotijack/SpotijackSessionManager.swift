@@ -456,10 +456,10 @@ public final class SpotijackSessionManager {
             preconditionFailure("Current recording configuration not set for a Spotijack session")
         }
 
-        let newRecordingBlock = { [weak self] in
-            self?._isRecordingTempDisabled = false
-            self?.isRecording = true
-            self?.spotifyBridge.play!()
+        let newRecordingBlock = {
+            self._isRecordingTempDisabled = false
+            self.isRecording = true
+            self.spotifyBridge.play!()
             os_signpost(.end, log: log, name: "Start New Recording", "started recording")
         }
 
