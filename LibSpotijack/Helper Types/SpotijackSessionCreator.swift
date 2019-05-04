@@ -11,7 +11,7 @@ import Foundation
 public enum SpotijackSessionCreator {
     public static func createSpotijackSession() throws {
         guard let creationScriptPath = Constants.libSpotijackBundle.url(forResource: "ConfigureSpotijackSession",
-                                                                        withExtension: "applescript") else {
+                                                                        withExtension: "scpt") else {
             preconditionFailure("Spotijack session configuration script could not be loaded from the framework bundle.")
         }
         var errorInfo: NSDictionary? = [:]
