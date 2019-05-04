@@ -170,11 +170,8 @@ public final class SpotijackSessionManager {
     /// The Spotijack session in Audio Hijack pro used for recording.
     private var _spotijackSession: Result<AudioHijackApplicationSession, SpotijackError.SpotijackSessionNotFound> {
         // Querying AHPs list of sessions is quite expensive so caching the session is a big boost to polling
-        // performance. The SBObject returned references the session by its index in AHPs list of session so we also
-        // check the name of the session hasn't changed as this would indicate the Spotijack session has moved or been
-        // deleted.
-        if let cachedSession = _cachedSpotijackSession,
-            cachedSession.name == "Spotijack" {
+        // performance.
+        if let cachedSession = _cachedSpotijackSession {
             return .success(cachedSession)
         } else if let session = audioHijackBridge.sessions!().first(where: { $0.name == "Spotijack" }) {
             _cachedSpotijackSession = session
