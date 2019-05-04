@@ -10,6 +10,9 @@
 import Cocoa
 import ScriptingBridge
 import TypedNotification
+import os.signpost
+
+private let log = OSLog(subsystem: "org.alexj.Spotijack", category: "Session Manager")
 
 // swiftlint:disable type_body_length
 /// `SpotijackSessionManager` coordinates a Spotijack recording session. It maintains a scripting bridge to Spotify,
@@ -372,8 +375,10 @@ public final class SpotijackSessionManager {
     // MARK: - Private Methods
 
     @objc private func applicationPollingTimerFired(timer: Timer) {
+        os_signpost(.begin, log: log, name: "Poll Applications")
         pollSpotify()
         pollAudioHijackPro()
+        os_signpost(.end, log: log, name: "Poll Applications")
     }
 
     /// ID of the track playing in Spotify when it was last polled.
@@ -381,6 +386,7 @@ public final class SpotijackSessionManager {
 
     // Synchronise the internal Spotify state
     internal func pollSpotify() {
+        os_signpost(.begin, log: log, name: "Poll Spotify")
         // Accessing properties on an SBObject is expensive so the state checks in this method are ordered to minimise
         // the number of SBObject properties queried.
 
@@ -389,6 +395,7 @@ public final class SpotijackSessionManager {
 
         // Nothing needs to be done if the track id hasn't changed.
         guard currentTrackId != _lastSpotifyTrackId else {
+            os_signpost(.end, log: log, name: "Poll Spotify", "Track not changed")
             return
         }
 
@@ -398,6 +405,7 @@ public final class SpotijackSessionManager {
             // This is the most expensive call in this method because building a `StaticSpotifyTrack` requires accessing
             // lots of SBObject properties.
             notificationCenter.post(TrackDidChange(object: self, newTrack: self.currentTrack))
+            os_signpost(.end, log: log, name: "Poll Spotify", "Track changed")
         }
 
         // Further checks are only needed if Spotijack is controlling the recording session.
@@ -421,21 +429,28 @@ public final class SpotijackSessionManager {
 
     // Synchronise the internal AHP state
     internal func pollAudioHijackPro() {
+        os_signpost(.begin, log: log, name: "Poll AHP")
         _isRecording = isRecording
         _isMuted = isMuted
+        os_signpost(.end, log: log, name: "Poll AHP")
     }
 
     /// Starts a new recording in AHP and resets Spotify's play position. If there is no new track, ends the current
     /// Spotijack session.
     private func startNewRecording() throws {
+        os_signpost(.begin, log: log, name: "Start New Recording")
+
         // Check we can still communicate with the recording session
         let spotijackSessionBridge = try self.spotijackSessionBridge.get()
 
         // End the session if there are no more tracks
         guard let currentTrack = currentTrack else {
             stopSpotijacking()
+            os_signpost(.end, log: log, name: "Start New Recording", "no more tracks")
             return
         }
+
+        os_signpost(.event, log: log, name: "Loaded Spotify track")
 
         // Start a new recording
         _isRecordingTempDisabled = true
@@ -443,6 +458,8 @@ public final class SpotijackSessionManager {
         spotifyBridge.pause!()
         spotifyBridge.setPlayerPosition!(0.0)
         spotijackSessionBridge.setMetadata(from: currentTrack)
+
+        os_signpost(.event, log: log, name: "Updated Audio Hijack Pro metadata")
 
         guard let delay = _currentRecordingConfiguration?.recordingStartDelay else {
             preconditionFailure("Current recording configuration not set for a Spotijack session")
@@ -452,6 +469,7 @@ public final class SpotijackSessionManager {
             self?._isRecordingTempDisabled = false
             self?.isRecording = true
             self?.spotifyBridge.play!()
+            os_signpost(.end, log: log, name: "Start New Recording", "started recording")
         }
 
         if delay == 0 {
