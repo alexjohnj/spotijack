@@ -29,7 +29,7 @@
 	<key>NSAppleEventsUsageDescription</key>
 	<string>Spotijack will control Audio Hijack Pro and Spotify to coordinate recording songs.</string>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright © 2014–2017 Alex Jackson. All rights reserved.</string>
+	<string>Copyright © 2014–2019 Alex Jackson. All rights reserved.</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
