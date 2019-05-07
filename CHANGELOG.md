@@ -1,5 +1,19 @@
 # Spotijack Changelog
 
+## Version 0.9 (2019-05-07)
+
+- Fixed crash on launch when Spotijack is compiled with Xcode 10.
+- Added support for Mojave (older versions will not work on Mojave).
+- Dropped support for macOS versions before Mojave.
+- Reduced overall CPU usage when recording tracks.
+
+## Version 0.8 (2018-05-27)
+
+- Disabled code signing.
+- Removed Sparkle as updates are no longer being distributed.
+- Raised the minimum macOS version to 10.11 (should've been done in the previous
+  version).
+
 ## Version 0.7 (2017-09-09)
 
 ### New

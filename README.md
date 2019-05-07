@@ -19,7 +19,7 @@ not publishing binaries to discourage people from using Spotijack.
 
 ## Requirements
 
-Spotijack requires macOS 10.10 or later. You need a licensed copy of Audio
+Spotijack requires macOS 10.14 or later. You need a licensed copy of Audio
 Hijack Pro (version 2, not 3) and any recent version of Spotify. You (probably)
 need a premium Spotify account since Spotijack makes no attempt to distinguish
 between adverts and songs.
@@ -37,12 +37,13 @@ All you need to do is start playing a song in Spotify and hit the record button.
 ## Building
 
 Spotijack uses Carthage to manage dependencies. Once they're set up, it should
-build cleanly using Xcode 9.
+build cleanly using Xcode 10. You should do a release build because the
+optimisations provide a nice reduction in CPU usage.
 
 ## Implementation
 
-Spotijack is the perfect example of an overengineered side project. Spotijack is
-split into two parts, the GUI application _Spotijack_ and the library
+Spotijack is the perfect example of an over engineered side project. Spotijack
+is split into two parts, the GUI application _Spotijack_ and the library
 _LibSpotijack_.
 
 _LibSpotijack_ contains the core recording and application management logic. It
