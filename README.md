@@ -1,5 +1,8 @@
 # Spotijack
 
+> ⚠️ Spotijack will not work on macOS 10.15 (Catalina) because Audio Hijack Pro
+> no longer runs. There are currently no plans to work around this.
+
 Spotijack is a macOS application that automates recording songs playing in
 Spotify using [Audio Hijack Pro][audio-hijack-pro]. When Spotify changes track,
 Spotijack starts a new recording in Audio Hijack Pro and updates the recording
@@ -19,14 +22,13 @@ not publishing binaries to discourage people from using Spotijack.
 
 ## Requirements
 
-Spotijack requires macOS 10.14 or later. You need a licensed copy of Audio
-Hijack Pro (version 2, not 3) and any recent version of Spotify. You (probably)
-need a premium Spotify account since Spotijack makes no attempt to distinguish
-between adverts and songs.
+Spotijack requires macOS 10.14. You need a licensed copy of Audio Hijack Pro
+(version 2, not 3) and any recent version of Spotify. You (probably) need a
+premium Spotify account since Spotijack makes no attempt to distinguish between
+adverts and songs.
 
 Spotijack has only been tested using the instant-on plugin for Audio Hijack
-Pro. If you're on macOS 10.12 or later, you'll _also_ need a copy of Audio
-Hijack 3 to get the plugin.
+Pro. You'll _also_ need a copy of Audio Hijack 3 to get the plugin.
 
 ## Usage
 
