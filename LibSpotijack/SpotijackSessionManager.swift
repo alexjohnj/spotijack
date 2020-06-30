@@ -247,11 +247,11 @@ public final class SpotijackSessionManager {
         )
 
         guard isAHPLaunched == true else {
-            throw SpotijackError.CantStartApplication(appName: Constants.spotifyBundle.name)
+            throw SpotijackError.CantStartApplication(appName: Constants.audioHijackBundle.name)
         }
 
         guard isSpotifyLaunched == true else {
-            throw SpotijackError.CantStartApplication(appName: Constants.audioHijackBundle.name)
+            throw SpotijackError.CantStartApplication(appName: Constants.spotifyBundle.name)
         }
 
         guard let ahpBridge = SBApplication(bundleIdentifier: Constants.audioHijackBundle.identifier) else {
