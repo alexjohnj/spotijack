@@ -28,6 +28,8 @@
 		FA93A2761B09150500A61F6E /* SessionProperties.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA93A2751B09150500A61F6E /* SessionProperties.plist */; };
 		FA9503661A421B76009D7149 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA9503651A421B76009D7149 /* Images.xcassets */; };
 		FA9503691A421B76009D7149 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA9503671A421B76009D7149 /* MainMenu.xib */; };
+		FAAEE64E24AB7C6E0060C1B6 /* AudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAEE64D24AB7C6E0060C1B6 /* AudioRecorder.swift */; };
+		FAAEE65024AB82BC0060C1B6 /* AudioRecorder.Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAEE64F24AB82BC0060C1B6 /* AudioRecorder.Configuration.swift */; };
 		FAAF86DD1F31F79300833028 /* SpotijackSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAF86DC1F31F79300833028 /* SpotijackSessionManager.swift */; };
 		FAB41F101F26002A00448440 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB41F0F1F26002A00448440 /* AppDelegate.swift */; };
 		FAB41F1A1F26019A00448440 /* MainWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB41F191F26019A00448440 /* MainWindowController.swift */; };
@@ -109,6 +111,8 @@
 		FA95035F1A421B76009D7149 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FA9503651A421B76009D7149 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		FA9503681A421B76009D7149 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		FAAEE64D24AB7C6E0060C1B6 /* AudioRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorder.swift; sourceTree = "<group>"; };
+		FAAEE64F24AB82BC0060C1B6 /* AudioRecorder.Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorder.Configuration.swift; sourceTree = "<group>"; };
 		FAAF86DC1F31F79300833028 /* SpotijackSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotijackSessionManager.swift; sourceTree = "<group>"; };
 		FAB41F0F1F26002A00448440 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FAB41F191F26019A00448440 /* MainWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindowController.swift; sourceTree = "<group>"; };
@@ -216,10 +220,12 @@
 		FA86C4B61F03FA25001ACBBA /* LibSpotijack */ = {
 			isa = PBXGroup;
 			children = (
+				FAAEE64F24AB82BC0060C1B6 /* AudioRecorder.Configuration.swift */,
+				FAAEE64D24AB7C6E0060C1B6 /* AudioRecorder.swift */,
 				FA2F5B0F1F376663007132ED /* Constants.swift */,
 				FAAF86DC1F31F79300833028 /* SpotijackSessionManager.swift */,
-				FA2F5B121F376866007132ED /* Helper Types */,
 				FA2F5B131F37686C007132ED /* Extensions */,
+				FA2F5B121F376866007132ED /* Helper Types */,
 				FADD9EB61F03FB2800EAC2BC /* Scripting Bridge Compatibility */,
 				FADD9ECB1F03FBCB00EAC2BC /* Supporting Files */,
 			);
@@ -545,12 +551,14 @@
 			files = (
 				FACA55471F24D17D007E7F46 /* AudioHijackSession+SetMetadata.swift in Sources */,
 				FADD9ECA1F03FB2800EAC2BC /* SpotifyScripting.swift in Sources */,
+				FAAEE65024AB82BC0060C1B6 /* AudioRecorder.Configuration.swift in Sources */,
 				FA678C781F164402009D6AF8 /* Notifications.swift in Sources */,
 				FADD9EC61F03FB2800EAC2BC /* ScriptingBridgeCompatProtocols.swift in Sources */,
 				FADD9EC91F03FB2800EAC2BC /* Spotify.swift in Sources */,
 				FAAF86DD1F31F79300833028 /* SpotijackSessionManager.swift in Sources */,
 				FADD9EC51F03FB2800EAC2BC /* AudioHijackScripting.swift in Sources */,
 				FAD901A81F3869B8006AD800 /* SpotijackError.swift in Sources */,
+				FAAEE64E24AB7C6E0060C1B6 /* AudioRecorder.swift in Sources */,
 				FA503A241F378B660009BDBD /* SpotijackSessionCreator.swift in Sources */,
 				FADD9EC41F03FB2800EAC2BC /* AudioHijack.swift in Sources */,
 				FACBE5C81F23D66C00030B87 /* StaticSpotifyTrack.swift in Sources */,
