@@ -24,29 +24,24 @@ public final class AudioRecorder: NSObject {
         case outputDeviceUnusable
     }
 
-    // MARK: - Properties
+    // MARK: - Public Properties
+
+    var isRecording: Bool {
+        sessionOutput.isRecording
+    }
+
+    // MARK: - Private Properties
 
     private let session = AVCaptureSession()
     private var inputDevice: AVCaptureDevice?
     private let sessionOutput = AVCaptureAudioFileOutput()
-
-    private var hasConfiguredSession: Bool {
-        !session.inputs.isEmpty && !session.outputs.isEmpty
-    }
 
     // MARK: - Public Methods
 
     public func setInputDevice(_ device: AVCaptureDevice) throws {
         do {
             os_log(.info, log: log, "Setting AudioRecorder input device to %@", device.description)
-
-            if hasConfiguredSession {
-                os_log(.info, log: log, "AudioRecorder session requires reconfiguring")
-                try reconfigureSession(for: device)
-            }
-
-            inputDevice = device
-
+            try changeSessionInput(to: device)
         } catch {
             os_log(.error, log: log, "Failed to changed input device of AudioRecorder because %{public}@",
                    String(describing: error))
@@ -93,9 +88,9 @@ public final class AudioRecorder: NSObject {
         os_signpost(.begin, log: log, name: "Start Capture Session")
         defer { os_signpost(.end, log: log, name: "Start Capture Session") }
 
-        if !hasConfiguredSession {
+        if session.outputs.isEmpty {
             do {
-                try configureCaptureSession()
+                try configureSessionOutput()
             } catch {
                 os_log(.error, log: log, "Failed to configure AudioRecorder capture session with error: %@",
                        String(describing: error))
@@ -106,34 +101,14 @@ public final class AudioRecorder: NSObject {
         session.startRunning()
     }
 
-    private func configureCaptureSession() throws {
-        guard let inputDevice = self.inputDevice else {
-            throw ConfigurationError.noInputDeviceSelected
-        }
-
-        let captureInput: AVCaptureDeviceInput
-        do {
-            captureInput = try AVCaptureDeviceInput(device: inputDevice)
-        } catch {
-            throw ConfigurationError.inputDeviceUnavailable(inputDevice, reason: error)
-        }
-
-        guard session.canAddInput(captureInput) else {
-            throw ConfigurationError.inputDeviceUnusable(inputDevice)
-        }
-
+    private func configureSessionOutput() throws {
         guard session.canAddOutput(sessionOutput) else {
             throw ConfigurationError.outputDeviceUnusable
         }
-
-        session.addInput(captureInput)
         session.addOutput(sessionOutput)
     }
 
-    private func reconfigureSession(for inputDevice: AVCaptureDevice) throws {
-        assert(hasConfiguredSession, "Attempt to reconfigure a session that has not been configured")
-        assert(!session.isRunning, "Attempt to reconfigure a session that is already running")
-
+    private func changeSessionInput(to inputDevice: AVCaptureDevice) throws {
         let captureInput: AVCaptureDeviceInput
         do {
             captureInput = try AVCaptureDeviceInput(device: inputDevice)
@@ -145,12 +120,18 @@ public final class AudioRecorder: NSObject {
             throw ConfigurationError.inputDeviceUnusable(inputDevice)
         }
 
-        session.inputs.forEach(session.removeInput(_:))
+        session.inputs.forEach(session.removeInput)
         session.addInput(captureInput)
     }
 }
 
 extension AudioRecorder: AVCaptureFileOutputRecordingDelegate {
     public func fileOutput(_ output: AVCaptureFileOutput, didFinishRecordingTo outputFileURL: URL, from connections: [AVCaptureConnection], error: Error?) {
+        if let error = error {
+            os_log(.error, log: log, "AudioRecorder failed to record to %@ with error %{public}@",
+                   outputFileURL.absoluteString, String(describing: error))
+        } else {
+            os_log(.info, log: log, "AudioRecorder finished recording to %@", outputFileURL.absoluteString)
+        }
     }
 }
