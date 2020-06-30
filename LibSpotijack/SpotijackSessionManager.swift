@@ -1,3 +1,4 @@
+// swiftlint:disable all
 //
 //  SpotijackSession.swift
 //  LibSpotijack
@@ -10,6 +11,7 @@ import Cocoa
 import ScriptingBridge
 import TypedNotification
 import os.signpost
+import AVFoundation
 
 private let log = OSLog(subsystem: "org.alexj.Spotijack", category: "Session Manager")
 
@@ -73,6 +75,7 @@ public final class SpotijackSessionManager {
 
     /// The currently playing track in Spotify or `nil` if no track is playing.
     ///
+    // TODO: - Extract this into a MusicApp type property
     public var currentTrack: StaticSpotifyTrack? {
         return spotifyBridge.currentTrack.map(StaticSpotifyTrack.init(from:))
     }
@@ -117,7 +120,7 @@ public final class SpotijackSessionManager {
     internal var _currentRecordingConfiguration: RecordingConfiguration?
 
     /// Interval we were polling applications at _before_ starting Spotijacking.
-    private var _pastPollingInterval: TimeInterval?
+    private var idlePollingInterval: TimeInterval?
 
     // MARK: - Initializers
 
@@ -147,6 +150,10 @@ public final class SpotijackSessionManager {
 
     // MARK: - Public Methods
 
+    public func setInputDevice(_ device: AVCaptureDevice) {
+        try! recorder.setInputDevice(device)
+    }
+
     /// Start a Spotijack recording session. Calling this method when a recording session is already in progress has no
     /// effect. Polling will be restarted at the interval specified in `config`.
     public func startSpotijacking(config: RecordingConfiguration) throws {
@@ -164,7 +171,7 @@ public final class SpotijackSessionManager {
         }
 
         if isPolling {
-            _pastPollingInterval = _applicationPollingTimer?.timeInterval
+            idlePollingInterval = _applicationPollingTimer?.timeInterval
             stopPolling()
         }
 
@@ -185,11 +192,12 @@ public final class SpotijackSessionManager {
     /// Stops a Spotijack recording session. Calling this method when no recording session is in progress has no
     /// effect. If we were polling when Spotijacking started, we'll resume polling at that interval.
     public func stopSpotijacking() {
-        guard isSpotijacking == true else {
+        guard isSpotijacking else {
             return
         }
 
         isSpotijacking = false
+        recorder.stopRecording()
         _currentRecordingConfiguration = nil
 
         if let activityToken = activityToken {
@@ -197,7 +205,7 @@ public final class SpotijackSessionManager {
             self.activityToken = nil
         }
 
-        if let pastPollingInterval = _pastPollingInterval {
+        if let pastPollingInterval = idlePollingInterval {
             stopPolling()
             startPolling(every: pastPollingInterval)
         } else {
@@ -315,6 +323,17 @@ public final class SpotijackSessionManager {
         }
 
         let newRecordingBlock = {
+            let recordingConfiguration = AudioRecorder.Configuration(
+                outputFile: URL(fileURLWithPath: "/Users/alex/Desktop").appendingPathComponent(UUID().uuidString).appendingPathExtension("m4a"),
+                fileFormat: .m4a,
+                encoding: .alac
+            )
+
+            do {
+                try self.recorder.startNewRecording(using: recordingConfiguration)
+            } catch {
+                self.notificationCenter.post(DidEncounterError(object: self, error: error))
+            }
             self.spotifyBridge.play!()
             os_signpost(.end, log: log, name: "Start New Recording", "started recording")
         }

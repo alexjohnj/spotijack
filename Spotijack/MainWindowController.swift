@@ -9,6 +9,7 @@
 import Cocoa
 import LibSpotijack
 import TypedNotification
+import AVFoundation
 
 internal class MainWindowController: NSWindowController {
     // MARK: Interface Builder Outlets
@@ -28,10 +29,14 @@ internal class MainWindowController: NSWindowController {
         // Start polling and update the UI
         do {
             try SpotijackSessionManager.shared().startPolling(every: 0.1)
+            let testDevice = AVCaptureDevice(uniqueID: "com.rogueamoeba.Loopback:02937F9F-20CD-4906-A22E-0024A99C6B65")!
+
+            try SpotijackSessionManager.shared().setInputDevice(testDevice)
             refreshUI()
         } catch {
             _ = presentError(error)
         }
+
     }
 }
 
@@ -53,12 +58,6 @@ extension MainWindowController {
     }
 
     @IBAction func muteButtonClicked(_ sender: NSButton) {
-        do {
-            let session = try SpotijackSessionManager.shared()
-            session.isMuted = !session.isMuted
-        } catch {
-            _ = presentError(error)
-        }
     }
 }
 
@@ -71,7 +70,6 @@ extension MainWindowController {
             let session = try SpotijackSessionManager.shared()
             updateTrackStatusFields(track: session.currentTrack)
             updateSpotijackButton(isSpotijacking: session.isSpotijacking)
-            updateMuteButton(isMuted: session.isMuted)
         } catch {
             _ = presentError(error)
         }

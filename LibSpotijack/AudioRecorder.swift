@@ -50,8 +50,6 @@ public final class AudioRecorder: NSObject {
     }
 
     public func startNewRecording(using configuration: Configuration) throws {
-        os_log(.info, log: log, "AudioRecorder starting a new recording")
-
         os_signpost(.begin, log: log, name: "Starting New Recording")
         defer { os_signpost(.end, log: log, name: "Starting New Recording") }
 
@@ -63,6 +61,7 @@ public final class AudioRecorder: NSObject {
             try startCaptureSession()
         }
 
+        os_log(.info, log: log, "AudioRecorder starting a new recording to %@", configuration.outputFile.absoluteString)
         sessionOutput.startRecording(
             to: configuration.outputFile,
             outputFileType: configuration.fileFormat.fileType,

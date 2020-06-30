@@ -34,5 +34,7 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Spotijack requires access to audio input devices to record your system&apos;s audio.</string>
 </dict>
 </plist>
