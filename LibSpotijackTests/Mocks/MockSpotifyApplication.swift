@@ -56,10 +56,10 @@ extension MockSpotifyApplication: SBApplicationProtocol {
 }
 
 // MARK: - SpotifyApplication Protocol Conformance
-extension MockSpotifyApplication: SpotifyApplication {
+extension MockSpotifyApplication: SpotifySBApplication {
     // MARK: Implemented
     // There is always a current track. When the playback queue is exhausted, we drain the played queue into it.
-    var currentTrack: SpotifyTrack { return _playbackQueue[0] }
+    var currentTrack: SpotifyTrackSBObject { return _playbackQueue[0] }
     var playerState: SpotifyEPlS { return _playerState }
     var playerPosition: Double { return _playerPosition }
     var repeating: Bool { return _repeating }

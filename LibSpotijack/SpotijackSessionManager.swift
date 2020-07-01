@@ -97,7 +97,7 @@ public final class SpotijackSessionManager {
 
     // MARK: - Private Properties
 
-    internal let spotifyBridge: SpotifyApplication
+    internal let spotifyBridge: SpotifySBApplication
     private let recorder = AudioRecorder()
 
     // MARK: - Private Properties - State
@@ -124,7 +124,7 @@ public final class SpotijackSessionManager {
 
     // MARK: - Initializers
 
-    internal init(spotifyBridge: SpotifyApplication, notificationCenter: TypedNotificationCenter = NotificationCenter.default) {
+    internal init(spotifyBridge: SpotifySBApplication, notificationCenter: TypedNotificationCenter = NotificationCenter.default) {
         self.spotifyBridge = spotifyBridge
         self.notificationCenter = notificationCenter
     }

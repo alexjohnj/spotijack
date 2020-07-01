@@ -28,7 +28,7 @@ extension MockSpotifyTrack: SBObjectProtocol {
 }
 
 // MARK: - SpotifyTrack Protocol Conformance
-extension MockSpotifyTrack: SpotifyTrack {
+extension MockSpotifyTrack: SpotifyTrackSBObject {
     // MARK: Implemented
     var artist: String { return _backingTrack.artist }
     var album: String { return _backingTrack.album }

@@ -9,8 +9,8 @@ import ScriptingBridge
 }
 
 // MARK: SpotifyApplication
-@objc public protocol SpotifyApplication: SBApplicationProtocol {
-    @objc optional var currentTrack: SpotifyTrack { get } // The current playing track.
+@objc public protocol SpotifySBApplication: SBApplicationProtocol {
+    @objc optional var currentTrack: SpotifyTrackSBObject { get } // The current playing track.
     @objc optional var soundVolume: Int { get } // The sound output volume (0 = minimum, 100 = maximum)
     @objc optional var playerState: SpotifyEPlS { get } // Is Spotify stopped, paused, or playing?
     @objc optional var playerPosition: Double { get } // The player’s position within the currently playing track in seconds.
@@ -32,10 +32,10 @@ import ScriptingBridge
     @objc optional var frontmost: Bool { get } // Is this the frontmost (active) application?
     @objc optional var version: String { get } // The version of the application.
 }
-extension SBApplication: SpotifyApplication {}
+extension SBApplication: SpotifySBApplication {}
 
 // MARK: SpotifyTrack
-@objc public protocol SpotifyTrack: SBObjectProtocol {
+@objc public protocol SpotifyTrackSBObject: SBObjectProtocol {
     @objc optional var artist: String { get } // The artist of the track.
     @objc optional var album: String { get } // The album of the track.
     @objc optional var discNumber: Int { get } // The disc number of the track.
@@ -52,5 +52,5 @@ extension SBApplication: SpotifyApplication {}
     @objc optional var spotifyUrl: String { get } // The URL of the track.
     @objc optional func setSpotifyUrl(_ spotifyUrl: String!) // The URL of the track.
 }
-extension SBObject: SpotifyTrack {}
+extension SBObject: SpotifyTrackSBObject {}
 

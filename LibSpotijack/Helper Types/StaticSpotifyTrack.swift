@@ -24,7 +24,7 @@ public struct StaticSpotifyTrack {
 }
 
 extension StaticSpotifyTrack {
-    public init(from track: SpotifyTrack) {
+    public init(from track: SpotifyTrackSBObject) {
         self.artist = track.artist!
         self.album = track.album!
         self.discNumber = track.discNumber!
