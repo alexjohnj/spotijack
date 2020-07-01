@@ -9,7 +9,7 @@
 import Foundation
 import Combine
 
-public protocol MusicApplication {
+public protocol MusicApplication: AnyObject {
 
     static var name: String { get }
     static var bundleID: String { get }

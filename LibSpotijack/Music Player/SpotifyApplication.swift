@@ -56,6 +56,7 @@ public final class SpotifyApplication: MusicApplication {
         self.trackIDPublisher = Timer.publish(every: kSpotifyPollingInterval, on: .main, in: .default)
             .autoconnect()
             .map { _ in spotifyBridge.currentTrack?.id?() }
+            .removeDuplicates()
             .share()
             .eraseToAnyPublisher()
     }

@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17132" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17132"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
-        <capability name="stacking Non-gravity area distributions on NSStackView" minToolsVersion="7.0" minSystemVersion="10.11"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="MainWindowController" customModule="Spotijack" customModuleProvider="target">
             <connections>
                 <outlet property="artistAlbumField" destination="2zZ-cK-X9C" id="IDn-Tv-lm0"/>
-                <outlet property="muteButton" destination="L0G-Ma-Vh5" id="Ihy-gH-Ubh"/>
                 <outlet property="spotijackButton" destination="AKD-kg-1UY" id="ccZ-hm-blr"/>
                 <outlet property="statusField" destination="SVJ-Xv-L1m" id="xIo-ac-N8n"/>
                 <outlet property="window" destination="uSh-TC-Nzq" id="lMK-yp-7zr"/>
@@ -22,16 +20,16 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="335" y="390" width="350" height="119"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="3440" height="1440"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="3440" height="1417"/>
             <view key="contentView" id="d0Y-fb-agL">
-                <rect key="frame" x="0.0" y="0.0" width="350" height="119"/>
+                <rect key="frame" x="0.0" y="0.0" width="350" height="117"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
                     <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="251" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="X0s-D8-cKM">
-                        <rect key="frame" x="20" y="52" width="310" height="47"/>
+                        <rect key="frame" x="20" y="52" width="310" height="45"/>
                         <subviews>
                             <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SVJ-Xv-L1m">
-                                <rect key="frame" x="-2" y="25" width="314" height="22"/>
+                                <rect key="frame" x="-2" y="24" width="314" height="21"/>
                                 <textFieldCell key="cell" controlSize="mini" sendsActionOnEndEditing="YES" placeholderString="Status" id="Dbj-7N-ITI">
                                     <font key="font" metaFont="system" size="18"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -39,7 +37,7 @@
                                 </textFieldCell>
                             </textField>
                             <textField verticalHuggingPriority="750" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2zZ-cK-X9C">
-                                <rect key="frame" x="-2" y="0.0" width="314" height="17"/>
+                                <rect key="frame" x="-2" y="0.0" width="314" height="16"/>
                                 <textFieldCell key="cell" sendsActionOnEndEditing="YES" placeholderString="Artist — Album" id="7op-DH-RlE">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
@@ -66,31 +64,14 @@
                             <action selector="spotijackButtonClicked:" target="-2" id="XqR-4D-0MN"/>
                         </connections>
                     </button>
-                    <button toolTip="Mute Spotify without affecting recordings" horizontalHuggingPriority="1000" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="L0G-Ma-Vh5">
-                        <rect key="frame" x="306" y="7" width="24" height="19"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="24" id="lSB-xv-Vt6"/>
-                        </constraints>
-                        <buttonCell key="cell" type="recessed" bezelStyle="recessed" image="Unmuted" imagePosition="only" alignment="center" alternateImage="Muted" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="N93-EO-Qj4">
-                            <behavior key="behavior" pushIn="YES" changeContents="YES" lightByContents="YES"/>
-                            <font key="font" metaFont="systemBold" size="12"/>
-                            <string key="keyEquivalent">e</string>
-                            <modifierMask key="keyEquivalentModifierMask" command="YES"/>
-                        </buttonCell>
-                        <connections>
-                            <action selector="muteButtonClicked:" target="-2" id="Hss-lt-a0N"/>
-                        </connections>
-                    </button>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="L0G-Ma-Vh5" firstAttribute="centerY" secondItem="AKD-kg-1UY" secondAttribute="centerY" id="0JM-N2-7eS"/>
                     <constraint firstAttribute="bottom" secondItem="AKD-kg-1UY" secondAttribute="bottom" constant="8" id="C2a-UX-LNE"/>
                     <constraint firstItem="X0s-D8-cKM" firstAttribute="leading" secondItem="d0Y-fb-agL" secondAttribute="leading" constant="20" symbolic="YES" id="C8W-Tf-8a6"/>
                     <constraint firstAttribute="trailing" secondItem="X0s-D8-cKM" secondAttribute="trailing" constant="20" symbolic="YES" id="DEP-ea-yYx"/>
                     <constraint firstItem="X0s-D8-cKM" firstAttribute="top" secondItem="d0Y-fb-agL" secondAttribute="top" constant="20" symbolic="YES" id="PVu-XW-S6n"/>
                     <constraint firstAttribute="centerX" secondItem="AKD-kg-1UY" secondAttribute="centerX" id="V7r-6M-qGW"/>
                     <constraint firstItem="AKD-kg-1UY" firstAttribute="top" secondItem="X0s-D8-cKM" secondAttribute="bottom" constant="26" id="chu-1O-Cew"/>
-                    <constraint firstAttribute="trailing" secondItem="L0G-Ma-Vh5" secondAttribute="trailing" constant="20" symbolic="YES" id="kk9-No-lIs"/>
                 </constraints>
             </view>
             <contentBorderThickness minY="32"/>
@@ -100,8 +81,4 @@
             <point key="canvasLocation" x="-1555" y="-6"/>
         </window>
     </objects>
-    <resources>
-        <image name="Muted" width="80" height="80"/>
-        <image name="Unmuted" width="80" height="80"/>
-    </resources>
 </document>

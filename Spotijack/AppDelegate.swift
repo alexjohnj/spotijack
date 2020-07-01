@@ -9,19 +9,34 @@
 import Cocoa
 import LibSpotijack
 
-@NSApplicationMain
-internal class AppDelegate: NSObject {
-    private lazy var mainWindowController = MainWindowController(windowNibName: "MainWindow")
-    private lazy var prefencesWindowController = PreferencesWindowController()
-}
+import AVFoundation
 
-// MARK: NSApplicationDelegate Methods
-extension AppDelegate: NSApplicationDelegate {
+@NSApplicationMain
+internal class AppDelegate: NSObject, NSApplicationDelegate {
+
+    // MARK: - Private Properties
+
+    private var sessionCoordinator: SessionCoordinator!
+    private var mainWindowController: MainWindowController!
+    private lazy var prefencesWindowController = PreferencesWindowController()
+
     func applicationDidFinishLaunching(_ notification: Notification) {
+
         Preferences.shared.registerDefaultValues()
 
-        // Display the main window
-        _ = applicationShouldHandleReopen(NSApplication.shared, hasVisibleWindows: false)
+        SpotifyApplication.launch { [self] result in
+            switch result {
+            case .success(let app):
+                sessionCoordinator = SessionCoordinator(musicApp: app, recorderFactory: { device in
+                    AudioRecorder(inputDevice: device as! AVCaptureDevice) // swiftlint:disable:this force_cast
+                })
+                mainWindowController = MainWindowController(musicApp: app, sessionCoordinator: sessionCoordinator)
+                _ = applicationShouldHandleReopen(NSApplication.shared, hasVisibleWindows: false)
+
+            case .failure(let error):
+                NSApplication.shared.presentError(error)
+            }
+        }
     }
 
     func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
@@ -32,31 +47,31 @@ extension AppDelegate: NSApplicationDelegate {
 
         return true
     }
-
-    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
-        let isSpotijacking = (try? SpotijackSessionManager.shared().isSpotijacking) ?? false
-        return !isSpotijacking
-    }
-
-    func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
-        let isSpotijacking = (try? SpotijackSessionManager.shared().isSpotijacking) ?? false
-        if isSpotijacking,
-            let window = mainWindowController.window {
-            presentTerminationWarning(window: window)
-            return .terminateLater
-        } else {
-            return .terminateNow
-        }
-    }
-
-    func applicationWillTerminate(_ notification: Notification) {
-        let isSpotijacking = (try? SpotijackSessionManager.shared().isSpotijacking) ?? false
-        if isSpotijacking {
-            do {
-                try? SpotijackSessionManager.shared().stopSpotijacking()
-            }
-        }
-    }
+//
+//    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+//        let isSpotijacking = (try? SpotijackSessionManager.shared().isSpotijacking) ?? false
+//        return !isSpotijacking
+//    }
+//
+//    func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
+//        let isSpotijacking = (try? SpotijackSessionManager.shared().isSpotijacking) ?? false
+//        if isSpotijacking,
+//           let window = mainWindowController.window {
+//            presentTerminationWarning(window: window)
+//            return .terminateLater
+//        } else {
+//            return .terminateNow
+//        }
+//    }
+//
+//    func applicationWillTerminate(_ notification: Notification) {
+//        let isSpotijacking = (try? SpotijackSessionManager.shared().isSpotijacking) ?? false
+//        if isSpotijacking {
+//            do {
+//                try? SpotijackSessionManager.shared().stopSpotijacking()
+//            }
+//        }
+//    }
 }
 
 // MARK: - UI Actions

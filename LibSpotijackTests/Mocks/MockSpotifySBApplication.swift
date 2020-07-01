@@ -10,7 +10,7 @@ import Foundation
 import ScriptingBridge
 import LibSpotijack
 
-internal class MockSpotifyApplication: NSObject {
+internal class MockSpotifySBApplication: NSObject {
     var _playbackQueue: [MockSpotifyTrack]
     var _playedQueue: [MockSpotifyTrack] = []
 
@@ -31,7 +31,7 @@ internal class MockSpotifyApplication: NSObject {
 }
 
 // MARK: - SBApplication Protocol Conformance
-extension MockSpotifyApplication: SBApplicationProtocol {
+extension MockSpotifySBApplication: SBApplicationProtocol {
     var delegate: SBApplicationDelegate! {
         get {
             fatalError("Not implemented")
@@ -56,7 +56,7 @@ extension MockSpotifyApplication: SBApplicationProtocol {
 }
 
 // MARK: - SpotifyApplication Protocol Conformance
-extension MockSpotifyApplication: SpotifySBApplication {
+extension MockSpotifySBApplication: SpotifySBApplication {
     // MARK: Implemented
     // There is always a current track. When the playback queue is exhausted, we drain the played queue into it.
     var currentTrack: SpotifyTrackSBObject { return _playbackQueue[0] }
@@ -127,12 +127,12 @@ extension MockSpotifyApplication: SpotifySBApplication {
 }
 
 // MARK: - Factory Method
-extension MockSpotifyApplication {
+extension MockSpotifySBApplication {
     // Creates a `MockSpotifyApplication` with three tracks in the playback queue and the player state set to paused.
     // Shuffling and repeat are disabled.
     // The three tracks (from active to last) are "Let the Flames Begin", "Fake Happy", "Outro"
-    static func makeStandardApplication() -> MockSpotifyApplication {
-        let spotify = MockSpotifyApplication(playbackQueue: [TestTrack.LetTheFlamesBegin,
+    static func makeStandardApplication() -> MockSpotifySBApplication {
+        let spotify = MockSpotifySBApplication(playbackQueue: [TestTrack.LetTheFlamesBegin,
                                                              TestTrack.FakeHappy,
                                                              TestTrack.BabesNeverDieOutro])
         spotify._playerState = .paused

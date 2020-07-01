@@ -18,6 +18,13 @@ public struct AudioSettings: Hashable {
 
     public enum Container {
         case m4a
+
+        var fileExtension: String {
+            switch self {
+            case .m4a:
+                return "m4a"
+            }
+        }
     }
 
     // MARK: - Public Properties
@@ -27,7 +34,7 @@ public struct AudioSettings: Hashable {
 
     // MARK: - Initializers
 
-    public init(encoding: Encoding, container: Container) {
+    public init(encoding: Encoding = .alac, container: Container = .m4a) {
         self.encoding = encoding
         self.container = container
     }
