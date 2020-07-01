@@ -28,6 +28,9 @@
 		FA93A2761B09150500A61F6E /* SessionProperties.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA93A2751B09150500A61F6E /* SessionProperties.plist */; };
 		FA9503661A421B76009D7149 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA9503651A421B76009D7149 /* Images.xcassets */; };
 		FA9503691A421B76009D7149 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA9503671A421B76009D7149 /* MainMenu.xib */; };
+		FAAA59F024ACAEDF009C237E /* RecordingEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAA59EF24ACAEDF009C237E /* RecordingEngine.swift */; };
+		FAAA59F224ACAEF0009C237E /* RecordingConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAA59F124ACAEF0009C237E /* RecordingConfiguration.swift */; };
+		FAAA59F424ACAF05009C237E /* AudioSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAA59F324ACAF05009C237E /* AudioSettings.swift */; };
 		FAAD519424AC910F0073A971 /* MusicApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAD519324AC910F0073A971 /* MusicApplication.swift */; };
 		FAAD519624AC911A0073A971 /* SpotifyApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAD519524AC911A0073A971 /* SpotifyApplication.swift */; };
 		FAAD519924AC96670073A971 /* PlayerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAD519824AC96670073A971 /* PlayerState.swift */; };
@@ -114,6 +117,9 @@
 		FA95035F1A421B76009D7149 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FA9503651A421B76009D7149 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		FA9503681A421B76009D7149 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		FAAA59EF24ACAEDF009C237E /* RecordingEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingEngine.swift; sourceTree = "<group>"; };
+		FAAA59F124ACAEF0009C237E /* RecordingConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingConfiguration.swift; sourceTree = "<group>"; };
+		FAAA59F324ACAF05009C237E /* AudioSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioSettings.swift; sourceTree = "<group>"; };
 		FAAD519324AC910F0073A971 /* MusicApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicApplication.swift; sourceTree = "<group>"; };
 		FAAD519524AC911A0073A971 /* SpotifyApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyApplication.swift; sourceTree = "<group>"; };
 		FAAD519824AC96670073A971 /* PlayerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerState.swift; sourceTree = "<group>"; };
@@ -227,12 +233,12 @@
 			isa = PBXGroup;
 			children = (
 				FAAEE64F24AB82BC0060C1B6 /* AudioRecorder.Configuration.swift */,
-				FAAEE64D24AB7C6E0060C1B6 /* AudioRecorder.swift */,
 				FA2F5B0F1F376663007132ED /* Constants.swift */,
 				FAAF86DC1F31F79300833028 /* SpotijackSessionManager.swift */,
 				FA2F5B131F37686C007132ED /* Extensions */,
 				FA2F5B121F376866007132ED /* Helper Types */,
 				FAAD519724AC96510073A971 /* Music Player */,
+				FAAA59EE24ACAEC2009C237E /* Recording */,
 				FADD9EB61F03FB2800EAC2BC /* Scripting Bridge Compatibility */,
 				FADD9ECB1F03FBCB00EAC2BC /* Supporting Files */,
 			);
@@ -285,6 +291,17 @@
 				FA3CF4E71B3C5AB700E8EF60 /* Credits.rtf */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		FAAA59EE24ACAEC2009C237E /* Recording */ = {
+			isa = PBXGroup;
+			children = (
+				FAAEE64D24AB7C6E0060C1B6 /* AudioRecorder.swift */,
+				FAAA59EF24ACAEDF009C237E /* RecordingEngine.swift */,
+				FAAA59F124ACAEF0009C237E /* RecordingConfiguration.swift */,
+				FAAA59F324ACAF05009C237E /* AudioSettings.swift */,
+			);
+			path = Recording;
 			sourceTree = "<group>";
 		};
 		FAAD519724AC96510073A971 /* Music Player */ = {
@@ -577,8 +594,11 @@
 				FAAF86DD1F31F79300833028 /* SpotijackSessionManager.swift in Sources */,
 				FADD9EC51F03FB2800EAC2BC /* AudioHijackScripting.swift in Sources */,
 				FAD901A81F3869B8006AD800 /* SpotijackError.swift in Sources */,
+				FAAA59F224ACAEF0009C237E /* RecordingConfiguration.swift in Sources */,
 				FAAD519924AC96670073A971 /* PlayerState.swift in Sources */,
+				FAAA59F424ACAF05009C237E /* AudioSettings.swift in Sources */,
 				FAAEE64E24AB7C6E0060C1B6 /* AudioRecorder.swift in Sources */,
+				FAAA59F024ACAEDF009C237E /* RecordingEngine.swift in Sources */,
 				FA503A241F378B660009BDBD /* SpotijackSessionCreator.swift in Sources */,
 				FADD9EC41F03FB2800EAC2BC /* AudioHijack.swift in Sources */,
 				FACBE5C81F23D66C00030B87 /* Track.swift in Sources */,

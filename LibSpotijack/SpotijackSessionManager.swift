@@ -98,7 +98,7 @@ public final class SpotijackSessionManager {
     // MARK: - Private Properties
 
     internal let spotifyBridge: SpotifySBApplication
-    private let recorder = AudioRecorder()
+    private let recorder: AudioRecorder = { fatalError("Not implemented") }()
 
     // MARK: - Private Properties - State
 
@@ -149,10 +149,6 @@ public final class SpotijackSessionManager {
     }
 
     // MARK: - Public Methods
-
-    public func setInputDevice(_ device: AVCaptureDevice) {
-        try! recorder.setInputDevice(device)
-    }
 
     /// Start a Spotijack recording session. Calling this method when a recording session is already in progress has no
     /// effect. Polling will be restarted at the interval specified in `config`.
@@ -330,7 +326,7 @@ public final class SpotijackSessionManager {
             )
 
             do {
-                try self.recorder.startNewRecording(using: recordingConfiguration)
+//                try self.recorder.startNewRecording(using: recordingConfiguration)
             } catch {
                 self.notificationCenter.post(DidEncounterError(object: self, error: error))
             }

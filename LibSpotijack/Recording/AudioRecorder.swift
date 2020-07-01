@@ -12,7 +12,7 @@ import os.log
 
 private let log = OSLog(subsystem: "org.alexj.Spotijack", category: "AudioRecorder")
 
-public final class AudioRecorder: NSObject {
+public final class AudioRecorder: NSObject, RecordingEngine {
 
     // MARK: - Nested Types
 
@@ -33,38 +33,33 @@ public final class AudioRecorder: NSObject {
     // MARK: - Private Properties
 
     private let session = AVCaptureSession()
-    private var inputDevice: AVCaptureDevice?
+    private let inputDevice: AVCaptureDevice
     private let sessionOutput = AVCaptureAudioFileOutput()
+
+    // MARK: - Initializers
+
+    public init(inputDevice: AVCaptureDevice) {
+        self.inputDevice = inputDevice
+    }
 
     // MARK: - Public Methods
 
-    public func setInputDevice(_ device: AVCaptureDevice) throws {
-        do {
-            os_log(.info, log: log, "Setting AudioRecorder input device to %@", device.description)
-            try changeSessionInput(to: device)
-        } catch {
-            os_log(.error, log: log, "Failed to changed input device of AudioRecorder because %{public}@",
-                   String(describing: error))
-            throw error
-        }
-    }
-
-    public func startNewRecording(using configuration: Configuration) throws {
+    public func startNewRecording(using configuration: RecordingConfiguration) throws {
         os_signpost(.begin, log: log, name: "Starting New Recording")
         defer { os_signpost(.end, log: log, name: "Starting New Recording") }
 
         sessionOutput.audioSettings = [
-            AVFormatIDKey: configuration.encoding.formatID
+            AVFormatIDKey: configuration.audioSettings.encoding.formatID
         ]
 
         if !session.isRunning {
             try startCaptureSession()
         }
 
-        os_log(.info, log: log, "AudioRecorder starting a new recording to %@", configuration.outputFile.absoluteString)
+        os_log(.info, log: log, "AudioRecorder starting a new recording to %@", configuration.fileLocation.absoluteString)
         sessionOutput.startRecording(
-            to: configuration.outputFile,
-            outputFileType: configuration.fileFormat.fileType,
+            to: configuration.fileLocation,
+            outputFileType: configuration.audioSettings.container.fileType,
             recordingDelegate: self
         )
     }
@@ -91,7 +86,17 @@ public final class AudioRecorder: NSObject {
             do {
                 try configureSessionOutput()
             } catch {
-                os_log(.error, log: log, "Failed to configure AudioRecorder capture session with error: %@",
+                os_log(.error, log: log, "Failed to configure AudioRecorder capture session outputs with error: %@",
+                       String(describing: error))
+                throw error
+            }
+        }
+
+        if session.inputs.isEmpty {
+            do {
+                try configureSessionInputs()
+            } catch {
+                os_log(.error, log: log, "Failed to configure AudioRecorder capture session inputs with error: %@",
                        String(describing: error))
                 throw error
             }
@@ -107,7 +112,7 @@ public final class AudioRecorder: NSObject {
         session.addOutput(sessionOutput)
     }
 
-    private func changeSessionInput(to inputDevice: AVCaptureDevice) throws {
+    private func configureSessionInputs() throws {
         let captureInput: AVCaptureDeviceInput
         do {
             captureInput = try AVCaptureDeviceInput(device: inputDevice)

@@ -6,7 +6,6 @@ excluded:
 opt_in_rules:
   - closure_end_indentation
   - closure_spacing
-  - explicit_top_level_acl
   - fatal_error_message
   - operator_usage_whitespace
   - overridden_super_call
