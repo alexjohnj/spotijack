@@ -17,11 +17,6 @@
 		FA678C781F164402009D6AF8 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA678C771F164402009D6AF8 /* Notifications.swift */; };
 		FA687F961F3C9D5100B63453 /* MockSpotifyTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA687F951F3C9D5100B63453 /* MockSpotifyTrack.swift */; };
 		FA687F991F3CA05E00B63453 /* MockSpotifyApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA687F981F3CA05E00B63453 /* MockSpotifyApplication.swift */; };
-		FA687F9B1F3CAA1C00B63453 /* MockSpotijackAudioHijackApplicationSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA687F9A1F3CAA1C00B63453 /* MockSpotijackAudioHijackApplicationSession.swift */; };
-		FA687F9D1F3CB22A00B63453 /* MockAudioHijackApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA687F9C1F3CB22A00B63453 /* MockAudioHijackApplication.swift */; };
-		FA687F9F1F3CB55900B63453 /* SpotijackSessionAudioHijackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA687F9E1F3CB55900B63453 /* SpotijackSessionAudioHijackTests.swift */; };
-		FA687FA51F3CEB2000B63453 /* SpotijackSessionSpotifyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA687FA41F3CEB2000B63453 /* SpotijackSessionSpotifyTests.swift */; };
-		FA687FA81F3CEBC400B63453 /* SpotijackSessionExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA687FA71F3CEBC400B63453 /* SpotijackSessionExtensions.swift */; };
 		FA6B96201F3609500011D0D8 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6B961F1F3609500011D0D8 /* Preferences.swift */; };
 		FA8393761B16539A006736C8 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA8393751B16539A006736C8 /* Media.xcassets */; };
 		FA86C4B91F03FA25001ACBBA /* LibSpotijack.h in Headers */ = {isa = PBXBuildFile; fileRef = FA86C4B71F03FA25001ACBBA /* LibSpotijack.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -39,8 +34,6 @@
 		FAAF86DD1F31F79300833028 /* SpotijackSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAF86DC1F31F79300833028 /* SpotijackSessionManager.swift */; };
 		FAB41F101F26002A00448440 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB41F0F1F26002A00448440 /* AppDelegate.swift */; };
 		FAB41F1A1F26019A00448440 /* MainWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB41F191F26019A00448440 /* MainWindowController.swift */; };
-		FABE36B81F3DDC5000A34923 /* SpotijackSessionSpotijackingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABE36B71F3DDC5000A34923 /* SpotijackSessionSpotijackingTests.swift */; };
-		FABE36BA1F3DDEB800A34923 /* MockAudioHijackAudioRecording.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABE36B91F3DDEB800A34923 /* MockAudioHijackAudioRecording.swift */; };
 		FAC300811F17E04A00E47CB4 /* LibSpotijack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA86C4B51F03FA25001ACBBA /* LibSpotijack.framework */; };
 		FACBE5C81F23D66C00030B87 /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACBE5C71F23D66C00030B87 /* Track.swift */; };
 		FAD45AB91F2140920012EF3F /* TestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD45AB81F2140920012EF3F /* TestData.swift */; };
@@ -97,11 +90,6 @@
 		FA678C771F164402009D6AF8 /* Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 		FA687F951F3C9D5100B63453 /* MockSpotifyTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSpotifyTrack.swift; sourceTree = "<group>"; };
 		FA687F981F3CA05E00B63453 /* MockSpotifyApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSpotifyApplication.swift; sourceTree = "<group>"; };
-		FA687F9A1F3CAA1C00B63453 /* MockSpotijackAudioHijackApplicationSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSpotijackAudioHijackApplicationSession.swift; sourceTree = "<group>"; };
-		FA687F9C1F3CB22A00B63453 /* MockAudioHijackApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAudioHijackApplication.swift; sourceTree = "<group>"; };
-		FA687F9E1F3CB55900B63453 /* SpotijackSessionAudioHijackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotijackSessionAudioHijackTests.swift; sourceTree = "<group>"; };
-		FA687FA41F3CEB2000B63453 /* SpotijackSessionSpotifyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotijackSessionSpotifyTests.swift; sourceTree = "<group>"; };
-		FA687FA71F3CEBC400B63453 /* SpotijackSessionExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotijackSessionExtensions.swift; sourceTree = "<group>"; };
 		FA6B961F1F3609500011D0D8 /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		FA8393751B16539A006736C8 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		FA86C4B51F03FA25001ACBBA /* LibSpotijack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LibSpotijack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -123,8 +111,6 @@
 		FAAF86DC1F31F79300833028 /* SpotijackSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotijackSessionManager.swift; sourceTree = "<group>"; };
 		FAB41F0F1F26002A00448440 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FAB41F191F26019A00448440 /* MainWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindowController.swift; sourceTree = "<group>"; };
-		FABE36B71F3DDC5000A34923 /* SpotijackSessionSpotijackingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotijackSessionSpotijackingTests.swift; sourceTree = "<group>"; };
-		FABE36B91F3DDEB800A34923 /* MockAudioHijackAudioRecording.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAudioHijackAudioRecording.swift; sourceTree = "<group>"; };
 		FAC3007C1F17E04A00E47CB4 /* LibSpotijackTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LibSpotijackTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAC300801F17E04A00E47CB4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FACBE5C71F23D66C00030B87 /* Track.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
@@ -194,9 +180,6 @@
 			children = (
 				FA687F951F3C9D5100B63453 /* MockSpotifyTrack.swift */,
 				FA687F981F3CA05E00B63453 /* MockSpotifyApplication.swift */,
-				FA687F9A1F3CAA1C00B63453 /* MockSpotijackAudioHijackApplicationSession.swift */,
-				FA687F9C1F3CB22A00B63453 /* MockAudioHijackApplication.swift */,
-				FABE36B91F3DDEB800A34923 /* MockAudioHijackAudioRecording.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -204,9 +187,6 @@
 		FA687FA61F3CEB2C00B63453 /* SpotijackSession Tests */ = {
 			isa = PBXGroup;
 			children = (
-				FA687F9E1F3CB55900B63453 /* SpotijackSessionAudioHijackTests.swift */,
-				FA687FA41F3CEB2000B63453 /* SpotijackSessionSpotifyTests.swift */,
-				FABE36B71F3DDC5000A34923 /* SpotijackSessionSpotijackingTests.swift */,
 			);
 			path = "SpotijackSession Tests";
 			sourceTree = "<group>";
@@ -298,11 +278,10 @@
 		FAC3007D1F17E04A00E47CB4 /* LibSpotijackTests */ = {
 			isa = PBXGroup;
 			children = (
-				FAD45AB81F2140920012EF3F /* TestData.swift */,
-				FA687FA71F3CEBC400B63453 /* SpotijackSessionExtensions.swift */,
-				FA687FA61F3CEB2C00B63453 /* SpotijackSession Tests */,
-				FA687F971F3C9D5400B63453 /* Mocks */,
 				FAC300801F17E04A00E47CB4 /* Info.plist */,
+				FAD45AB81F2140920012EF3F /* TestData.swift */,
+				FA687F971F3C9D5400B63453 /* Mocks */,
+				FA687FA61F3CEB2C00B63453 /* SpotijackSession Tests */,
 			);
 			path = LibSpotijackTests;
 			sourceTree = "<group>";
@@ -586,13 +565,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FA687F9D1F3CB22A00B63453 /* MockAudioHijackApplication.swift in Sources */,
-				FABE36B81F3DDC5000A34923 /* SpotijackSessionSpotijackingTests.swift in Sources */,
-				FA687FA81F3CEBC400B63453 /* SpotijackSessionExtensions.swift in Sources */,
-				FA687F9F1F3CB55900B63453 /* SpotijackSessionAudioHijackTests.swift in Sources */,
-				FA687FA51F3CEB2000B63453 /* SpotijackSessionSpotifyTests.swift in Sources */,
-				FA687F9B1F3CAA1C00B63453 /* MockSpotijackAudioHijackApplicationSession.swift in Sources */,
-				FABE36BA1F3DDEB800A34923 /* MockAudioHijackAudioRecording.swift in Sources */,
 				FA687F961F3C9D5100B63453 /* MockSpotifyTrack.swift in Sources */,
 				FAD45AB91F2140920012EF3F /* TestData.swift in Sources */,
 				FA687F991F3CA05E00B63453 /* MockSpotifyApplication.swift in Sources */,
