@@ -75,7 +75,7 @@ extension MainWindowController {
         }
     }
 
-    private func updateTrackStatusFields(track: StaticSpotifyTrack?) {
+    private func updateTrackStatusFields(track: Track?) {
         if let track = track {
             statusField.stringValue = track.name
             artistAlbumField.stringValue = "\(track.artist) — \(track.album)"

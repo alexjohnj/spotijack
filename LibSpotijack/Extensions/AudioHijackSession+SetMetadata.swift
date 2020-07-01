@@ -9,7 +9,7 @@
 import Foundation
 
 extension AudioHijackSession {
-    internal func setMetadata(from track: StaticSpotifyTrack) {
+    internal func setMetadata(from track: Track) {
         setTitleTag!(track.name)
         setArtistTag!(track.artist)
         setAlbumArtistTag!(track.albumArtist)

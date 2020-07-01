@@ -76,8 +76,8 @@ public final class SpotijackSessionManager {
     /// The currently playing track in Spotify or `nil` if no track is playing.
     ///
     // TODO: - Extract this into a MusicApp type property
-    public var currentTrack: StaticSpotifyTrack? {
-        return spotifyBridge.currentTrack.map(StaticSpotifyTrack.init(from:))
+    public var currentTrack: Track? {
+        return spotifyBridge.currentTrack.map(Track.init(from:))
     }
 
     /// Queries AHP to determine if the Spotijack session is recording. Returns false and posts a `DidEncounterError`

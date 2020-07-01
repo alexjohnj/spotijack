@@ -21,7 +21,7 @@ internal class SpotijackSessionSpotifyTests: XCTestCase {
 
     func testChangeTrackNotifiesDelegate() {
         let expectedTrack = TestTrack.FakeHappy._backingTrack
-        var receivedTrack: StaticSpotifyTrack?
+        var receivedTrack: Track?
 
         let (session, spotify, _) = SpotijackSessionManager.makeStandardApplications()
         let obs = session.notificationCenter.addObserver(forType: TrackDidChange.self,

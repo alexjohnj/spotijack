@@ -33,7 +33,7 @@ public struct RecordingStateDidChange: TypedNotification {
 /// attached track can be `nil` if no more tracks are playing.
 public struct TrackDidChange: TypedNotification {
     public let object: SpotijackSessionManager
-    public let newTrack: StaticSpotifyTrack?
+    public let newTrack: Track?
 }
 
 /// Posted when Spotijacking has ended, regardless of the reason.

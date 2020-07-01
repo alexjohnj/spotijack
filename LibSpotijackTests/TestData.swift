@@ -10,7 +10,7 @@ import Foundation
 @testable import LibSpotijack
 
 internal enum TestTrack {
-    static let LetTheFlamesBegin = MockSpotifyTrack(backingTrack: StaticSpotifyTrack(
+    static let LetTheFlamesBegin = MockSpotifyTrack(backingTrack: Track(
         artist: "Paramore",
         album: "RIOT",
         discNumber: 1,
@@ -22,7 +22,7 @@ internal enum TestTrack {
         )
     )
 
-    static let FakeHappy = MockSpotifyTrack(backingTrack: StaticSpotifyTrack(
+    static let FakeHappy = MockSpotifyTrack(backingTrack: Track(
         artist: "Paramore",
         album: "Hard Times",
         discNumber: 1,
@@ -34,7 +34,7 @@ internal enum TestTrack {
         )
     )
 
-    static let BabesNeverDieOutro = MockSpotifyTrack(backingTrack: StaticSpotifyTrack(
+    static let BabesNeverDieOutro = MockSpotifyTrack(backingTrack: Track(
         artist: "Honeyblood",
         album: "Babes Never Die",
         discNumber: 1,

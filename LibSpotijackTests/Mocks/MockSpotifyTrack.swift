@@ -11,9 +11,9 @@ import LibSpotijack
 
 internal class MockSpotifyTrack: NSObject {
     // A StaticSpotifyTrack that this track represents
-    var _backingTrack: StaticSpotifyTrack
+    var _backingTrack: Track
 
-    init(backingTrack: StaticSpotifyTrack) {
+    init(backingTrack: Track) {
         _backingTrack = backingTrack
 
         super.init()
