@@ -109,7 +109,6 @@ final class SessionCoordinatorTests: XCTestCase {
         // Then
         let recordingConfiguration = try XCTUnwrap(recorder.startNewRecordingInvocations.first)
         XCTAssertEqual(recordingConfiguration.track, track)
-        XCTAssertEqual(recordingConfiguration.audioSettings, sessionConfig.audioSettings)
     }
 
     func test_startRecording_appliesSessionConfiguration_toMusicApp() throws {

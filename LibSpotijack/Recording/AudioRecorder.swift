@@ -35,11 +35,13 @@ public final class AudioRecorder: NSObject, RecordingEngine {
     private let session = AVCaptureSession()
     private let inputDevice: AVCaptureDevice
     private let sessionOutput = AVCaptureAudioFileOutput()
+    private let audioSettings: AudioSettings
 
     // MARK: - Initializers
 
-    public init(inputDevice: AVCaptureDevice) {
+    public init(inputDevice: AVCaptureDevice, audioSettings: AudioSettings) {
         self.inputDevice = inputDevice
+        self.audioSettings = audioSettings
     }
 
     // MARK: - Public Methods
@@ -48,10 +50,6 @@ public final class AudioRecorder: NSObject, RecordingEngine {
         os_signpost(.begin, log: log, name: "Starting New Recording")
         defer { os_signpost(.end, log: log, name: "Starting New Recording") }
 
-        sessionOutput.audioSettings = [
-            AVFormatIDKey: configuration.audioSettings.encoding.formatID
-        ]
-
         if !session.isRunning {
             try startCaptureSession()
         }
@@ -59,7 +57,7 @@ public final class AudioRecorder: NSObject, RecordingEngine {
         os_log(.info, log: log, "AudioRecorder starting a new recording to %@", configuration.fileLocation.absoluteString)
         sessionOutput.startRecording(
             to: configuration.fileLocation,
-            outputFileType: configuration.audioSettings.container.fileType,
+            outputFileType: audioSettings.container.fileType,
             recordingDelegate: self
         )
     }
@@ -71,7 +69,6 @@ public final class AudioRecorder: NSObject, RecordingEngine {
 
         sessionOutput.stopRecording()
         session.stopRunning()
-
     }
 
     // MARK: - Private Methods
@@ -81,16 +78,6 @@ public final class AudioRecorder: NSObject, RecordingEngine {
 
         os_signpost(.begin, log: log, name: "Start Capture Session")
         defer { os_signpost(.end, log: log, name: "Start Capture Session") }
-
-        if session.outputs.isEmpty {
-            do {
-                try configureSessionOutput()
-            } catch {
-                os_log(.error, log: log, "Failed to configure AudioRecorder capture session outputs with error: %@",
-                       String(describing: error))
-                throw error
-            }
-        }
 
         if session.inputs.isEmpty {
             do {
@@ -102,14 +89,33 @@ public final class AudioRecorder: NSObject, RecordingEngine {
             }
         }
 
+        if session.outputs.isEmpty {
+            do {
+                try configureSessionOutput()
+            } catch {
+                os_log(.error, log: log, "Failed to configure AudioRecorder capture session outputs with error: %@",
+                       String(describing: error))
+                throw error
+            }
+        }
+
         session.startRunning()
     }
 
     private func configureSessionOutput() throws {
+        // Important that the output is configured _after_ the input otherwise the output's audio settings will not
+        // apply.
+        assert(!session.inputs.isEmpty, "AVCaptureSession inputs need to be configured before the output is configured")
+
         guard session.canAddOutput(sessionOutput) else {
             throw ConfigurationError.outputDeviceUnusable
         }
+
         session.addOutput(sessionOutput)
+
+        sessionOutput.audioSettings = [
+            AVFormatIDKey: audioSettings.encoding.formatID
+        ]
     }
 
     private func configureSessionInputs() throws {

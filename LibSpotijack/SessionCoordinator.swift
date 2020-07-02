@@ -90,8 +90,7 @@ public final class SessionCoordinator {
 
                         let recordingConfiguration = RecordingConfiguration(
                             fileLocation: newRecordingLocation,
-                            track: currentTrack,
-                            audioSettings: configuration.audioSettings
+                            track: currentTrack
                         )
 
                         try recordingEngine.startNewRecording(using: recordingConfiguration)

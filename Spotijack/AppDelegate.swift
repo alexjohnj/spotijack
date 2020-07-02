@@ -28,7 +28,7 @@ internal class AppDelegate: NSObject, NSApplicationDelegate {
             switch result {
             case .success(let app):
                 sessionCoordinator = SessionCoordinator(musicApp: app, recorderFactory: { device in
-                    AudioRecorder(inputDevice: device as! AVCaptureDevice) // swiftlint:disable:this force_cast
+                    AudioRecorder(inputDevice: device as! AVCaptureDevice, audioSettings: AudioSettings()) // swiftlint:disable:this force_cast
                 })
                 mainWindowController = MainWindowController(musicApp: app, sessionCoordinator: sessionCoordinator)
                 _ = applicationShouldHandleReopen(NSApplication.shared, hasVisibleWindows: false)

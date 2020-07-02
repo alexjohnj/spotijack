@@ -18,7 +18,7 @@ internal class MainWindowController: NSWindowController {
 
     private let sessionCoordinator: SessionCoordinator
     private let musicApp: MusicApplication
-    private let testDevice = AVCaptureDevice(uniqueID: "com.rogueamoeba.Loopback:02937F9F-20CD-4906-A22E-0024A99C6B65")!
+    private let testDevice = AVCaptureDevice(uniqueID: "com.rogueamoeba.Loopback:FA961DC0-CDBE-4CE4-A609-EA5BD676F205")!
 
     private var cancellationBag: [AnyCancellable] = []
 

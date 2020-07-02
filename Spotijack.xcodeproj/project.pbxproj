@@ -427,8 +427,9 @@
 					};
 					FA95035A1A421B76009D7149 = {
 						CreatedOnToolsVersion = 6.1.1;
+						DevelopmentTeam = LMVB86HGC7;
 						LastSwiftMigration = 1020;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 					};
 					FAC3007B1F17E04A00E47CB4 = {
 						CreatedOnToolsVersion = 9.0;
@@ -834,9 +835,10 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = LMVB86HGC7;
 				GCC_PREFIX_HEADER = Spotijack/PrefixHeader.pch;
 				INFOPLIST_FILE = Spotijack/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
@@ -854,9 +856,10 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = LMVB86HGC7;
 				GCC_PREFIX_HEADER = Spotijack/PrefixHeader.pch;
 				INFOPLIST_FILE = Spotijack/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";

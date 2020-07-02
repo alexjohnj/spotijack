@@ -11,5 +11,4 @@ import Foundation
 public struct RecordingConfiguration: Hashable {
     public var fileLocation: URL
     public var track: Track
-    public var audioSettings: AudioSettings
 }
