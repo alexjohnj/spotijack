@@ -37,6 +37,9 @@ public final class AudioRecorder: NSObject, RecordingEngine {
     private let sessionOutput = AVCaptureAudioFileOutput()
     private let audioSettings: AudioSettings
 
+    private let recordingQueue = DispatchQueue(label: "org.alexj.Spotijack.AudioRecorderQueue")
+    private let recordingGroup = DispatchGroup()
+
     // MARK: - Initializers
 
     public init(inputDevice: AVCaptureDevice, audioSettings: AudioSettings) {
@@ -47,6 +50,18 @@ public final class AudioRecorder: NSObject, RecordingEngine {
     // MARK: - Public Methods
 
     public func startNewRecording(using configuration: RecordingConfiguration) throws {
+        try recordingQueue.sync { try recordingQueue_startNewRecording(using: configuration) }
+    }
+
+    public func stopRecording() {
+        recordingQueue.sync { recordingQueue_stopRecording() }
+    }
+
+    // MARK: - Queue Specific Methods
+
+    private func recordingQueue_startNewRecording(using configuration: RecordingConfiguration) throws {
+        dispatchPrecondition(condition: .onQueue(recordingQueue))
+
         os_signpost(.begin, log: log, name: "Starting New Recording")
         defer { os_signpost(.end, log: log, name: "Starting New Recording") }
 
@@ -55,6 +70,7 @@ public final class AudioRecorder: NSObject, RecordingEngine {
         }
 
         os_log(.info, log: log, "AudioRecorder starting a new recording to %@", configuration.fileLocation.absoluteString)
+        recordingGroup.enter()
         sessionOutput.startRecording(
             to: configuration.fileLocation,
             outputFileType: audioSettings.container.fileType,
@@ -62,16 +78,27 @@ public final class AudioRecorder: NSObject, RecordingEngine {
         )
     }
 
-    public func stopRecording() {
+    private func recordingQueue_stopRecording() {
+        dispatchPrecondition(condition: .onQueue(recordingQueue))
+
         os_log(.info, log: log, "AudioRecorder is ending recording")
+
         os_signpost(.begin, log: log, name: "Stopping Recording")
         defer { os_signpost(.end, log: log, name: "Stopping Recording") }
 
         sessionOutput.stopRecording()
-        session.stopRunning()
+
+        // Recording finishes on a background thread. Must wait for it to complete before stopping the capture session.
+        // And must block the recording queue so new recordings aren't started until the old session completes.
+        recordingQueue.async {
+            // Timeout as we can deadlock when calling startNewRecording: and the caller's queue is the queue
+            // AVCaptureAudioFileOutput calls the delegate on.
+            _ = self.recordingGroup.wait(timeout: .now() + 2)
+            self.session.stopRunning()
+        }
     }
 
-    // MARK: - Private Methods
+    // MARK: - Helper Methods
 
     private func startCaptureSession() throws {
         os_log(.info, log: log, "Starting AudioRecorder capture session")
@@ -137,6 +164,8 @@ public final class AudioRecorder: NSObject, RecordingEngine {
 
 extension AudioRecorder: AVCaptureFileOutputRecordingDelegate {
     public func fileOutput(_ output: AVCaptureFileOutput, didFinishRecordingTo outputFileURL: URL, from connections: [AVCaptureConnection], error: Error?) {
+        defer { recordingGroup.leave() }
+
         if let error = error {
             os_log(.error, log: log, "AudioRecorder failed to record to %@ with error %{public}@",
                    outputFileURL.absoluteString, String(describing: error))
