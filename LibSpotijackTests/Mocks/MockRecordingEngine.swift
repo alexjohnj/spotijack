@@ -11,6 +11,8 @@ import Foundation
 
 final class MockRecordingEngine: RecordingEngine {
 
+    weak var delegate: RecordingEngineDelegate?
+
     var startNewRecordingInvocations = [RecordingConfiguration]()
     var startNewRecordingInvocationCount: Int { startNewRecordingInvocations.count }
     var startNewRecordingInvoked: Bool { !startNewRecordingInvocations.isEmpty }

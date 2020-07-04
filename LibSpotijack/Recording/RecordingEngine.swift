@@ -8,7 +8,9 @@
 
 import Foundation
 
-protocol RecordingEngine {
+protocol RecordingEngine: AnyObject {
+
+    var delegate: RecordingEngineDelegate? { get set }
 
     /// Instructs the engine to start a new recording using a given configuration.
     ///
@@ -19,4 +21,10 @@ protocol RecordingEngine {
 
     /// Instructs the engine to end a recording if one is in progress.
     func stopRecording()
+}
+
+protocol RecordingEngineDelegate: AnyObject {
+
+    /// Notifies the delegate that recording has finished. This can be called from any thread.
+    func recordingEngine(_ recordingEngine: RecordingEngine, didFinishRecordingTo fileURL: URL, withError error: Error?)
 }

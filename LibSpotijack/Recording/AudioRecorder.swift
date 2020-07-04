@@ -26,6 +26,8 @@ final class AudioRecorder: NSObject, RecordingEngine {
 
     // MARK: - Properties
 
+    weak var delegate: RecordingEngineDelegate?
+
     var isRecording: Bool {
         sessionOutput.isRecording
     }
@@ -176,5 +178,7 @@ extension AudioRecorder: AVCaptureFileOutputRecordingDelegate {
         } else {
             os_log(.info, log: log, "AudioRecorder finished recording to %@", outputFileURL.absoluteString)
         }
+
+        delegate?.recordingEngine(self, didFinishRecordingTo: outputFileURL, withError: error)
     }
 }

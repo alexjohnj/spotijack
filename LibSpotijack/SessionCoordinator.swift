@@ -82,6 +82,7 @@ public final class SessionCoordinator {
         }
 
         let recordingEngine = try recorderFactory(captureDevice, configuration.audioSettings)
+        recordingEngine.delegate = self
         activeRecordingEngine = recordingEngine
 
         musicApp.pause()
@@ -138,6 +139,15 @@ public final class SessionCoordinator {
 
         if configuration.shouldDisableRepeat {
             musicApp.setRepeatEnabled(false)
+        }
+    }
+}
+
+extension SessionCoordinator: RecordingEngineDelegate {
+    func recordingEngine(_ recordingEngine: RecordingEngine, didFinishRecordingTo fileURL: URL, withError error: Error?) {
+        guard error == nil else {
+            stopRecording()
+            return
         }
     }
 }
