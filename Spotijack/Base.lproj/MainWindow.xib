@@ -9,6 +9,7 @@
         <customObject id="-2" userLabel="File's Owner" customClass="MainWindowController" customModule="Spotijack" customModuleProvider="target">
             <connections>
                 <outlet property="artistAlbumField" destination="2zZ-cK-X9C" id="IDn-Tv-lm0"/>
+                <outlet property="inputDevicePopUp" destination="cXV-At-tDt" id="zIH-z7-IfH"/>
                 <outlet property="spotijackButton" destination="AKD-kg-1UY" id="ccZ-hm-blr"/>
                 <outlet property="statusField" destination="SVJ-Xv-L1m" id="xIo-ac-N8n"/>
                 <outlet property="window" destination="uSh-TC-Nzq" id="lMK-yp-7zr"/>
@@ -22,43 +23,73 @@
             <rect key="contentRect" x="335" y="390" width="350" height="119"/>
             <rect key="screenRect" x="0.0" y="0.0" width="3440" height="1417"/>
             <view key="contentView" id="d0Y-fb-agL">
-                <rect key="frame" x="0.0" y="0.0" width="350" height="117"/>
+                <rect key="frame" x="0.0" y="0.0" width="350" height="163"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
-                    <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="251" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="X0s-D8-cKM">
-                        <rect key="frame" x="20" y="52" width="310" height="45"/>
-                        <subviews>
-                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SVJ-Xv-L1m">
-                                <rect key="frame" x="-2" y="24" width="314" height="21"/>
-                                <textFieldCell key="cell" controlSize="mini" sendsActionOnEndEditing="YES" placeholderString="Status" id="Dbj-7N-ITI">
-                                    <font key="font" metaFont="system" size="18"/>
-                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
-                            <textField verticalHuggingPriority="750" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2zZ-cK-X9C">
-                                <rect key="frame" x="-2" y="0.0" width="314" height="16"/>
-                                <textFieldCell key="cell" sendsActionOnEndEditing="YES" placeholderString="Artist — Album" id="7op-DH-RlE">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
-                        </subviews>
-                        <visibilityPriorities>
-                            <integer value="1000"/>
-                            <integer value="1000"/>
-                        </visibilityPriorities>
-                        <customSpacing>
-                            <real value="3.4028234663852886e+38"/>
-                            <real value="3.4028234663852886e+38"/>
-                        </customSpacing>
-                    </stackView>
+                    <gridView horizontalHuggingPriority="750" verticalHuggingPriority="750" xPlacement="leading" yPlacement="fill" rowAlignment="none" rowSpacing="8" columnSpacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="EYO-Ym-ndF">
+                        <rect key="frame" x="20" y="61" width="310" height="82"/>
+                        <rows>
+                            <gridRow id="Eof-zb-HF2"/>
+                            <gridRow bottomPadding="8" id="R1A-iP-Ml4"/>
+                            <gridRow rowAlignment="firstBaseline" id="2CJ-SI-GaC"/>
+                        </rows>
+                        <columns>
+                            <gridColumn id="46j-Ow-Tgp"/>
+                            <gridColumn id="y1B-6i-DUv"/>
+                        </columns>
+                        <gridCells>
+                            <gridCell row="Eof-zb-HF2" column="46j-Ow-Tgp" headOfMergedCell="P1G-bT-dLD" id="P1G-bT-dLD">
+                                <textField key="contentView" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SVJ-Xv-L1m">
+                                    <rect key="frame" x="-2" y="61" width="314" height="21"/>
+                                    <textFieldCell key="cell" controlSize="mini" sendsActionOnEndEditing="YES" placeholderString="Status" id="Dbj-7N-ITI">
+                                        <font key="font" metaFont="system" size="18"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                            </gridCell>
+                            <gridCell row="Eof-zb-HF2" column="y1B-6i-DUv" headOfMergedCell="P1G-bT-dLD" id="KDZ-hf-1gz"/>
+                            <gridCell row="R1A-iP-Ml4" column="46j-Ow-Tgp" headOfMergedCell="YdQ-1y-UEn" id="YdQ-1y-UEn">
+                                <textField key="contentView" verticalHuggingPriority="750" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2zZ-cK-X9C">
+                                    <rect key="frame" x="-2" y="37" width="314" height="16"/>
+                                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" placeholderString="Artist — Album" id="7op-DH-RlE">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                            </gridCell>
+                            <gridCell row="R1A-iP-Ml4" column="y1B-6i-DUv" headOfMergedCell="YdQ-1y-UEn" id="xmQ-0M-sQu"/>
+                            <gridCell row="2CJ-SI-GaC" column="46j-Ow-Tgp" id="c3Z-b4-cg4">
+                                <textField key="contentView" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="kcj-yF-IX2">
+                                    <rect key="frame" x="-2" y="0.0" width="89" height="20"/>
+                                    <textFieldCell key="cell" lineBreakMode="clipping" title="Audio Source:" id="ZNf-ao-x79">
+                                        <font key="font" usesAppearanceFont="YES"/>
+                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                            </gridCell>
+                            <gridCell row="2CJ-SI-GaC" column="y1B-6i-DUv" id="5OQ-Gu-jQN">
+                                <popUpButton key="contentView" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cXV-At-tDt">
+                                    <rect key="frame" x="91" y="-3" width="222" height="25"/>
+                                    <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="EwT-Gg-hWU">
+                                        <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="menu"/>
+                                        <menu key="menu" id="hey-aY-dld"/>
+                                    </popUpButtonCell>
+                                    <connections>
+                                        <action selector="selectInputDevice:" target="-2" id="xYr-1c-Njh"/>
+                                    </connections>
+                                </popUpButton>
+                            </gridCell>
+                        </gridCells>
+                    </gridView>
                     <button toolTip="Start recording" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="AKD-kg-1UY">
-                        <rect key="frame" x="147" y="7" width="57" height="19"/>
-                        <buttonCell key="cell" type="recessed" title="Record" bezelStyle="recessed" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="VHG-XA-Bdi">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
-                            <font key="font" metaFont="systemBold" size="12"/>
+                        <rect key="frame" x="134" y="13" width="83" height="32"/>
+                        <buttonCell key="cell" type="push" title="Record" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="VHG-XA-Bdi">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
                         </buttonCell>
                         <connections>
                             <action selector="spotijackButtonClicked:" target="-2" id="XqR-4D-0MN"/>
@@ -66,19 +97,18 @@
                     </button>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="bottom" secondItem="AKD-kg-1UY" secondAttribute="bottom" constant="8" id="C2a-UX-LNE"/>
-                    <constraint firstItem="X0s-D8-cKM" firstAttribute="leading" secondItem="d0Y-fb-agL" secondAttribute="leading" constant="20" symbolic="YES" id="C8W-Tf-8a6"/>
-                    <constraint firstAttribute="trailing" secondItem="X0s-D8-cKM" secondAttribute="trailing" constant="20" symbolic="YES" id="DEP-ea-yYx"/>
-                    <constraint firstItem="X0s-D8-cKM" firstAttribute="top" secondItem="d0Y-fb-agL" secondAttribute="top" constant="20" symbolic="YES" id="PVu-XW-S6n"/>
+                    <constraint firstItem="EYO-Ym-ndF" firstAttribute="leading" secondItem="d0Y-fb-agL" secondAttribute="leading" constant="20" symbolic="YES" id="0ZC-bs-iBi"/>
                     <constraint firstAttribute="centerX" secondItem="AKD-kg-1UY" secondAttribute="centerX" id="V7r-6M-qGW"/>
-                    <constraint firstItem="AKD-kg-1UY" firstAttribute="top" secondItem="X0s-D8-cKM" secondAttribute="bottom" constant="26" id="chu-1O-Cew"/>
+                    <constraint firstAttribute="bottom" secondItem="AKD-kg-1UY" secondAttribute="bottom" constant="20" symbolic="YES" id="W3q-oU-x0g"/>
+                    <constraint firstAttribute="trailing" secondItem="EYO-Ym-ndF" secondAttribute="trailing" constant="20" symbolic="YES" id="eZP-yo-Q6g"/>
+                    <constraint firstItem="EYO-Ym-ndF" firstAttribute="top" secondItem="d0Y-fb-agL" secondAttribute="top" constant="20" symbolic="YES" id="iam-uq-m1r"/>
+                    <constraint firstItem="AKD-kg-1UY" firstAttribute="top" secondItem="EYO-Ym-ndF" secondAttribute="bottom" constant="20" symbolic="YES" id="wXX-ux-hd3"/>
                 </constraints>
             </view>
-            <contentBorderThickness minY="32"/>
             <connections>
                 <outlet property="delegate" destination="-2" id="ea6-We-iEi"/>
             </connections>
-            <point key="canvasLocation" x="-1555" y="-6"/>
+            <point key="canvasLocation" x="-1956" y="37"/>
         </window>
     </objects>
 </document>
