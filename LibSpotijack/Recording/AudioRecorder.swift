@@ -12,11 +12,11 @@ import os.log
 
 private let log = OSLog(subsystem: "org.alexj.Spotijack", category: "AudioRecorder")
 
-public final class AudioRecorder: NSObject, RecordingEngine {
+final class AudioRecorder: NSObject, RecordingEngine {
 
     // MARK: - Nested Types
 
-    public enum ConfigurationError: Error {
+    enum ConfigurationError: Error {
         case noInputDeviceSelected
 
         case inputDeviceUnavailable(AVCaptureDevice, reason: Error)
@@ -24,7 +24,7 @@ public final class AudioRecorder: NSObject, RecordingEngine {
         case outputDeviceUnusable
     }
 
-    // MARK: - Public Properties
+    // MARK: - Properties
 
     var isRecording: Bool {
         sessionOutput.isRecording
@@ -42,18 +42,22 @@ public final class AudioRecorder: NSObject, RecordingEngine {
 
     // MARK: - Initializers
 
-    public init(inputDevice: AVCaptureDevice, audioSettings: AudioSettings) {
+    init(inputDevice: AVCaptureDevice, audioSettings: AudioSettings) {
         self.inputDevice = inputDevice
         self.audioSettings = audioSettings
     }
 
-    // MARK: - Public Methods
+    convenience init(convertibleDevice: AVCaptureDeviceConvertible, audioSettings: AudioSettings) {
+        self.init(inputDevice: convertibleDevice.resolvedDevice, audioSettings: audioSettings)
+    }
 
-    public func startNewRecording(using configuration: RecordingConfiguration) throws {
+    // MARK: - Methods
+
+    func startNewRecording(using configuration: RecordingConfiguration) throws {
         try recordingQueue.sync { try recordingQueue_startNewRecording(using: configuration) }
     }
 
-    public func stopRecording() {
+    func stopRecording() {
         recordingQueue.sync { recordingQueue_stopRecording() }
     }
 
@@ -163,7 +167,7 @@ public final class AudioRecorder: NSObject, RecordingEngine {
 }
 
 extension AudioRecorder: AVCaptureFileOutputRecordingDelegate {
-    public func fileOutput(_ output: AVCaptureFileOutput, didFinishRecordingTo outputFileURL: URL, from connections: [AVCaptureConnection], error: Error?) {
+    func fileOutput(_ output: AVCaptureFileOutput, didFinishRecordingTo outputFileURL: URL, from connections: [AVCaptureConnection], error: Error?) {
         defer { recordingGroup.leave() }
 
         if let error = error {

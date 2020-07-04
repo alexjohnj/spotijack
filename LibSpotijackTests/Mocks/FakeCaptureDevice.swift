@@ -7,6 +7,9 @@
 //
 
 import Foundation
-import LibSpotijack
+import AVFoundation
+@testable import LibSpotijack
 
-struct FakeCaptureDevice: CaptureDevice { }
+struct FakeCaptureDevice: AVCaptureDeviceConvertible {
+    var resolvedDevice: AVCaptureDevice { fatalError("Not implemented") }
+}

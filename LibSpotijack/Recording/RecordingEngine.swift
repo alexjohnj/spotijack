@@ -8,7 +8,7 @@
 
 import Foundation
 
-public protocol RecordingEngine {
+protocol RecordingEngine {
 
     /// Instructs the engine to start a new recording using a given configuration.
     ///

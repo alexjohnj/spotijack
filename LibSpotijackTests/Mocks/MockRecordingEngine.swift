@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import LibSpotijack
+@testable import LibSpotijack
 
 final class MockRecordingEngine: RecordingEngine {
 

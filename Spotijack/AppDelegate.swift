@@ -27,9 +27,7 @@ internal class AppDelegate: NSObject, NSApplicationDelegate {
         SpotifyApplication.launch { [self] result in
             switch result {
             case .success(let app):
-                sessionCoordinator = SessionCoordinator(musicApp: app, recorderFactory: { device in
-                    AudioRecorder(inputDevice: device as! AVCaptureDevice, audioSettings: AudioSettings()) // swiftlint:disable:this force_cast
-                })
+                sessionCoordinator = SessionCoordinator(musicApp: app)
                 mainWindowController = MainWindowController(musicApp: app, sessionCoordinator: sessionCoordinator)
                 _ = applicationShouldHandleReopen(NSApplication.shared, hasVisibleWindows: false)
 

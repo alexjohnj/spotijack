@@ -18,7 +18,7 @@ public final class SessionCoordinator {
 
     // MARK: - Nested Types
 
-    public typealias RecorderFactory = (CaptureDevice) throws -> RecordingEngine
+    typealias RecorderFactory = (AVCaptureDeviceConvertible, AudioSettings) throws -> RecordingEngine
 
     public struct Configuration: Hashable {
         public var shouldDisableShuffling = true
@@ -55,20 +55,33 @@ public final class SessionCoordinator {
 
     // MARK: - Initializers
 
-    public init(musicApp: MusicApplication, recorderFactory: @escaping RecorderFactory) {
+    init(musicApp: MusicApplication, recorderFactory: @escaping RecorderFactory) {
         self.musicApp = musicApp
         self.recorderFactory = recorderFactory
     }
 
+    public convenience init(musicApp: MusicApplication) {
+        self.init(
+            musicApp: musicApp,
+            recorderFactory: { device, audioSettings in
+                return AudioRecorder(convertibleDevice: device, audioSettings: audioSettings)
+            }
+        )
+    }
+
     // MARK: - Public Methods
 
-    public func startRecording(from captureDevice: CaptureDevice, using configuration: Configuration) throws {
+    public func startRecording(from captureDevice: AVCaptureDevice, using configuration: Configuration) throws {
+        try startRecordingFromConvertibleDevice(captureDevice, using: configuration)
+    }
+
+    func startRecordingFromConvertibleDevice(_ captureDevice: AVCaptureDeviceConvertible, using configuration: Configuration) throws {
         guard !isRecording,
               let currentTrack = musicApp.currentTrack else {
             return
         }
 
-        let recordingEngine = try recorderFactory(captureDevice)
+        let recordingEngine = try recorderFactory(captureDevice, configuration.audioSettings)
         activeRecordingEngine = recordingEngine
 
         musicApp.pause()
