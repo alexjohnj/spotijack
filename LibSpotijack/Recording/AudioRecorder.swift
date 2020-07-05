@@ -75,7 +75,7 @@ final class AudioRecorder: NSObject, RecordingEngine {
             try startCaptureSession()
         }
 
-        os_log(.info, log: log, "AudioRecorder starting a new recording to %@", configuration.fileLocation.absoluteString)
+        os_log(.info, log: log, "AudioRecorder starting a new recording to %s", configuration.fileLocation.path)
         recordingGroup.enter()
         sessionOutput.startRecording(
             to: configuration.fileLocation,
@@ -118,7 +118,7 @@ final class AudioRecorder: NSObject, RecordingEngine {
             do {
                 try configureSessionInputs()
             } catch {
-                os_log(.error, log: log, "Failed to configure AudioRecorder capture session inputs with error: %@",
+                os_log(.error, log: log, "Failed to configure AudioRecorder capture session inputs with error: %{public}s",
                        String(describing: error))
                 throw error
             }
@@ -128,7 +128,7 @@ final class AudioRecorder: NSObject, RecordingEngine {
             do {
                 try configureSessionOutput()
             } catch {
-                os_log(.error, log: log, "Failed to configure AudioRecorder capture session outputs with error: %@",
+                os_log(.error, log: log, "Failed to configure AudioRecorder capture session outputs with error: %{public}s",
                        String(describing: error))
                 throw error
             }
@@ -175,10 +175,10 @@ extension AudioRecorder: AVCaptureFileOutputRecordingDelegate {
         defer { recordingGroup.leave() }
 
         if let error = error {
-            os_log(.error, log: log, "AudioRecorder failed to record to %@ with error %{public}@",
-                   outputFileURL.absoluteString, String(describing: error))
+            os_log(.error, log: log, "AudioRecorder failed to record to %s with error %{public}s",
+                   outputFileURL.path, String(describing: error))
         } else {
-            os_log(.info, log: log, "AudioRecorder finished recording to %@", outputFileURL.absoluteString)
+            os_log(.info, log: log, "AudioRecorder finished recording to %s", outputFileURL.path)
         }
 
         delegate?.recordingEngine(self, didFinishRecordingTo: outputFileURL, withError: error)

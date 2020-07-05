@@ -19,10 +19,10 @@ final class SessionCoordinatorTests: XCTestCase {
         let sut = SessionCoordinator(musicApp: musicApp, recorderFactory: { _, _  in MockRecordingEngine() })
 
         // When
-        try sut.startRecordingFromConvertibleDevice(FakeCaptureDevice(), using: SessionCoordinator.Configuration())
+        try sut.startRecordingFromConvertibleDevice(FakeCaptureDevice())
 
         // Then
-        XCTAssertFalse(sut.isRecording)
+        XCTAssertNotEqual(sut.state, .recording)
     }
 
     func test_startRecording_updatesRecordingState() throws {
@@ -30,10 +30,10 @@ final class SessionCoordinatorTests: XCTestCase {
         let sut = SessionCoordinator(musicApp: MockMusicApp(), recorderFactory: { _, _  in MockRecordingEngine() })
 
         // When
-        try sut.startRecordingFromConvertibleDevice(FakeCaptureDevice(), using: SessionCoordinator.Configuration())
+        try sut.startRecordingFromConvertibleDevice(FakeCaptureDevice())
 
         // Then
-        XCTAssertTrue(sut.isRecording)
+        XCTAssertEqual(sut.state, .recording)
     }
 
     func test_startRecording_doesNotStartRecording_ifAlreadyRecording() throws {
@@ -42,8 +42,8 @@ final class SessionCoordinatorTests: XCTestCase {
         let sut = SessionCoordinator(musicApp: MockMusicApp(), recorderFactory: { _, _  in recorder })
 
         // When
-        try sut.startRecordingFromConvertibleDevice(FakeCaptureDevice(), using: SessionCoordinator.Configuration())
-        try sut.startRecordingFromConvertibleDevice(FakeCaptureDevice(), using: SessionCoordinator.Configuration())
+        try sut.startRecordingFromConvertibleDevice(FakeCaptureDevice())
+        try sut.startRecordingFromConvertibleDevice(FakeCaptureDevice())
 
         // Then
         XCTAssertEqual(recorder.startNewRecordingInvocationCount, 1)
@@ -58,7 +58,7 @@ final class SessionCoordinatorTests: XCTestCase {
         })
 
         // When
-        try sut.startRecordingFromConvertibleDevice(FakeCaptureDevice(), using: SessionCoordinator.Configuration())
+        try sut.startRecordingFromConvertibleDevice(FakeCaptureDevice())
 
         XCTAssertTrue(createRecorderCalled)
     }
@@ -72,7 +72,7 @@ final class SessionCoordinatorTests: XCTestCase {
         let sut = SessionCoordinator(musicApp: musicApp, recorderFactory: { _, _  in MockRecordingEngine() })
 
         // When
-        try sut.startRecordingFromConvertibleDevice(FakeCaptureDevice(), using: SessionCoordinator.Configuration())
+        try sut.startRecordingFromConvertibleDevice(FakeCaptureDevice())
 
         // Then
         XCTAssertTrue(musicApp.pauseInvoked, "Pauses music playbcak")
@@ -84,10 +84,9 @@ final class SessionCoordinatorTests: XCTestCase {
         // Given
         let recorder = MockRecordingEngine()
         let sut = SessionCoordinator(musicApp: MockMusicApp(), recorderFactory: { _, _  in recorder })
-        let sessionConfig = SessionCoordinator.Configuration()
 
         // When
-        try sut.startRecordingFromConvertibleDevice(FakeCaptureDevice(), using: sessionConfig)
+        try sut.startRecordingFromConvertibleDevice(FakeCaptureDevice())
 
         // Then
         XCTAssertTrue(recorder.startNewRecordingInvoked)
@@ -99,12 +98,10 @@ final class SessionCoordinatorTests: XCTestCase {
         let musicApp = MockMusicApp()
         musicApp.currentTrack = track
         let recorder = MockRecordingEngine()
-
         let sut = SessionCoordinator(musicApp: musicApp, recorderFactory: { _, _  in recorder })
-        let sessionConfig = SessionCoordinator.Configuration()
 
         // When
-        try sut.startRecordingFromConvertibleDevice(FakeCaptureDevice(), using: sessionConfig)
+        try sut.startRecordingFromConvertibleDevice(FakeCaptureDevice())
 
         // Then
         let recordingConfiguration = try XCTUnwrap(recorder.startNewRecordingInvocations.first)
@@ -114,12 +111,11 @@ final class SessionCoordinatorTests: XCTestCase {
     func test_startRecording_appliesSessionConfiguration_toMusicApp() throws {
         // Given
         let musicApp = MockMusicApp()
-
-        let sut = SessionCoordinator(musicApp: musicApp, recorderFactory: { _, _  in MockRecordingEngine() })
         let sessionConfig = SessionCoordinator.Configuration(shouldDisableShuffling: true, shouldDisableRepeat: true)
+        let sut = SessionCoordinator(musicApp: musicApp, configuration: sessionConfig, recorderFactory: { _, _  in MockRecordingEngine() })
 
         // When
-        try sut.startRecordingFromConvertibleDevice(FakeCaptureDevice(), using: sessionConfig)
+        try sut.startRecordingFromConvertibleDevice(FakeCaptureDevice())
 
         // Then
         XCTAssertTrue(musicApp.setShuffleEnabledInvoked)
@@ -129,12 +125,11 @@ final class SessionCoordinatorTests: XCTestCase {
     func test_startRecording_doesNotChangeMusicAppState_whenSessionConfigurationDoesNotRequestIt() throws {
         // Given
         let musicApp = MockMusicApp()
-
-        let sut = SessionCoordinator(musicApp: musicApp, recorderFactory: { _, _  in MockRecordingEngine() })
         let sessionConfig = SessionCoordinator.Configuration(shouldDisableShuffling: false, shouldDisableRepeat: false)
+        let sut = SessionCoordinator(musicApp: musicApp, configuration: sessionConfig, recorderFactory: { _, _  in MockRecordingEngine() })
 
         // When
-        try sut.startRecordingFromConvertibleDevice(FakeCaptureDevice(), using: sessionConfig)
+        try sut.startRecordingFromConvertibleDevice(FakeCaptureDevice())
 
         // Then
         XCTAssertFalse(musicApp.setShuffleEnabledInvoked)
@@ -151,7 +146,7 @@ final class SessionCoordinatorTests: XCTestCase {
         let sut = SessionCoordinator(musicApp: musicApp, recorderFactory: { _, _  in recorder })
 
         // When
-        try sut.startRecordingFromConvertibleDevice(FakeCaptureDevice(), using: SessionCoordinator.Configuration())
+        try sut.startRecordingFromConvertibleDevice(FakeCaptureDevice())
 
         musicApp.currentTrack = newTrack
         musicApp.trackIDSubject.send(newTrack.id)
@@ -170,7 +165,7 @@ final class SessionCoordinatorTests: XCTestCase {
         let sut = SessionCoordinator(musicApp: musicApp, recorderFactory: { _, _  in recorder })
 
         // When
-        try sut.startRecordingFromConvertibleDevice(FakeCaptureDevice(), using: SessionCoordinator.Configuration())
+        try sut.startRecordingFromConvertibleDevice(FakeCaptureDevice())
 
         musicApp.currentTrack = newTrack
         musicApp.trackIDSubject.send(newTrack.id)
@@ -186,14 +181,36 @@ final class SessionCoordinatorTests: XCTestCase {
         let recorder = MockRecordingEngine()
         let sut = SessionCoordinator(musicApp: MockMusicApp(), recorderFactory: { _, _ in recorder })
 
-        // When
-        try sut.startRecordingFromConvertibleDevice(FakeCaptureDevice(), using: SessionCoordinator.Configuration())
-        XCTAssertTrue(sut.isRecording, "Sanity check")
+        // When, Then
+        try sut.startRecordingFromConvertibleDevice(FakeCaptureDevice())
+        XCTAssertEqual(sut.state, .recording, "Sanity Check")
 
         recorder.delegate?.recordingEngine(recorder, didFinishRecordingTo: URL(fileURLWithPath: "/"), withError: TestError())
+        XCTAssertEqual(sut.state, .endingRecording, "The SessionCoordinator is stopping")
+
+        if let completion = recorder.stopRecordingInvocations.last {
+            completion?()
+        }
+
+        XCTAssertEqual(sut.state, .notRecording)
+    }
+
+    func test_enqueuesRecordingForProcessing_whenRecordingFinishesSuccesfully() throws {
+        // Given
+        let recorder = MockRecordingEngine()
+        let processor = MockRecordingProcessor()
+        let musicApp = MockMusicApp()
+        musicApp.currentTrack = .fixture()
+        let expectedRecordingURL = URL(fileURLWithPath: "/test.m4a")
+        let sut = SessionCoordinator(musicApp: MockMusicApp(), recordingProcessor: processor, recorderFactory: { _, _ in recorder })
+        sut.tempPathGenerator = TemporaryFilePathGenerator { expectedRecordingURL }
+
+        // When
+        try sut.startRecordingFromConvertibleDevice(FakeCaptureDevice())
+        recorder.delegate?.recordingEngine(recorder, didFinishRecordingTo: expectedRecordingURL, withError: nil)
 
         // Then
-        XCTAssertFalse(sut.isRecording, "The SessionCoordinator has stopped")
+        XCTAssertTrue(processor.processRecordingInvoked)
     }
 
     // MARK: - Stopping Recording
@@ -205,7 +222,7 @@ final class SessionCoordinatorTests: XCTestCase {
         let sut = SessionCoordinator(musicApp: musicApp, recorderFactory: { _, _  in recorder })
 
         // When
-        try sut.startRecordingFromConvertibleDevice(FakeCaptureDevice(), using: SessionCoordinator.Configuration())
+        try sut.startRecordingFromConvertibleDevice(FakeCaptureDevice())
 
         musicApp.currentTrack = nil
         musicApp.trackIDSubject.send(nil)
@@ -229,21 +246,27 @@ final class SessionCoordinatorTests: XCTestCase {
 
     func test_stopRecording_updatesRecordingState() throws {
         // Given
-        let sut = SessionCoordinator(musicApp: MockMusicApp(), recorderFactory: { _, _  in MockRecordingEngine() })
-        try sut.startRecordingFromConvertibleDevice(FakeCaptureDevice(), using: SessionCoordinator.Configuration())
+        let recorder = MockRecordingEngine()
+        let sut = SessionCoordinator(musicApp: MockMusicApp(), recorderFactory: { _, _  in recorder })
+        try sut.startRecordingFromConvertibleDevice(FakeCaptureDevice())
 
         // When
         sut.stopRecording()
 
         // Then
-        XCTAssertFalse(sut.isRecording)
+        XCTAssertEqual(sut.state, .endingRecording)
+
+        if let completion = recorder.stopRecordingInvocations.last {
+            completion?()
+        }
+        XCTAssertEqual(sut.state, .notRecording)
     }
 
     func test_stopRecording_tellsRecordingEngineToStopRecording() throws {
         // Given
         let recorder = MockRecordingEngine()
         let sut = SessionCoordinator(musicApp: MockMusicApp(), recorderFactory: { _, _  in recorder })
-        try sut.startRecordingFromConvertibleDevice(FakeCaptureDevice(), using: SessionCoordinator.Configuration())
+        try sut.startRecordingFromConvertibleDevice(FakeCaptureDevice())
 
         // When
         sut.stopRecording()
@@ -260,7 +283,7 @@ final class SessionCoordinatorTests: XCTestCase {
         let sut = SessionCoordinator(musicApp: musicApp, recorderFactory: { _, _  in recorder })
 
         // When
-        try sut.startRecordingFromConvertibleDevice(FakeCaptureDevice(), using: SessionCoordinator.Configuration())
+        try sut.startRecordingFromConvertibleDevice(FakeCaptureDevice())
         sut.stopRecording()
 
         // These changes should have no effect

@@ -20,6 +20,12 @@ public struct Track: Hashable, Equatable, Identifiable {
     public var albumArtist: String
 }
 
+extension Track: CustomStringConvertible {
+    public var description: String {
+        "\(name) - \(artist) - \(album) (\(id))"
+    }
+}
+
 extension Track {
     init(from track: SpotifyTrackSBObject) {
         self.id = track.id!()

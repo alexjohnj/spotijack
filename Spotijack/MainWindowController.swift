@@ -100,20 +100,34 @@ internal class MainWindowController: NSWindowController {
             .assign(to: \.isEnabled, on: spotijackButton)
             .store(in: &cancellationBag)
 
-        sessionCoordinator.$isRecording
-            .sink { [unowned self] isRecording in
-                if isRecording {
+        sessionCoordinator.$state
+            .sink { [unowned self] state in
+                switch state {
+                case .recording:
                     spotijackButton.title = NSLocalizedString("Stop Recording", comment: "")
                     spotijackButton.state = .on
-                } else {
+
+                case .notRecording:
                     spotijackButton.title = NSLocalizedString("Record", comment: "")
+                    spotijackButton.state = .off
+
+                case .endingRecording:
+                    spotijackButton.title = "Ending Recording…"
                     spotijackButton.state = .off
                 }
             }
             .store(in: &cancellationBag)
 
-        sessionCoordinator.$isRecording
-            .map { !$0 }
+        sessionCoordinator.$state
+            .map { state in
+                switch state {
+                case .recording,
+                     .endingRecording:
+                    return false
+                case .notRecording:
+                    return true
+                }
+            }
             .assign(to: \.isEnabled, on: self.inputDevicePopUp)
             .store(in: &cancellationBag)
 
@@ -135,16 +149,21 @@ internal class MainWindowController: NSWindowController {
 // MARK: - UI Actions
 extension MainWindowController {
     @IBAction func spotijackButtonClicked(_ sender: NSButton) {
-        if sessionCoordinator.isRecording {
+        switch sessionCoordinator.state {
+        case .endingRecording:
+            return
+
+        case .recording:
             sessionCoordinator.stopRecording()
-        } else {
+
+        case .notRecording:
             do {
                 guard let inputDevice = selectedInputDevice else {
                     NSSound.beep()
                     return
                 }
 
-                try sessionCoordinator.startRecording(from: inputDevice, using: SessionCoordinator.Configuration())
+                try sessionCoordinator.startRecording(from: inputDevice)
             } catch {
                 _ = presentError(error)
             }

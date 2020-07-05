@@ -13,9 +13,13 @@ public struct FilePathFormatter: Hashable {
     public init() { }
 
     func filePath(for track: Track, recordedWith audioSettings: AudioSettings) throws -> URL {
-        let outputDirectory = try FileManager.default.url(for: .musicDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+        let outputDirectory = try FileManager.default
+            .url(for: .musicDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+            .appendingPathComponent("Spotijack", isDirectory: true)
+            .appendingPathComponent(track.artist)
+            .appendingPathComponent(track.album)
 
-        let fileBaseName = "\(track.trackNumber) - \(track.name) - \(track.album)"
+        let fileBaseName = "\(track.trackNumber) - \(track.name)"
         return outputDirectory
             .appendingPathComponent(fileBaseName, isDirectory: false)
             .appendingPathExtension(audioSettings.container.fileExtension)
