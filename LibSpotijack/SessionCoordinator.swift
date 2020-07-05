@@ -124,7 +124,7 @@ public final class SessionCoordinator {
     public func stopRecording() {
         guard isRecording else { return }
 
-        activeRecordingEngine?.stopRecording()
+        activeRecordingEngine?.stopRecording(completionHandler: nil)
         recordingCancellable = nil
 
         isRecording = false

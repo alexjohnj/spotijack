@@ -21,9 +21,10 @@ final class MockRecordingEngine: RecordingEngine {
         startNewRecordingInvocations.append(configuration)
     }
 
-    var stopRecordingInvocationCount = 0
-    var stopRecordingInvoked: Bool { stopRecordingInvocationCount > 0 }
-    func stopRecording() {
-        stopRecordingInvocationCount += 1
+    var stopRecordingInvocations: [(() -> Void)?] = []
+    var stopRecordingInvocationCount: Int { stopRecordingInvocations.count }
+    var stopRecordingInvoked: Bool { !stopRecordingInvocations.isEmpty }
+    func stopRecording(completionHandler: (() -> Void)?) {
+        stopRecordingInvocations.append(completionHandler)
     }
 }

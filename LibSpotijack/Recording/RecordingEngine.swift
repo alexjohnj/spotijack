@@ -19,8 +19,12 @@ protocol RecordingEngine: AnyObject {
     ///
     func startNewRecording(using configuration: RecordingConfiguration) throws
 
-    /// Instructs the engine to end a recording if one is in progress.
-    func stopRecording()
+    /// Instructs the recording engine to stop the current recording and free any recording resources.
+    ///
+    /// - Parameter completionHandler: A block to execute when the receiver has finished recording and all resources
+    /// are freed. The completion handler can be called from any thread.
+    ///
+    func stopRecording(completionHandler: (() -> Void)?)
 }
 
 protocol RecordingEngineDelegate: AnyObject {

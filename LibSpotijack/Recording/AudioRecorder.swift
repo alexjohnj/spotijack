@@ -59,8 +59,8 @@ final class AudioRecorder: NSObject, RecordingEngine {
         try recordingQueue.sync { try recordingQueue_startNewRecording(using: configuration) }
     }
 
-    func stopRecording() {
-        recordingQueue.sync { recordingQueue_stopRecording() }
+    func stopRecording(completionHandler: (() -> Void)?) {
+        recordingQueue.sync { recordingQueue_stopRecording(completionHandler: completionHandler) }
     }
 
     // MARK: - Queue Specific Methods
@@ -84,13 +84,11 @@ final class AudioRecorder: NSObject, RecordingEngine {
         )
     }
 
-    private func recordingQueue_stopRecording() {
+    private func recordingQueue_stopRecording(completionHandler: (() -> Void)?) {
         dispatchPrecondition(condition: .onQueue(recordingQueue))
 
         os_log(.info, log: log, "AudioRecorder is ending recording")
-
         os_signpost(.begin, log: log, name: "Stopping Recording")
-        defer { os_signpost(.end, log: log, name: "Stopping Recording") }
 
         sessionOutput.stopRecording()
 
@@ -100,7 +98,11 @@ final class AudioRecorder: NSObject, RecordingEngine {
             // Timeout as we can deadlock when calling startNewRecording: and the caller's queue is the queue
             // AVCaptureAudioFileOutput calls the delegate on.
             _ = self.recordingGroup.wait(timeout: .now() + 2)
+
             self.session.stopRunning()
+            DispatchQueue.main.async { completionHandler?() }
+
+            os_signpost(.end, log: log, name: "Stopping Recording")
         }
     }
 
