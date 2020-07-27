@@ -3,8 +3,22 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 54;
 	objects = {
+
+/* Begin PBXAggregateTarget section */
+		FA4EE74E24CF28C50059E933 /* Run SwiftLint */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = FA4EE75124CF28C50059E933 /* Build configuration list for PBXAggregateTarget "Run SwiftLint" */;
+			buildPhases = (
+				FA4EE75224CF28CC0059E933 /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = "Run SwiftLint";
+			productName = "Run SwiftLint";
+		};
+/* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
 		FA1814D924CEC2F8008CCD4F /* Architecture.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1814D824CEC2F8008CCD4F /* Architecture.swift */; };
@@ -70,6 +84,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = FA86C4B41F03FA25001ACBBA;
 			remoteInfo = LibSpotijack;
+		};
+		FA4EE75324CF28E70059E933 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FA9503531A421B76009D7149 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FA4EE74E24CF28C50059E933;
+			remoteInfo = "Run SwiftLint";
+		};
+		FA4EE75524CF28EA0059E933 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FA9503531A421B76009D7149 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FA4EE74E24CF28C50059E933;
+			remoteInfo = "Run SwiftLint";
 		};
 		FAC300821F17E04A00E47CB4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -391,11 +419,11 @@
 				FA86C4B11F03FA25001ACBBA /* Frameworks */,
 				FA86C4B21F03FA25001ACBBA /* Headers */,
 				FA86C4B31F03FA25001ACBBA /* Resources */,
-				FA804F841F3B05F30080DD3A /* ShellScript */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				FA4EE75624CF28EA0059E933 /* PBXTargetDependency */,
 			);
 			name = LibSpotijack;
 			productName = LibSpotijack;
@@ -411,11 +439,11 @@
 				FA9503591A421B76009D7149 /* Resources */,
 				FAC8659F1B3965510086BF2A /* Update build number */,
 				FABADAF21F025D1C001751AE /* Embed Frameworks */,
-				FA804F851F3B07760080DD3A /* ShellScript */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				FA4EE75424CF28E70059E933 /* PBXTargetDependency */,
 				FA2BFA6C227DA7E50084698A /* PBXTargetDependency */,
 			);
 			name = Spotijack;
@@ -452,6 +480,9 @@
 				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = "Alex Jackson";
 				TargetAttributes = {
+					FA4EE74E24CF28C50059E933 = {
+						CreatedOnToolsVersion = 12.0;
+					};
 					FA86C4B41F03FA25001ACBBA = {
 						CreatedOnToolsVersion = 8.3.3;
 						LastSwiftMigration = 1020;
@@ -486,6 +517,7 @@
 				FA95035A1A421B76009D7149 /* Spotijack */,
 				FA86C4B41F03FA25001ACBBA /* LibSpotijack */,
 				FAC3007B1F17E04A00E47CB4 /* LibSpotijackTests */,
+				FA4EE74E24CF28C50059E933 /* Run SwiftLint */,
 			);
 		};
 /* End PBXProject section */
@@ -524,25 +556,17 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		FA804F841F3B05F30080DD3A /* ShellScript */ = {
+		FA4EE75224CF28CC0059E933 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\n    swiftlint\nelse\n    echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
-		};
-		FA804F851F3B07760080DD3A /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+			inputFileListPaths = (
 			);
 			inputPaths = (
+			);
+			outputFileListPaths = (
 			);
 			outputPaths = (
 			);
@@ -636,6 +660,16 @@
 			target = FA86C4B41F03FA25001ACBBA /* LibSpotijack */;
 			targetProxy = FA2BFA6B227DA7E50084698A /* PBXContainerItemProxy */;
 		};
+		FA4EE75424CF28E70059E933 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FA4EE74E24CF28C50059E933 /* Run SwiftLint */;
+			targetProxy = FA4EE75324CF28E70059E933 /* PBXContainerItemProxy */;
+		};
+		FA4EE75624CF28EA0059E933 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FA4EE74E24CF28C50059E933 /* Run SwiftLint */;
+			targetProxy = FA4EE75524CF28EA0059E933 /* PBXContainerItemProxy */;
+		};
 		FAC300831F17E04A00E47CB4 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = FA86C4B41F03FA25001ACBBA /* LibSpotijack */;
@@ -687,6 +721,24 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		FA4EE74F24CF28C50059E933 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = LMVB86HGC7;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		FA4EE75024CF28C50059E933 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = LMVB86HGC7;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		FA86C4BA1F03FA25001ACBBA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -710,7 +762,11 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = LibSpotijack/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.alexj.LibSpotijack;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -745,12 +801,17 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = LibSpotijack/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.alexj.LibSpotijack;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -865,7 +926,8 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 			};
 			name = Release;
 		};
@@ -881,7 +943,10 @@
 				DEVELOPMENT_TEAM = LMVB86HGC7;
 				GCC_PREFIX_HEADER = Spotijack/PrefixHeader.pch;
 				INFOPLIST_FILE = Spotijack/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.alexj.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -902,7 +967,10 @@
 				DEVELOPMENT_TEAM = LMVB86HGC7;
 				GCC_PREFIX_HEADER = Spotijack/PrefixHeader.pch;
 				INFOPLIST_FILE = Spotijack/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.alexj.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -925,7 +993,12 @@
 				DEVELOPMENT_TEAM = "";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = LibSpotijackTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks $(PROJECT_DIR)/Carthage/Build/Mac";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.alexj.LibSpotijackTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -950,7 +1023,12 @@
 				DEVELOPMENT_TEAM = "";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = LibSpotijackTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks $(PROJECT_DIR)/Carthage/Build/Mac";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.alexj.LibSpotijackTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -961,6 +1039,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		FA4EE75124CF28C50059E933 /* Build configuration list for PBXAggregateTarget "Run SwiftLint" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FA4EE74F24CF28C50059E933 /* Debug */,
+				FA4EE75024CF28C50059E933 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		FA86C4BC1F03FA25001ACBBA /* Build configuration list for PBXNativeTarget "LibSpotijack" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
