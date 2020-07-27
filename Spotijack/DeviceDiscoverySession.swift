@@ -16,15 +16,13 @@ protocol DeviceDiscoverySession {
 
 final class InputDeviceDiscoverySession: DeviceDiscoverySession {
 
-    private(set) var devices: [AVCaptureDevice]
-
-    init() {
+    var devices: [AVCaptureDevice] {
         let avDiscoverySession = AVCaptureDevice.DiscoverySession(
             deviceTypes: [.externalUnknown, .builtInMicrophone],
             mediaType: .audio,
             position: .unspecified
         )
 
-        devices = avDiscoverySession.devices
+        return avDiscoverySession.devices
     }
 }
