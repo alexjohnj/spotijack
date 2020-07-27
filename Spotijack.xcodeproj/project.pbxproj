@@ -32,7 +32,6 @@
 		FA8393761B16539A006736C8 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA8393751B16539A006736C8 /* Media.xcassets */; };
 		FA86C4B91F03FA25001ACBBA /* LibSpotijack.h in Headers */ = {isa = PBXBuildFile; fileRef = FA86C4B71F03FA25001ACBBA /* LibSpotijack.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FA93A2761B09150500A61F6E /* SessionProperties.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA93A2751B09150500A61F6E /* SessionProperties.plist */; };
-		FA9503661A421B76009D7149 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA9503651A421B76009D7149 /* Images.xcassets */; };
 		FA9503691A421B76009D7149 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA9503671A421B76009D7149 /* MainMenu.xib */; };
 		FAAA59F024ACAEDF009C237E /* RecordingEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAA59EF24ACAEDF009C237E /* RecordingEngine.swift */; };
 		FAAA59F224ACAEF0009C237E /* RecordingConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAA59F124ACAEF0009C237E /* RecordingConfiguration.swift */; };
@@ -124,7 +123,6 @@
 		FA93A2751B09150500A61F6E /* SessionProperties.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = SessionProperties.plist; sourceTree = "<group>"; };
 		FA95035B1A421B76009D7149 /* Spotijack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Spotijack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA95035F1A421B76009D7149 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		FA9503651A421B76009D7149 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		FA9503681A421B76009D7149 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		FAAA59EF24ACAEDF009C237E /* RecordingEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingEngine.swift; sourceTree = "<group>"; };
 		FAAA59F124ACAEF0009C237E /* RecordingConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingConfiguration.swift; sourceTree = "<group>"; };
@@ -265,7 +263,6 @@
 				FA6B961F1F3609500011D0D8 /* Preferences.swift */,
 				FA1992D31F35EF71000881D9 /* PreferencesWindowController.swift */,
 				FADF0C481F389EC80034152B /* SpotijackError+FatalError.swift */,
-				FA9503651A421B76009D7149 /* Images.xcassets */,
 				FABCF55B24CEE14600A34D74 /* Architecture */,
 				FA95035E1A421B76009D7149 /* Supporting Files */,
 				FAF81BE81A421ED9008F3360 /* XIBs */,
@@ -511,7 +508,6 @@
 				FAE1C14D1B07DC64007FF95C /* Localizable.strings in Resources */,
 				FA8393761B16539A006736C8 /* Media.xcassets in Resources */,
 				FAE1C1531B07DF63007FF95C /* PreferencesWindow.xib in Resources */,
-				FA9503661A421B76009D7149 /* Images.xcassets in Resources */,
 				FA9503691A421B76009D7149 /* MainMenu.xib in Resources */,
 				FA93A2761B09150500A61F6E /* SessionProperties.plist in Resources */,
 				FAE1C1501B07DF5F007FF95C /* MainWindow.xib in Resources */,
