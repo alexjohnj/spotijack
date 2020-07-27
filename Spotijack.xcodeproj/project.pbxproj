@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FA1814D924CEC2F8008CCD4F /* Architecture.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1814D824CEC2F8008CCD4F /* Architecture.swift */; };
 		FA1992D41F35EF71000881D9 /* PreferencesWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1992D31F35EF71000881D9 /* PreferencesWindowController.swift */; };
 		FA2BFA69227DA7E50084698A /* LibSpotijack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA86C4B51F03FA25001ACBBA /* LibSpotijack.framework */; };
 		FA2BFA6A227DA7E50084698A /* LibSpotijack.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FA86C4B51F03FA25001ACBBA /* LibSpotijack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -91,6 +92,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		FA1814D824CEC2F8008CCD4F /* Architecture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Architecture.swift; sourceTree = "<group>"; };
 		FA1992D31F35EF71000881D9 /* PreferencesWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesWindowController.swift; sourceTree = "<group>"; };
 		FA2BFA6D227DABF00084698A /* TypedNotification.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TypedNotification.framework; path = Carthage/Build/Mac/Static/TypedNotification.framework; sourceTree = "<group>"; };
 		FA2DEF871F37A70E006F44B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -251,6 +253,7 @@
 			isa = PBXGroup;
 			children = (
 				FAB41F0F1F26002A00448440 /* AppDelegate.swift */,
+				FA1814D824CEC2F8008CCD4F /* Architecture.swift */,
 				FAB41F191F26019A00448440 /* MainWindowController.swift */,
 				FA1992D31F35EF71000881D9 /* PreferencesWindowController.swift */,
 				FA6B961F1F3609500011D0D8 /* Preferences.swift */,
@@ -584,6 +587,7 @@
 				FA6B96201F3609500011D0D8 /* Preferences.swift in Sources */,
 				FA1992D41F35EF71000881D9 /* PreferencesWindowController.swift in Sources */,
 				FAB41F1A1F26019A00448440 /* MainWindowController.swift in Sources */,
+				FA1814D924CEC2F8008CCD4F /* Architecture.swift in Sources */,
 				FADF0C491F389EC80034152B /* SpotijackError+FatalError.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
