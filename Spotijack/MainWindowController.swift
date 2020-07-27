@@ -8,33 +8,14 @@
 
 import AppKit
 import Combine
-import AVFoundation
-
 import LibSpotijack
-
-import os.log
-
-private let log = OSLog(subsystem: "org.alexj.Spotijack.UIEvents", category: "MainWindowController")
 
 internal class MainWindowController: NSWindowController {
 
     // MARK: Private Properties
 
-    private let sessionCoordinator: SessionCoordinator
-    private let musicApp: MusicApplication
-
+    private let store: Store<AppState, AppMessage>
     private var cancellationBag: [AnyCancellable] = []
-
-    @Published private var availableInputDevice: [AVCaptureDevice] = []
-    @Published private var selectedInputDevice: AVCaptureDevice? {
-        didSet {
-            if let device = selectedInputDevice {
-                os_log(.default, log: log, "Selected input device: %s", device.localizedName)
-            } else {
-                os_log(.default, log: log, "Deselected any input device.")
-            }
-        }
-    }
 
     // MARK: - Outlets
 
@@ -45,9 +26,8 @@ internal class MainWindowController: NSWindowController {
 
     // MARK: - Initializers
 
-    init(musicApp: MusicApplication, sessionCoordinator: SessionCoordinator) {
-        self.musicApp = musicApp
-        self.sessionCoordinator = sessionCoordinator
+    init(store: Store<AppState, AppMessage>) {
+        self.store = store
         super.init(window: nil)
     }
 
@@ -65,76 +45,44 @@ internal class MainWindowController: NSWindowController {
     override func windowDidLoad() {
         super.windowDidLoad()
 
-        let deviceDiscoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.externalUnknown, .builtInMicrophone], mediaType: .audio, position: .unspecified)
-        self.availableInputDevice = deviceDiscoverySession.devices
-        self.selectedInputDevice = availableInputDevice.first
+        store.publisher
+            .map { ($0.availableInputDevices, $0.selectedInputDevice) }
+            .sink { [unowned self] devices, selectedDevice in
+                let deviceNames = devices.map(\.name)
 
-        NotificationCenter.default.publisher(for: .AVCaptureDeviceWasConnected)
-            .sink { [unowned self] note in
-                self.availableInputDevice.append(note.object as! AVCaptureDevice) // swiftlint:disable:this force_cast
-            }
-            .store(in: &cancellationBag)
+                inputDevicePopUp.removeAllItems()
+                inputDevicePopUp.addItems(withTitles: deviceNames)
 
-        NotificationCenter.default.publisher(for: .AVCaptureDeviceWasDisconnected)
-            .sink { [unowned self] note in
-                let device = note.object as! AVCaptureDevice // swiftlint:disable:this force_cast
-                self.availableInputDevice.removeAll(where: { $0 == device })
-                if device == selectedInputDevice {
-                    selectedInputDevice = nil
+                if let selectedDevice = selectedDevice {
+                    inputDevicePopUp.selectItem(withTitle: selectedDevice.name)
+                } else {
+                    inputDevicePopUp.selectItem(at: -1)
                 }
             }
             .store(in: &cancellationBag)
 
-        $availableInputDevice.sink { [unowned self] devices in
-            let deviceNames = devices.map(\.localizedName)
-            inputDevicePopUp.removeAllItems()
-            inputDevicePopUp.addItems(withTitles: deviceNames)
-            if let selection = selectedInputDevice {
-                inputDevicePopUp.selectItem(withTitle: selection.localizedName)
-            }
-        }
-        .store(in: &cancellationBag)
-
-        $selectedInputDevice
-            .map { $0 != nil }
-            .assign(to: \.isEnabled, on: spotijackButton)
-            .store(in: &cancellationBag)
-
-        sessionCoordinator.$state
-            .sink { [unowned self] state in
-                switch state {
-                case .recording,
-                     .startingRecording:
+        store.publisher.map(\.isRecording)
+            .sink { [unowned self] isRecording in
+                if isRecording {
                     spotijackButton.title = NSLocalizedString("Stop Recording", comment: "")
-                    spotijackButton.state = .on
-
-                case .notRecording:
+                } else {
                     spotijackButton.title = NSLocalizedString("Record", comment: "")
-                    spotijackButton.state = .off
-
-                case .endingRecording:
-                    spotijackButton.title = "Ending Recording…"
-                    spotijackButton.state = .off
                 }
             }
             .store(in: &cancellationBag)
 
-        sessionCoordinator.$state
-            .map { state in
-                switch state {
-                case .recording,
-                     .startingRecording,
-                     .endingRecording:
-                    return false
-                case .notRecording:
-                    return true
-                }
-            }
-            .assign(to: \.isEnabled, on: self.inputDevicePopUp)
+        store.publisher.map(\.isRecording)
+            .map { !$0 }
+            .assign(to: \.isEnabled, on: inputDevicePopUp)
             .store(in: &cancellationBag)
 
-        musicApp.trackIDPublisher
-            .map { [musicApp] _ in musicApp.currentTrack }
+        store.publisher.map(\.canStartRecording)
+            .sink { [unowned self] canStartRecording in
+                spotijackButton.isEnabled = canStartRecording
+            }
+            .store(in: &cancellationBag)
+
+        store.publisher.map(\.currentTrack)
             .sink { [unowned self] track in
                 if let track = track {
                     statusField.stringValue = track.name
@@ -149,34 +97,15 @@ internal class MainWindowController: NSWindowController {
 }
 
 // MARK: - UI Actions
+
 extension MainWindowController {
     @IBAction func spotijackButtonClicked(_ sender: NSButton) {
-        switch sessionCoordinator.state {
-        case .endingRecording:
-            return
-
-        case .recording,
-             .startingRecording:
-            sessionCoordinator.stopRecording()
-
-        case .notRecording:
-            do {
-                guard let inputDevice = selectedInputDevice else {
-                    NSSound.beep()
-                    return
-                }
-
-                try sessionCoordinator.startRecording(from: inputDevice)
-            } catch {
-                _ = presentError(error)
-            }
-        }
+        store.send(.toggleRecording)
     }
 
     @IBAction private func selectInputDevice(_ sender: NSPopUpButton) {
         let selectionIndex = sender.indexOfSelectedItem
-        guard selectionIndex < availableInputDevice.count else { return }
-        selectedInputDevice = availableInputDevice[selectionIndex]
+        store.send(.selectInputDevice(index: selectionIndex))
     }
 }
 

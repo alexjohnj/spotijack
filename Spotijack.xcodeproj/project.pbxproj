@@ -44,6 +44,10 @@
 		FAAEE65024AB82BC0060C1B6 /* AudioRecorder.Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAEE64F24AB82BC0060C1B6 /* AudioRecorder.Configuration.swift */; };
 		FAB41F101F26002A00448440 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB41F0F1F26002A00448440 /* AppDelegate.swift */; };
 		FAB41F1A1F26019A00448440 /* MainWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB41F191F26019A00448440 /* MainWindowController.swift */; };
+		FABCF55A24CECBE600A34D74 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABCF55924CECBE600A34D74 /* AppState.swift */; };
+		FABCF55E24CEE15900A34D74 /* RecordingSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABCF55D24CEE15900A34D74 /* RecordingSession.swift */; };
+		FABCF56224CEE6CC00A34D74 /* DeviceDiscoverySession.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABCF56124CEE6CC00A34D74 /* DeviceDiscoverySession.swift */; };
+		FABCF56424CEEAFC00A34D74 /* AppState+AVFoundation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABCF56324CEEAFC00A34D74 /* AppState+AVFoundation.swift */; };
 		FAC300811F17E04A00E47CB4 /* LibSpotijack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA86C4B51F03FA25001ACBBA /* LibSpotijack.framework */; };
 		FACBE5C81F23D66C00030B87 /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACBE5C71F23D66C00030B87 /* Track.swift */; };
 		FACDC4C824CC57D600CA8FA3 /* OSUnfairLock.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACDC4C724CC57D600CA8FA3 /* OSUnfairLock.swift */; };
@@ -132,6 +136,10 @@
 		FAAEE64F24AB82BC0060C1B6 /* AudioRecorder.Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorder.Configuration.swift; sourceTree = "<group>"; };
 		FAB41F0F1F26002A00448440 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FAB41F191F26019A00448440 /* MainWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindowController.swift; sourceTree = "<group>"; };
+		FABCF55924CECBE600A34D74 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		FABCF55D24CEE15900A34D74 /* RecordingSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingSession.swift; sourceTree = "<group>"; };
+		FABCF56124CEE6CC00A34D74 /* DeviceDiscoverySession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceDiscoverySession.swift; sourceTree = "<group>"; };
+		FABCF56324CEEAFC00A34D74 /* AppState+AVFoundation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppState+AVFoundation.swift"; sourceTree = "<group>"; };
 		FAC3007C1F17E04A00E47CB4 /* LibSpotijackTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LibSpotijackTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAC300801F17E04A00E47CB4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FACBE5C71F23D66C00030B87 /* Track.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
@@ -253,14 +261,14 @@
 			isa = PBXGroup;
 			children = (
 				FAB41F0F1F26002A00448440 /* AppDelegate.swift */,
-				FA1814D824CEC2F8008CCD4F /* Architecture.swift */,
 				FAB41F191F26019A00448440 /* MainWindowController.swift */,
-				FA1992D31F35EF71000881D9 /* PreferencesWindowController.swift */,
 				FA6B961F1F3609500011D0D8 /* Preferences.swift */,
+				FA1992D31F35EF71000881D9 /* PreferencesWindowController.swift */,
 				FADF0C481F389EC80034152B /* SpotijackError+FatalError.swift */,
-				FAF81BE81A421ED9008F3360 /* XIBs */,
 				FA9503651A421B76009D7149 /* Images.xcassets */,
+				FABCF55B24CEE14600A34D74 /* Architecture */,
 				FA95035E1A421B76009D7149 /* Supporting Files */,
+				FAF81BE81A421ED9008F3360 /* XIBs */,
 			);
 			path = Spotijack;
 			sourceTree = "<group>";
@@ -298,6 +306,18 @@
 				FAAD519524AC911A0073A971 /* SpotifyApplication.swift */,
 			);
 			path = "Music Player";
+			sourceTree = "<group>";
+		};
+		FABCF55B24CEE14600A34D74 /* Architecture */ = {
+			isa = PBXGroup;
+			children = (
+				FABCF55924CECBE600A34D74 /* AppState.swift */,
+				FABCF56324CEEAFC00A34D74 /* AppState+AVFoundation.swift */,
+				FA1814D824CEC2F8008CCD4F /* Architecture.swift */,
+				FABCF56124CEE6CC00A34D74 /* DeviceDiscoverySession.swift */,
+				FABCF55D24CEE15900A34D74 /* RecordingSession.swift */,
+			);
+			name = Architecture;
 			sourceTree = "<group>";
 		};
 		FAC3007D1F17E04A00E47CB4 /* LibSpotijackTests */ = {
@@ -585,6 +605,10 @@
 			files = (
 				FAB41F101F26002A00448440 /* AppDelegate.swift in Sources */,
 				FA6B96201F3609500011D0D8 /* Preferences.swift in Sources */,
+				FABCF55E24CEE15900A34D74 /* RecordingSession.swift in Sources */,
+				FABCF56224CEE6CC00A34D74 /* DeviceDiscoverySession.swift in Sources */,
+				FABCF55A24CECBE600A34D74 /* AppState.swift in Sources */,
+				FABCF56424CEEAFC00A34D74 /* AppState+AVFoundation.swift in Sources */,
 				FA1992D41F35EF71000881D9 /* PreferencesWindowController.swift in Sources */,
 				FAB41F1A1F26019A00448440 /* MainWindowController.swift in Sources */,
 				FA1814D924CEC2F8008CCD4F /* Architecture.swift in Sources */,

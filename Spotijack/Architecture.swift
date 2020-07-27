@@ -9,6 +9,12 @@
 import Foundation
 import Dispatch
 import Combine
+import os.log
+
+// An implementation of The Elm Architecture/Redux/Flux/$UNIDIRECTIONAL_DATA_FLOW. The implementation is based on
+// the ideas described by the Point-Free (http://pointfree.co) guys and is _eerily_ similar to their TCA library to the
+// point at which I probably should've just used that instead. Nonetheless this was fun to write and only took around
+// half an hour.
 
 // MARK: - Commands
 
@@ -21,8 +27,78 @@ extension Publisher where Failure == Never {
 }
 
 extension Command {
+
+    static func just(value: Output) -> Command<Output> {
+        Just<Output>(value).eraseToCommand()
+    }
+
     static var none: Self {
         Empty(completeImmediately: true).eraseToAnyPublisher()
+    }
+
+    static func sequence(_ commands: Command<Output>...) -> Command<Output> {
+        sequence(commands)
+    }
+
+    static func sequence<C: Collection>(_ commands: C) -> Command<Output> where C.Element == Command<Output> {
+        guard let firstCommand = commands.first else { return .none }
+
+        return commands.dropFirst()
+            .reduce(into: firstCommand) { (combinedCommands: inout Command<Output>, command: Command<Output>) in
+                combinedCommands = combinedCommands.append(command).eraseToCommand()
+            }
+    }
+
+    static func merge(_ commands: Command<Output>...) -> Command<Output> {
+        return merge(commands)
+    }
+
+    static func merge<C: Collection>(_ commands: C) -> Command<Output> where C.Element == Command<Output> {
+        return Publishers.MergeMany(commands).eraseToCommand()
+    }
+
+    static func future<Failure: Error>(_ work: @escaping (@escaping (Result<Output, Failure>) -> Void) -> Void) -> Command<Result<Output, Failure>> {
+        Deferred {
+            Future { promise in
+                work { promise($0) }
+            }
+        }
+        .catchCommand()
+    }
+
+    static func fireAndForget(_ work: @escaping () -> Void) -> Command<Output> {
+        return Deferred { () -> Empty<Output, Never> in
+            work()
+            return Empty(completeImmediately: true)
+        }
+        .eraseToCommand()
+    }
+
+    static func catching(_ work: @escaping () throws -> Output) -> Command<Result<Output, Error>> {
+        return Deferred { () -> AnyPublisher<Output, Error> in
+            do {
+                let output = try work()
+                return Just(output).setFailureType(to: Error.self).eraseToAnyPublisher()
+            } catch {
+                return Fail(error: error).eraseToAnyPublisher()
+            }
+        }
+        .catchCommand()
+    }
+}
+
+extension Command where Output == Never, Failure == Never {
+    func fireAndForget<NewOutput>() -> Command<NewOutput> {
+        func absurd<A>(_ value: Never) -> A { }
+        return self.map(absurd(_:)).eraseToCommand()
+    }
+}
+
+extension Publisher {
+    func catchCommand() -> Command<Result<Output, Failure>> {
+        return self.map(Result.success)
+            .catch { Just(.failure($0)) }
+            .eraseToCommand()
     }
 }
 
@@ -42,6 +118,13 @@ struct Reducer<State, Message, Environment> {
 
     static var none: Reducer<State, Message, Environment> {
         Reducer { _, _, _ in .none }
+    }
+
+    func debugMessages() -> Reducer<State, Message, Environment> {
+        return Reducer { state, message, env in
+            os_log(.debug, "Received Message: %s", String(describing: message))
+            return self.evaluate(&state, message, env)
+        }
     }
 }
 

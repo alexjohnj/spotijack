@@ -19,22 +19,26 @@ internal class AppDelegate: NSObject, NSApplicationDelegate {
     private var sessionCoordinator: SessionCoordinator!
     private var mainWindowController: MainWindowController!
     private lazy var prefencesWindowController = PreferencesWindowController()
+    private var appStore: Store<AppState, AppMessage>!
 
     func applicationDidFinishLaunching(_ notification: Notification) {
-
         Preferences.shared.registerDefaultValues()
 
-        SpotifyApplication.launch { [self] result in
-            switch result {
-            case .success(let app):
-                sessionCoordinator = SessionCoordinator(musicApp: app)
-                mainWindowController = MainWindowController(musicApp: app, sessionCoordinator: sessionCoordinator)
-                _ = applicationShouldHandleReopen(NSApplication.shared, hasVisibleWindows: false)
+        appStore = Store(
+            initialState: AppState(),
+            reducer: appReducer.debugMessages(),
+            environment: AppEnvironment(
+                app: NSApp,
+                recordingSession: RecordingSession(),
+                deviceDiscoverySession: InputDeviceDiscoverySession(),
+                notificationCenter: .default
+            )
+        )
 
-            case .failure(let error):
-                NSApplication.shared.presentError(error)
-            }
-        }
+        appStore.send(.didFinishLaunching)
+
+        mainWindowController = MainWindowController(store: appStore)
+        _ = applicationShouldHandleReopen(NSApplication.shared, hasVisibleWindows: false)
     }
 
     func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
@@ -45,31 +49,16 @@ internal class AppDelegate: NSObject, NSApplicationDelegate {
 
         return true
     }
-//
-//    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
-//        let isSpotijacking = (try? SpotijackSessionManager.shared().isSpotijacking) ?? false
-//        return !isSpotijacking
-//    }
-//
-//    func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
-//        let isSpotijacking = (try? SpotijackSessionManager.shared().isSpotijacking) ?? false
-//        if isSpotijacking,
-//           let window = mainWindowController.window {
-//            presentTerminationWarning(window: window)
-//            return .terminateLater
-//        } else {
-//            return .terminateNow
-//        }
-//    }
-//
-//    func applicationWillTerminate(_ notification: Notification) {
-//        let isSpotijacking = (try? SpotijackSessionManager.shared().isSpotijacking) ?? false
-//        if isSpotijacking {
-//            do {
-//                try? SpotijackSessionManager.shared().stopSpotijacking()
-//            }
-//        }
-//    }
+
+    func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
+        if appStore.state.isRecording,
+           let window = mainWindowController.window {
+            presentTerminationWarning(window: window)
+            return .terminateLater
+        } else {
+            return .terminateNow
+        }
+    }
 }
 
 // MARK: - UI Actions
@@ -80,7 +69,9 @@ extension AppDelegate {
 }
 
 // MARK: - Helper Functions
+
 extension AppDelegate {
+
     /// Presents an alert sheet asking the user to verify they want to quit.
     /// The alert response invokes `NSApp.reply(toApplicationShouldTerminate:)`
     ///
@@ -92,13 +83,13 @@ extension AppDelegate {
         alert.messageText = NSLocalizedString("SESSION_QUIT_INFORMATIVE",
                                               comment: "Saying that a recording is in progress.")
         alert.addButton(withTitle: NSLocalizedString("Cancel", comment: ""))
-        alert.addButton(withTitle: NSLocalizedString("OK", comment: ""))
+        alert.addButton(withTitle: NSLocalizedString("Quit", comment: ""))
 
         alert.beginSheetModal(for: window) { response in
             if response == .alertFirstButtonReturn {
                 NSApp.reply(toApplicationShouldTerminate: false)
             } else {
-                NSApp.reply(toApplicationShouldTerminate: true)
+                self.appStore.send(.terminate)
             }
         }
     }
