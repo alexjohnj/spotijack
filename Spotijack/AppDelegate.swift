@@ -78,9 +78,9 @@ extension AppDelegate {
     /// - parameter window: The window to attach the alert to.
     private func presentTerminationWarning(window: NSWindow) {
         let alert = NSAlert()
-        alert.informativeText = NSLocalizedString("SESSION_QUIT_MESSAGE",
+        alert.informativeText = NSLocalizedString("SESSION_QUIT_INFORMATIVE",
                                                   comment: "Asking if you want to quit")
-        alert.messageText = NSLocalizedString("SESSION_QUIT_INFORMATIVE",
+        alert.messageText = NSLocalizedString("SESSION_QUIT_MESSAGE",
                                               comment: "Saying that a recording is in progress.")
         alert.addButton(withTitle: NSLocalizedString("Cancel", comment: ""))
         alert.addButton(withTitle: NSLocalizedString("Quit", comment: ""))
