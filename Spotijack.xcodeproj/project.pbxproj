@@ -45,6 +45,7 @@
 		FAB41F1A1F26019A00448440 /* MainWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB41F191F26019A00448440 /* MainWindowController.swift */; };
 		FAC300811F17E04A00E47CB4 /* LibSpotijack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA86C4B51F03FA25001ACBBA /* LibSpotijack.framework */; };
 		FACBE5C81F23D66C00030B87 /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACBE5C71F23D66C00030B87 /* Track.swift */; };
+		FACDC4C824CC57D600CA8FA3 /* OSUnfairLock.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACDC4C724CC57D600CA8FA3 /* OSUnfairLock.swift */; };
 		FAD45AB91F2140920012EF3F /* TestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD45AB81F2140920012EF3F /* TestData.swift */; };
 		FAD901A81F3869B8006AD800 /* SpotijackError.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD901A71F3869B8006AD800 /* SpotijackError.swift */; };
 		FADD9EC61F03FB2800EAC2BC /* ScriptingBridgeCompatProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADD9EBC1F03FB2800EAC2BC /* ScriptingBridgeCompatProtocols.swift */; };
@@ -132,6 +133,7 @@
 		FAC3007C1F17E04A00E47CB4 /* LibSpotijackTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LibSpotijackTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAC300801F17E04A00E47CB4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FACBE5C71F23D66C00030B87 /* Track.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
+		FACDC4C724CC57D600CA8FA3 /* OSUnfairLock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSUnfairLock.swift; sourceTree = "<group>"; };
 		FAD45AB81F2140920012EF3F /* TestData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestData.swift; sourceTree = "<group>"; };
 		FAD901A71F3869B8006AD800 /* SpotijackError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotijackError.swift; sourceTree = "<group>"; };
 		FADD9EBC1F03FB2800EAC2BC /* ScriptingBridgeCompatProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScriptingBridgeCompatProtocols.swift; sourceTree = "<group>"; };
@@ -188,6 +190,7 @@
 				FAD901A71F3869B8006AD800 /* SpotijackError.swift */,
 				FACBE5C71F23D66C00030B87 /* Track.swift */,
 				FA503A231F378B660009BDBD /* SpotijackSessionCreator.swift */,
+				FACDC4C724CC57D600CA8FA3 /* OSUnfairLock.swift */,
 			);
 			path = "Helper Types";
 			sourceTree = "<group>";
@@ -553,6 +556,7 @@
 				FA51322A24B212AA00BB99FE /* RecordingProcessing.swift in Sources */,
 				FA7D6A3B24ACB319007C499D /* SessionCoordinator.swift in Sources */,
 				FADD9ECA1F03FB2800EAC2BC /* SpotifyScripting.swift in Sources */,
+				FACDC4C824CC57D600CA8FA3 /* OSUnfairLock.swift in Sources */,
 				FA51322E24B2221A00BB99FE /* TemporaryFilePathGenerator.swift in Sources */,
 				FAAEE65024AB82BC0060C1B6 /* AudioRecorder.Configuration.swift in Sources */,
 				FAAD519624AC911A0073A971 /* SpotifyApplication.swift in Sources */,

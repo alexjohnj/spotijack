@@ -8,7 +8,9 @@
 
 import Foundation
 import AVFoundation
+
 import os.log
+import os.lock
 
 private let log = OSLog(subsystem: "org.alexj.Spotijack", category: "AudioRecorder")
 
@@ -18,19 +20,20 @@ final class AudioRecorder: NSObject, RecordingEngine {
 
     enum ConfigurationError: Error {
         case noInputDeviceSelected
-
         case inputDeviceUnavailable(AVCaptureDevice, reason: Error)
         case inputDeviceUnusable(AVCaptureDevice)
         case outputDeviceUnusable
     }
 
+    private enum RecordingCommand {
+        case none
+        case startNewRecording(RecordingConfiguration)
+        case endRecording
+    }
+
     // MARK: - Properties
 
     weak var delegate: RecordingEngineDelegate?
-
-    var isRecording: Bool {
-        sessionOutput.isRecording
-    }
 
     // MARK: - Private Properties
 
@@ -39,8 +42,16 @@ final class AudioRecorder: NSObject, RecordingEngine {
     private let sessionOutput = AVCaptureAudioFileOutput()
     private let audioSettings: AudioSettings
 
-    private let recordingQueue = DispatchQueue(label: "org.alexj.Spotijack.AudioRecorderQueue")
+    /// A serial queue to configure the capture session on.
+    private let sessionQueue = DispatchQueue(label: "org.alexj.Spotijack.AudioRecorderQueue")
+
+    /// Tracks the files being written to in the background by `sessionOutput`.
     private let recordingGroup = DispatchGroup()
+
+    /// A command the recorder should carry out when it's outputted the next sample buffer. The command is
+    /// reset after each sample.
+    private var nextRecordingCommand: RecordingCommand = .none
+    private let commandLock = OSUnfairLock()
 
     // MARK: - Initializers
 
@@ -55,86 +66,88 @@ final class AudioRecorder: NSObject, RecordingEngine {
 
     // MARK: - Methods
 
+    func prepareToRecord(_ completion: @escaping (Result<Void, Error>) -> Void) {
+        os_log(.info, log: log, "AudioRecorder is preparing to record")
+
+        sessionQueue.async {
+            let configResult = Result { try self.recordingQueue_configureCaptureSession() }
+
+            if case .success = configResult {
+                os_log(.info, log: log, "AudioRecorder is ready to record")
+            }
+
+            DispatchQueue.main.async { completion(configResult) }
+        }
+    }
+
     func startNewRecording(using configuration: RecordingConfiguration) throws {
-        try recordingQueue.sync { try recordingQueue_startNewRecording(using: configuration) }
+        assert(sessionQueue.sync { session.isRunning }, "Attempt to start a new recording without preparing the session")
+
+        commandLock.withCriticalScope {
+            if case .none = nextRecordingCommand {
+                nextRecordingCommand = .startNewRecording(configuration)
+            }
+        }
     }
 
     func stopRecording(completionHandler: (() -> Void)?) {
-        recordingQueue.sync { recordingQueue_stopRecording(completionHandler: completionHandler) }
+        os_log(.info, log: log, "AudioRecorder asked to end recording")
+
+        // If a recording is in progress it'll be stopped when the next sample is produced.
+        commandLock.withCriticalScope {
+            nextRecordingCommand = .endRecording
+        }
+
+        // When the session output stops recording, it continues to write data in the background. The session can't be
+        // stopped until this finishes otherwise data will be lost so we block the session configuration queue until the
+        // output finishes writing all of its files.
+        sessionQueue.async { [weak self] in
+            self?.recordingGroup.wait()
+            self?.session.stopRunning()
+
+            self?.commandLock.withCriticalScope {
+                self?.nextRecordingCommand = .none
+            }
+
+            DispatchQueue.main.async {
+                completionHandler?()
+            }
+
+            os_log(.info, log: log, "AudioRecorder has finished all recording activity")
+        }
     }
 
     // MARK: - Queue Specific Methods
 
-    private func recordingQueue_startNewRecording(using configuration: RecordingConfiguration) throws {
-        dispatchPrecondition(condition: .onQueue(recordingQueue))
+    private func recordingQueue_configureCaptureSession() throws {
+        dispatchPrecondition(condition: .onQueue(sessionQueue))
 
-        os_signpost(.begin, log: log, name: "Starting New Recording")
-        defer { os_signpost(.end, log: log, name: "Starting New Recording") }
-
-        if !session.isRunning {
-            try startCaptureSession()
+        guard !session.isRunning else {
+            return
         }
 
-        os_log(.info, log: log, "AudioRecorder starting a new recording to %s", configuration.fileLocation.path)
-        recordingGroup.enter()
-        sessionOutput.startRecording(
-            to: configuration.fileLocation,
-            outputFileType: audioSettings.container.fileType,
-            recordingDelegate: self
-        )
-    }
+        os_signpost(.begin, log: log, name: "Configuring Capture Session")
+        defer { os_signpost(.end, log: log, name: "Configuring Capture Session") }
 
-    private func recordingQueue_stopRecording(completionHandler: (() -> Void)?) {
-        dispatchPrecondition(condition: .onQueue(recordingQueue))
+        do {
+            session.beginConfiguration()
 
-        os_log(.info, log: log, "AudioRecorder is ending recording")
-        os_signpost(.begin, log: log, name: "Stopping Recording")
-
-        sessionOutput.stopRecording()
-
-        // Recording finishes on a background thread. Must wait for it to complete before stopping the capture session.
-        // And must block the recording queue so new recordings aren't started until the old session completes.
-        recordingQueue.async {
-            // Timeout as we can deadlock when calling startNewRecording: and the caller's queue is the queue
-            // AVCaptureAudioFileOutput calls the delegate on.
-            _ = self.recordingGroup.wait(timeout: .now() + 2)
-
-            self.session.stopRunning()
-            DispatchQueue.main.async { completionHandler?() }
-
-            os_signpost(.end, log: log, name: "Stopping Recording")
-        }
-    }
-
-    // MARK: - Helper Methods
-
-    private func startCaptureSession() throws {
-        os_log(.info, log: log, "Starting AudioRecorder capture session")
-
-        os_signpost(.begin, log: log, name: "Start Capture Session")
-        defer { os_signpost(.end, log: log, name: "Start Capture Session") }
-
-        if session.inputs.isEmpty {
-            do {
+            if session.inputs.isEmpty {
                 try configureSessionInputs()
-            } catch {
-                os_log(.error, log: log, "Failed to configure AudioRecorder capture session inputs with error: %{public}s",
-                       String(describing: error))
-                throw error
             }
-        }
 
-        if session.outputs.isEmpty {
-            do {
+            if session.outputs.isEmpty {
                 try configureSessionOutput()
-            } catch {
-                os_log(.error, log: log, "Failed to configure AudioRecorder capture session outputs with error: %{public}s",
-                       String(describing: error))
-                throw error
             }
-        }
 
-        session.startRunning()
+            session.commitConfiguration()
+            session.startRunning()
+        } catch {
+            os_log(.error, log: log, "Failed to configure capture session with error %{public}s",
+                   String(describing: error))
+            session.commitConfiguration()
+            throw error
+        }
     }
 
     private func configureSessionOutput() throws {
@@ -146,6 +159,7 @@ final class AudioRecorder: NSObject, RecordingEngine {
             throw ConfigurationError.outputDeviceUnusable
         }
 
+        sessionOutput.delegate = self
         session.addOutput(sessionOutput)
 
         sessionOutput.audioSettings = [
@@ -167,6 +181,35 @@ final class AudioRecorder: NSObject, RecordingEngine {
 
         session.inputs.forEach(session.removeInput)
         session.addInput(captureInput)
+    }
+}
+
+extension AudioRecorder: AVCaptureFileOutputDelegate {
+    func fileOutputShouldProvideSampleAccurateRecordingStart(_ output: AVCaptureFileOutput) -> Bool {
+        return true
+    }
+
+    func fileOutput(_ output: AVCaptureFileOutput, didOutputSampleBuffer sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+        commandLock.withCriticalScope {
+            switch nextRecordingCommand {
+            case .none:
+                break
+
+            case .startNewRecording(let config):
+                recordingGroup.enter()
+                sessionOutput.startRecording(
+                    to: config.fileLocation,
+                    outputFileType: audioSettings.container.fileType,
+                    recordingDelegate: self
+                )
+
+            case .endRecording:
+                sessionOutput.stopRecording()
+                nextRecordingCommand = .none
+            }
+
+            nextRecordingCommand = .none
+        }
     }
 }
 

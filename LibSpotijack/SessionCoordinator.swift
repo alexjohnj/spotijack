@@ -22,10 +22,34 @@ public final class SessionCoordinator {
 
     public enum State {
         case notRecording
+        case startingRecording
         case recording
 
         // The session will move to the `notRecording` state when it has finished writing out recorded audio data.
         case endingRecording
+
+        func canTransition(to otherState: State) -> Bool {
+            switch (self, otherState) {
+            case (.notRecording, .startingRecording):
+                return true
+
+            case (.startingRecording, .recording),
+                 (.startingRecording, .endingRecording):
+                return true
+
+            case (.recording, .endingRecording):
+                return true
+
+            case (.endingRecording, .notRecording):
+                return true
+
+            case (.notRecording, _),
+                 (.startingRecording, _),
+                 (.recording, _),
+                 (.endingRecording, _):
+                return false
+            }
+        }
     }
 
     public struct Configuration: Hashable {
@@ -129,12 +153,14 @@ public final class SessionCoordinator {
     // MARK: - Private Methods
 
     private func locked_startRecordingFromConvertibleDevice(_ captureDevice: AVCaptureDeviceConvertible) throws {
-        guard state == .notRecording,
+        guard state.canTransition(to: .startingRecording),
               let currentTrack = musicApp.currentTrack else {
             return
         }
 
+        state = .startingRecording
         os_log(.info, log: log, "Recording Session is starting.")
+
         let activeSessionConfiguration = _configuration // Copy the current configuration for the duration of the session
         let recordingEngine = try recorderFactory(captureDevice, activeSessionConfiguration.audioSettings)
         recordingEngine.delegate = self
@@ -144,10 +170,24 @@ public final class SessionCoordinator {
         musicApp.playerPosition = 0
         applyMusicAppConfiguration(activeSessionConfiguration)
 
+        recordingEngine.prepareToRecord { [weak self] result in
+            switch result {
+            case .failure:
+                self?.stopRecording()
+
+            case .success:
+                self?.didPrepareRecordingEngine(recordingEngine, toRecordTrack: currentTrack)
+            }
+        }
+    }
+
+    private func didPrepareRecordingEngine(_ recordingEngine: RecordingEngine, toRecordTrack track: Track) {
+        guard state.canTransition(to: .recording) else { return }
+
         recordingCancellable = musicApp.trackIDPublisher
             .removeDuplicates()
             .map { [musicApp] _ in musicApp.currentTrack }
-            .prepend(currentTrack)
+            .prepend(track)
             .handleEvents(receiveOutput: { track in
                 os_log(.info, log: log, "Starting recording of new track %s.",
                        track?.description ?? "NO_TRACK")
@@ -177,7 +217,8 @@ public final class SessionCoordinator {
     }
 
     private func locked_stopRecording() {
-        guard state == .recording else { return }
+        guard state.canTransition(to: .endingRecording) else { return }
+
         state = .endingRecording
         os_log(.info, log: log, "Recording Session is ending.")
 

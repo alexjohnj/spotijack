@@ -13,6 +13,18 @@ final class MockRecordingEngine: RecordingEngine {
 
     weak var delegate: RecordingEngineDelegate?
 
+    var prepareToRecordInvocations = [((Result<Void, Error>) -> Void)]()
+    var prepareToRecordInvocationCount: Int { prepareToRecordInvocations.count }
+    var prepareToRecordInvoked: Bool { !prepareToRecordInvocations.isEmpty }
+    var stubbedPrepareToRecordCompletion: (Result<Void, Error>)? = .success(())
+
+    func prepareToRecord(_ completion: @escaping (Result<Void, Error>) -> Void) {
+        prepareToRecordInvocations.append(completion)
+        if let stubbedCompletion = stubbedPrepareToRecordCompletion {
+            completion(stubbedCompletion)
+        }
+    }
+
     var startNewRecordingInvocations = [RecordingConfiguration]()
     var startNewRecordingInvocationCount: Int { startNewRecordingInvocations.count }
     var startNewRecordingInvoked: Bool { !startNewRecordingInvocations.isEmpty }

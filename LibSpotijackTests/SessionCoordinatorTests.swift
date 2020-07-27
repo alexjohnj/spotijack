@@ -27,7 +27,8 @@ final class SessionCoordinatorTests: XCTestCase {
 
     func test_startRecording_updatesRecordingState() throws {
         // Given
-        let sut = SessionCoordinator(musicApp: MockMusicApp(), recorderFactory: { _, _  in MockRecordingEngine() })
+        let recordingEnigne = MockRecordingEngine()
+        let sut = SessionCoordinator(musicApp: MockMusicApp(), recorderFactory: { _, _  in recordingEnigne })
 
         // When
         try sut.startRecordingFromConvertibleDevice(FakeCaptureDevice())

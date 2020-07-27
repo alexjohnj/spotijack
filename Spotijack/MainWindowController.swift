@@ -103,7 +103,8 @@ internal class MainWindowController: NSWindowController {
         sessionCoordinator.$state
             .sink { [unowned self] state in
                 switch state {
-                case .recording:
+                case .recording,
+                     .startingRecording:
                     spotijackButton.title = NSLocalizedString("Stop Recording", comment: "")
                     spotijackButton.state = .on
 
@@ -122,6 +123,7 @@ internal class MainWindowController: NSWindowController {
             .map { state in
                 switch state {
                 case .recording,
+                     .startingRecording,
                      .endingRecording:
                     return false
                 case .notRecording:
@@ -153,7 +155,8 @@ extension MainWindowController {
         case .endingRecording:
             return
 
-        case .recording:
+        case .recording,
+             .startingRecording:
             sessionCoordinator.stopRecording()
 
         case .notRecording:
