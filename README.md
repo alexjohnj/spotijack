@@ -1,7 +1,11 @@
 # Spotijack
 
 > ⚠️ Spotijack will not work on macOS 10.15 (Catalina) because Audio Hijack Pro
-> no longer runs. There are currently no plans to work around this.
+> no longer runs. There is an experimental build [on this
+> branch][recording-experiment-branch] that removes the need for Audio Hijack
+> Pro.
+
+[recording-experiment-branch]: https://github.com/alexjohnj/spotijack/tree/exp/recording
 
 Spotijack is a macOS application that automates recording songs playing in
 Spotify using [Audio Hijack Pro][audio-hijack-pro]. When Spotify changes track,
