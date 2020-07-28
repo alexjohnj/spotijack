@@ -1,16 +1,23 @@
-# Spotijack
+# Spotijack (Experimental Recording Branch)
 
-> ⚠️ Spotijack will not work on macOS 10.15 (Catalina) because Audio Hijack Pro
-> no longer runs. There are currently no plans to work around this.
+Spotijack is a macOS application that records songs playing in Spotify. This
+branch contains a version of Spotijack that does not depend on Audio Hijack Pro
+which means it can run on macOS 10.15 Catalina.
 
-Spotijack is a macOS application that automates recording songs playing in
-Spotify using [Audio Hijack Pro][audio-hijack-pro]. When Spotify changes track,
-Spotijack starts a new recording in Audio Hijack Pro and updates the recording
-metadata.
+To use this version of Spotijack, you'll need to set up a local loopback device
+that can be the output device for Spotify and the input device for Spotijack.
 
-[audio-hijack-pro]: http://rogueamoeba.com/legacy/
+To compile this version of Spotijack, you will need to be using at least Xcode
+12 Beta 2.
 
-![screenshot](scrot.png)
+This version of Spotijack has several limitations compared to the master version
+including:
+
+- No control over the recording format (M4A files containing ALAC encoded audio
+  only).
+- No control over file naming (but the default naming is sensible).
+- Lots of potential for funky audio glitches (since I'm no where near as
+  experienced with audio programming as the Rouge Amoeba folks).
 
 ## Piracy
 
@@ -22,25 +29,22 @@ not publishing binaries to discourage people from using Spotijack.
 
 ## Requirements
 
-Spotijack requires macOS 10.14. You need a licensed copy of Audio Hijack Pro
-(version 2, not 3) and any recent version of Spotify. You (probably) need a
-premium Spotify account since Spotijack makes no attempt to distinguish between
-adverts and songs.
-
-Spotijack has only been tested using the instant-on plugin for Audio Hijack
-Pro. You'll _also_ need a copy of Audio Hijack 3 to get the plugin.
+Spotijack requires macOS 10.15 and a local loopback audio device. You (probably)
+need a premium Spotify account since Spotijack makes no attempt to distinguish
+between adverts and songs.
 
 ## Usage
 
-On first launch, Spotijack will handle creating a recording session in Audio
-Hijack Pro as well as setting up Audio Hijack Pro and Spotify for scripting.
-All you need to do is start playing a song in Spotify and hit the record button.
+Launch Spotijack, select the input device it should record from and then click
+record.
+
+If recording is ending immediately after starting, check the console for a
+logged error.
 
 ## Building
 
-Spotijack uses Carthage to manage dependencies. Once they're set up, it should
-build cleanly using Xcode 10. You should do a release build because the
-optimisations provide a nice reduction in CPU usage.
+Spotijack requires Xcode 12 Beta 2 to build. You should do a release build
+because the optimisations provide a nice reduction in CPU usage.
 
 ## Implementation
 
