@@ -50,13 +50,13 @@ internal class MainWindowController: NSWindowController {
             .sink { [unowned self] devices, selectedDevice in
                 let deviceNames = devices.map(\.name)
 
-                inputDevicePopUp.removeAllItems()
-                inputDevicePopUp.addItems(withTitles: deviceNames)
+                self.inputDevicePopUp.removeAllItems()
+                self.inputDevicePopUp.addItems(withTitles: deviceNames)
 
                 if let selectedDevice = selectedDevice {
-                    inputDevicePopUp.selectItem(withTitle: selectedDevice.name)
+                    self.inputDevicePopUp.selectItem(withTitle: selectedDevice.name)
                 } else {
-                    inputDevicePopUp.selectItem(at: -1)
+                    self.inputDevicePopUp.selectItem(at: -1)
                 }
             }
             .store(in: &cancellationBag)
@@ -64,9 +64,9 @@ internal class MainWindowController: NSWindowController {
         store.publisher.map(\.isRecording)
             .sink { [unowned self] isRecording in
                 if isRecording {
-                    spotijackButton.title = NSLocalizedString("Stop Recording", comment: "")
+                    self.spotijackButton.title = NSLocalizedString("Stop Recording", comment: "")
                 } else {
-                    spotijackButton.title = NSLocalizedString("Record", comment: "")
+                    self.spotijackButton.title = NSLocalizedString("Record", comment: "")
                 }
             }
             .store(in: &cancellationBag)
@@ -78,18 +78,18 @@ internal class MainWindowController: NSWindowController {
 
         store.publisher.map(\.canStartRecording)
             .sink { [unowned self] canStartRecording in
-                spotijackButton.isEnabled = canStartRecording
+                self.spotijackButton.isEnabled = canStartRecording
             }
             .store(in: &cancellationBag)
 
         store.publisher.map(\.currentTrack)
             .sink { [unowned self] track in
                 if let track = track {
-                    statusField.stringValue = track.name
-                    artistAlbumField.stringValue = "\(track.artist) — \(track.album)"
+                    self.statusField.stringValue = track.name
+                    self.artistAlbumField.stringValue = "\(track.artist) — \(track.album)"
                 } else {
-                    statusField.stringValue = NSLocalizedString("Ready to Record", comment: "")
-                    artistAlbumField.stringValue = ""
+                    self.statusField.stringValue = NSLocalizedString("Ready to Record", comment: "")
+                    self.artistAlbumField.stringValue = ""
                 }
             }
             .store(in: &cancellationBag)

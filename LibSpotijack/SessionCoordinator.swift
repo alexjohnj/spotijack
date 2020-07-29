@@ -195,20 +195,20 @@ public final class SessionCoordinator {
             .sink { [unowned self] newTrack in
                 if let newTrack = newTrack {
                     do {
-                        let newRecordingLocation = try tempPathGenerator.generateFilePath()
+                        let newRecordingLocation = try self.tempPathGenerator.generateFilePath()
                         let recordingConfiguration = RecordingConfiguration(
                             fileLocation: newRecordingLocation,
                             track: newTrack
                         )
 
                         try recordingEngine.startNewRecording(using: recordingConfiguration)
-                        withStateLock { inProgressTracks[newRecordingLocation] = newTrack }
+                        self.withStateLock { self.inProgressTracks[newRecordingLocation] = newTrack }
                     } catch {
-                        stopRecording()
+                        self.stopRecording()
                     }
                 } else {
                     os_log(.info, log: log, "New track id is nil, ending recording session.")
-                    stopRecording()
+                    self.stopRecording()
                 }
             }
 
